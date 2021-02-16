@@ -325,10 +325,17 @@ function GetHardwareIDFromUsername($user) {
     //print_r($GLOBALS);
     //echo "</pre>";
     //$conn=$db;
+    error_reporting(1);
     global $conn;
+
+    $res_type = is_resource($conn) ? get_resource_type($conn) : gettype($conn);
+    if(strpos($res_type, 'mysql') === false) {
+        $conn = ConectaSQL('ocsweb');
+    }       
     //error_reporting(E_ALL);
     $sql = "select HARDWARE_ID from accountinfo where tag='".$user."'";
     $result = $conn->query($sql);
+    //echo $conn->connect_error);
     //echo $result->num_rows;
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
@@ -694,6 +701,12 @@ function UserForm($ldata) {
                                             <input type="checkbox" class="form-check-input" id="val-'.$cu.'" name="val-'.$cu.'" onclick="EnableService('."'$dn'".','."'$cu'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  Drupal 
                                         </div>
                                     </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-row form-check-label" id="nuke-'.$cu.'">
+                                             <button type="button" class="btn btn-danger" onclick="DeleteUser('."'$dn'".')">Borrar</button>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 ';
                                 $cu='noone';
@@ -963,6 +976,18 @@ function DeleteLDAPVAl($dn,$value,$vname) {
     return $RES;
 }
 
+function DeleteLDAPUser($dn) {
+    $ldapBind=ConectaLDAP();
+    ldap_error($ldapBind);
+    if (@ldap_delete($ldapBind, $dn)) {
+        $RES="YES";
+    } else {
+         $RES=ldap_error($ldapBind).$dn;
+    }
+    return $RES;
+}
+
+
 function UpdateDelFeria($dn,$value,$vname) {
     $ldapBind=ConectaLDAP();
     $removal = array(
@@ -1063,11 +1088,32 @@ function GetOfficeAbrevs($db) {
 }
 
 
+function plainPassword(): string
+{
+    $numbers = array_rand(range(0, 9), rand(3, 5));
+    $uppercase = array_rand(array_flip(range('A', 'Z')), rand(2, 4));
+    $lowercase = array_rand(array_flip(range('a', 'z')), rand(3, 4));
+    $special = array_rand(array_flip(['@', '#', '$', '!', '%', '*', '?', '&']), rand(3, 2));
+
+    $password = array_merge(
+        $numbers,
+        $uppercase,
+        $lowercase,
+        $special
+    );
+
+    shuffle($password);
+
+    return implode($password);
+}
+
+
 function NewUserForm() {
     $rouser="";
     $cu="NU";
     $CmbOfi="";
     $abs=GetOfficeAbrevs('x');
+    $pass=plainPassword();
     foreach ($abs as $value) {
         $CmbOfi .= '<OPTION VALUE="'.$value.'">'.$value.'</OPTION>';
     }
@@ -1090,7 +1136,7 @@ function NewUserForm() {
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-userpassword">Password:</label></div>
                                     <div class="col-lg-6">
-                                        <input type="password" class="form-control" id="val-userpassword" name="val-userpassword" placeholder="Autogenerado">
+                                        <input type="password" class="form-control" id="val-userpassword" name="val-userpassword" placeholder="Autogenerado" value="'.$pass.'" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -1100,7 +1146,7 @@ function NewUserForm() {
                                 $cu='givenname';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Nombre: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Nombre: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'palabrasp','$cu'".','."'NO'".')" '.$rouser.'>
@@ -1111,7 +1157,7 @@ function NewUserForm() {
                                 $cu='sn';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Apellidos: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Apellidos: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'palabraspforce','$cu'".','."'NO'".')" '.$rouser.'>
@@ -1124,7 +1170,7 @@ function NewUserForm() {
                                 $cu='noempleado';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Numero de Empleado: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Numero de Empleado: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'"  '.$ldata[0][$cu][0].' onchange="validarinput('."'numero','$cu'".','."'SI'".')" '.$rouser.'>
@@ -1135,7 +1181,7 @@ function NewUserForm() {
                                 $cu='oficina';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">Oficina: </p></label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">Oficina: </p></label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             
@@ -1158,7 +1204,7 @@ function NewUserForm() {
                                 $cu='travelling';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Travelling: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Travelling: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
 
@@ -1175,7 +1221,7 @@ function NewUserForm() {
                                 $cu='accesosdered';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">Accesos de red: </p></label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">Accesos de red: </p></label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
 
@@ -1198,10 +1244,10 @@ function NewUserForm() {
                                 $cu='nivelscup';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Nivel SCRUP: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Nivel SCRUP: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1209,10 +1255,14 @@ function NewUserForm() {
                                 $cu='anfitrion';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Anfitrion: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Anfitrion: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
+                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>-->
+                                            <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
+                                                <option value="0">NO</option>
+                                                <option value="1">SI</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -1223,7 +1273,7 @@ function NewUserForm() {
                                 $forma .='
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Licencia Google: </label>
-                                    <!--<div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div>--></div>
+                                    <!--<div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div>--></div>
                                     <div class="col-lg-6">
                                             <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
                                                 <option value="SELECCIONE">SELECCIONE</option>
@@ -1244,7 +1294,7 @@ function NewUserForm() {
                                 $cu='mail';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Mail: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Mail: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
@@ -1257,7 +1307,7 @@ function NewUserForm() {
                                 $cu='extension';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Extension asignada: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Extension asignada: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
@@ -1268,10 +1318,10 @@ function NewUserForm() {
                                 $cu='aliasgoogle';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Alias Google: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Alias Google: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="user1" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1292,13 +1342,10 @@ function NewUserForm() {
                                 $cu='lanmac';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">MAC Address LAN: </p></label><div id="edit-'.$cu.'"><a href="#/"" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">MAC Address LAN: </p></label><div id="edit-'.$cu.'"><a href="#/"" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'><br>-->'.GetAvailHardware($cu,'jferia').'
-
-
-
+                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'><br>--><input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" readonly><div id="lanmacsel">Waiting for info</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1308,7 +1355,7 @@ function NewUserForm() {
                                 $cu='wifiip';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Wifi IP: <small>(Calculada, No LDAP)</small> </label><div id="edit-'.$cu.'"><!--<a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a>--></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Wifi IP: <small>(Calculada, No LDAP)</small> </label><div id="edit-'.$cu.'"><!--<a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a>--></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
@@ -1319,10 +1366,10 @@ function NewUserForm() {
                                 $cu='wifimac';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">MAC Address Wifi: </p></label><div id="edit-'.$cu.'"><a href="#/"" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">MAC Address Wifi: </p></label><div id="edit-'.$cu.'"><a href="#/"" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'>
+                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'>--><input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" readonly><div id="wifimacsel">Waiting for info</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1332,7 +1379,7 @@ function NewUserForm() {
                                 $cu='puesto';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Puesto: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Puesto: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
@@ -1343,7 +1390,7 @@ function NewUserForm() {
                                 $cu='sambaacctflags';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">sambaacctflags: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">sambaacctflags: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>

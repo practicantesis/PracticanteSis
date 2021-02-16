@@ -1,3 +1,32 @@
+function DeleteUser(dn) {
+    //alert(dn);
+    var r = confirm("Esta seguro que quiere borrar a "+dn+"????");
+    if (r == true) {
+        var rr = confirm("Esta seguro que quiere borrar a "+dn+"???? lo jura por la mejor artista de este mundo, Shania Twain?");
+        if (rr == true) {
+            $.ajax({
+                type: "POST",
+                url: 'php/DeleteUser.php',
+                data: { dn: dn },
+                dataType: "json",
+                success: function(data) {
+                    if (data[0].success == "YES") {
+                        alert('Usuario BORRADO');
+                        ShowLDAP('LDAPUsers');
+                    } else {
+                        alert(data[0].success);
+                    }
+                }
+            });
+        } else {
+          alert("Abusado!!");
+        }    
+    } else {
+      alert("Abusado!!");
+    }    
+    return false;
+}
+
 function ShowOPENVPN() {
     Limpia();
 
@@ -108,10 +137,10 @@ function ShowLDAP(what) {
             url: 'php/NewUser.php',
             dataType: "json",
             success: function(data) {
-                alert(data[0].success);
+                //alert(data[0].success);
                 if (data[0].success == "YES") {
                     $('#NewLDAPUser').html(data[0].data);
-                    alert(data[0].data);
+                    //alert(data[0].data);
                 }
             }
         });
@@ -318,6 +347,7 @@ function ValidateLDAPass() {
 
 function Limpia() {
         $('#TOPDIV').html('');
+        //$('#NewLDAPUser').hide();
         $("#LDAPUser").hide();
         $("#LDAPAlias").hide();
         //$("#LDAPGroups").hide();
@@ -357,6 +387,10 @@ function EnableService(dn,nuevo,initial) {
         });
     } 
 
+}
+
+function UValn(dn,value) {
+    alert('boo!');
 }
 
 function UVal(dn,value) {
@@ -722,15 +756,19 @@ function validarinput(tipo,valor,chkexist) {
             $.ajax({
                 type: "POST",
                 url: 'php/ChkOCSTag.php',
-                data: { valor: valor },
+                data: { valor: va },
                 dataType: "json",
                 success: function(data) {
                     if (data[0].success == "YES") {
-                        alert ("Nueva IP");
-                        if (valor == "lanmac") {
-                            $("#val-lanip").val(nvalue);
-                            $('#val-lanip').attr('readonly', true);
+                        if (data[0].valor == "NO") {
+                            alert('TAG OCS NO ENCONTRADO');
+                        } else {
+                            alert('TAG OCS PARA '+va+' ENCONTRADO: '+data[0].valor);
+                            //$('#lanmacsel').html(data[0].lanmac);
+                            
                         }
+                        $('#lanmacsel').html(data[0].lanmac);
+                        $('#wifimacsel').html(data[0].wifimac);
                     }
                 }
             });
@@ -834,9 +872,9 @@ function SaveMacChange(tipo) {
 }
 
 function ValidateMacSet(tipo) {
-    //alert(tipo);
+    alert(tipo);
     var e = document.getElementById(tipo+"-sel");
-    //alert (e);
+    alert (e);
     if (e) {
         var multi = e.options[e.selectedIndex].value;
         if (multi == "NO") {

@@ -873,7 +873,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 
             <div class="container-fluid mt-6">
                         <div id="VPNTable"></div>
-                        <div id="NewLDAPUser">
+                        <div id="NewLDAPUser"></div>
                         <div id="LDAPUser" style="display:none;">
                             <div class="row">
                                 <div class="col-md-6 col-lg-3">
@@ -1022,7 +1022,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 
 
 
-            </div>
+            <!-- NUKED newldapuser -->
 
 
 

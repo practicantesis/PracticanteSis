@@ -50,7 +50,7 @@
                                     <div class="form-group">
                                         <input type="password" name="pass" id="pass" class="form-control" placeholder="Password">
                                     </div>
-                                    <button type="submit" class="btn login-form__btn submit w-100">Sign In</button><!--<input type="submit" />-->
+                                    <button type="submit" class="btn login-form__btn submit w-100">Sign In</button><input type="submit" />
                                 </form>
                                 <!--<p class="mt-5 login-form__footer">Dont have account? <a href="page-register.html" class="text-primary">Sign Up</a> now</p>-->
                             </div>
