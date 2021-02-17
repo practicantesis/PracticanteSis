@@ -45,12 +45,13 @@
         
                                 <form class="mt-5 mb-5 login-input" method="post" action="index.php">
                                     <div class="form-group">
-                                        <input type="text" name="user" id="user" class="form-control" placeholder="user">
+                                        <input type="text" name="user" id="user" class="form-control" placeholder="Usuario">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" name="pass" id="pass" class="form-control" placeholder="Password">
+                                        <input type="password" name="pass" id="pass" class="form-control" placeholder="Contraseña">
+                                         <center><img src="icons/botones/eye.png" alt="ojo" id="ojo"></center>
                                     </div>
-                                    <button type="submit" class="btn login-form__btn submit w-100">Sign In</button><!--<input type="submit" />-->
+                                    <button type="submit" class="btn login-form__btn submit w-100">Ingresar</button><!--<input type="submit" />-->
                                 </form>
                                 <!--<p class="mt-5 login-form__footer">Dont have account? <a href="page-register.html" class="text-primary">Sign Up</a> now</p>-->
                             </div>
@@ -60,7 +61,26 @@
             </div>
         </div>
     </div>
-    
+    <script>
+    var boton=document.getElementById('ojo');
+        var input=document.getElementById('pass');
+        boton.addEventListener('click',mostrarClave);
+        
+        function mostrarClave(){
+            if(input.type=="password"){
+                input.type="text";
+                boton.src="icons/botones/invisible.png";
+                setTimeout("ocultar()",4000);
+            }else{
+                input.type="password";
+                boton.src="icons/botones/eye.png";
+            }
+        }
+        function ocultar(){
+            input.type="password";
+            boton.src="icons/botones/eye.png";
+        }
+    </script>
 
     
 
