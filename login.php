@@ -41,7 +41,7 @@
                     <div class="form-input-content">
                         <div class="card login-form mb-0">
                             <div class="card-body pt-5">
-                                <a class="text-center" href="index.html"> <h4>PORTAL DE INFRAESTRUCTURA</h4></a>
+                                <a class="text-center" href="login.php"> <h4>PORTAL DE INFRAESTRUCTURA</h4></a>
         
                                 <form class="mt-5 mb-5 login-input" method="post" action="index.php">
                                     <div class="form-group">
