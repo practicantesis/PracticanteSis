@@ -62,6 +62,7 @@
         </div>
     </div>
     <!--prebua de conexion con git-->
+    <!--comentario de prueba-->
     <script>
     var boton=document.getElementById('ojo');
         var input=document.getElementById('pass');
