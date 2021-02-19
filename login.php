@@ -61,7 +61,7 @@
             </div>
         </div>
     </div>
-    
+    <!--prueba de git fetch en servidor con putty-->
     <script>
     var boton=document.getElementById('ojo');
         var input=document.getElementById('pass');
