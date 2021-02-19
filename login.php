@@ -71,7 +71,7 @@
             if(input.type=="password"){
                 input.type="text";
                 boton.src="icons/botones/invisible.png";
-                setTimeout("ocultar()",4000);
+                setTimeout("ocultar()",5000);
             }else{
                 input.type="password";
                 boton.src="icons/botones/eye.png";
