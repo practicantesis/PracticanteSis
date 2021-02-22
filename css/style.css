@@ -7601,7 +7601,11 @@ sub {
     z-index: 999; }
     .nav-header .brand-logo a {
       padding: 1.607rem 1.8125rem;
-      display: block; }
+      /*display: block; */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
       .nav-header .brand-logo a i {
         font-size: 1.375rem; }
       .nav-header .brand-logo a b img {
