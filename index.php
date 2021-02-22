@@ -557,11 +557,11 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
         ***********************************-->
         <div class="nav-header">
             <div class="brand-logo">
-                <a href="cashiportal.php">
-                    <b class="logo-abbr"><img src="images/logo-blanco.png" alt=""> </b>
-                    <span class="logo-compact"><img src="./images/logo-blanco.png" alt=""></span>
+                <a href="index.php" style="height:50px;">
+                    <b class="logo-abbr"><img src="images/logo-blanco.png" alt="Logo pitic"> </b>
+                    <span class="logo-compact"><img src="./images/logo-blanco.png" alt="Logo pitic"></span>
                     <span class="brand-title">
-                        <img src="images/logo-blanco.png" alt="">
+                        <img src="images/logo-blanco.png" alt="Logo pitic" width="160" height="80">
                     </span>
                 </a>
             </div>
