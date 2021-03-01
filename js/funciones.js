@@ -28,7 +28,7 @@ function DeleteUser(dn) {
 }
 
 function ShowOPENVPN() {
-    Limpia();
+    Limpia2();
 
     $.ajax({
             type: "POST",
@@ -64,7 +64,7 @@ function ShowOPENVPN() {
 
 
 function ShowTravel() {
-    Limpia();
+    Limpia2();
      $.ajax({
             type: "POST",
             url: 'php/ShowTravellers.php',
@@ -88,7 +88,7 @@ function ShowTravel() {
 }
 
 function Show(what,where) {
-    Limpia();
+    Limpia2();
     //alert(what);
     //alert(what);
     $.ajax({
@@ -125,9 +125,9 @@ function Show(what,where) {
 }
 
 function ShowLDAP(what) {
-    Limpia();
-    $("#LDAPGroups").hide();
-    $("#SrchLDAPGp").hide();
+    Limpia2();
+   // $("#LDAPGroups").hide();
+   // $("#SrchLDAPGp").hide();
     if (what == "LDAPUsers") {
         $("#LDAPUser").show();    
     }
@@ -347,15 +347,27 @@ function ValidateLDAPass() {
 
 function Limpia() {
         $('#TOPDIV').html('');
-        //$('#NewLDAPUser').hide();
+        $('#NewLDAPUser').html('');
         $("#LDAPUser").hide();
         $("#LDAPAlias").hide();
-        //$("#LDAPGroups").hide();
-
-
-        //
+        $('#VPNTable').html('');
+        $('#BOTTDIV').html('');
         $('#MEDDIV').html('');
         $('#teibol').html('');
+       
+}
+
+function Limpia2() {
+     $('#TOPDIV').html('');
+     $('#NewLDAPUser').html('');
+     $("#LDAPUser").hide();
+     $("#LDAPAlias").hide();
+     $('#VPNTable').html('');
+     $('#BOTTDIV').html('');
+     $('#MEDDIV').html('');
+     $('#teibol').html('');
+     $('#LDAPGroups').hide(); 
+     $("#SrchLDAPGp").hide(); 
 }
 
 
