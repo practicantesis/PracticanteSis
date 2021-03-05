@@ -764,20 +764,30 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 
                     <li class="nav-label">LDAP</li>
                         <!--<li><a href="#" onclick="ShowLDAP('LDAPAlias')">Alias LDAP</a></li>-->
-                        <li><a href="#" onclick="ShowLDAPG('LDAPGroup')">Grupos LDAP</a></li>
-                        <li><a href="#" onclick="ShowLDAP('LDAPUsers')">Usuarios LDAP</a></li>
-                        <li><a href="#" onclick="ShowLDAP('AddLDAPUsers')">Agregar Usuario</a></li>
+                        <li><a href="#" onclick="ShowLDAPG('LDAPGroup')">
+				 <i class="icon-grid menu-icon"></i><span class="nav-text">Grupos LDAP </span>
+				</a></li>
+                        
+			<li><a href="#" onclick="ShowLDAP('LDAPUsers')">
+				<i class="icon-people menu-icon"></i><span class="nav-text">Usuarios LDAP </span>
+				</a></li>
+                        
+			<li><a href="#" onclick="ShowLDAP('AddLDAPUsers')">
+				<i class="icon-user-follow menu-icon"></i><span class="nav-text">Agregar usuario </span>
+				</a></li>
 
 
                     <li class="nav-label">OPENVPN</li>
-                        <li><a href="#" onclick="ShowOPENVPN()">Conexiones</a></li>
+                        <li><a href="#" onclick="ShowOPENVPN()">
+				 <i class="icon-shuffle menu-icon"></i><span class="nav-text">Conexiones </span>
+				</a></li>
 
 
 
                     <li class="nav-label">Informacion</li>
                     <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">IP Adressing </span>
+                        <a class="has-arrow" href="javascript:void()">
+                             <i class="icon-location-pin menu-icon"></i><span class="nav-text">IP Adressing </span>
 
                         </a>
                         <ul aria-expanded="false">
@@ -787,7 +797,9 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </li>
 
                     <li class="nav-label">HARDWARE</li>
-                            <li><a href="#" onclick="Show('print')">Impresoras</a>
+                            <li><a href="#" onclick="Show('print')">Impresoras
+				     <i class="icon-printer menu-icon"></i><span class="nav-text">Impresoras </span>
+				    </a>
                     </li>
 
 
