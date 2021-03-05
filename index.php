@@ -797,7 +797,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </li>
 
                     <li class="nav-label">HARDWARE</li>
-                            <li><a href="#" onclick="Show('print')">Impresoras
+                            <li><a href="#" onclick="Show('print')">
 				     <i class="icon-printer menu-icon"></i><span class="nav-text">Impresoras </span>
 				    </a>
                     </li>
