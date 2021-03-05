@@ -558,10 +558,10 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
         <div class="nav-header">
             <div class="brand-logo">
                 <a href="index.php" style="height:50px;">
-                    <b class="logo-abbr"><img src="images/logo-blanco.png" alt="Logo pitic"> </b>
-                    <span class="logo-compact"><img src="./images/logo-blanco.png" alt="Logo pitic"></span>
+                    <b class="logo-abbr"><img src="images/logo-color.png" alt="Logo pitic"> </b>
+                    <span class="logo-compact"><img src="./images/logo-color.png" alt="Logo pitic"></span>
                     <span class="brand-title">
-                        <img src="images/logo-blanco.png" alt="Logo pitic" width="160" height="80">
+                        <img src="images/pitic.png" alt="Logo pitic" width="155" height="50">
                     </span>
                 </a>
             </div>
