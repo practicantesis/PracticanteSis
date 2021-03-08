@@ -890,7 +890,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                             <div class="row">
                                 <div class="col-md-6 col-lg-3">
                                     <div class="card">
-                                                <img class="img-fluid" src="images/big/img1.jpg" alt="">
+                                                <img class="img-fluid" src="images/big/pankaj.jpg" alt="">
                                         <div class="card-body">
                                             <h5 class="card-title">Buscar Usuario</h5>
                                             <div class="frmSearch">
@@ -898,13 +898,13 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                                     <div id="suggesstion-box"></div>
                                             </div>
                                             <p class="card-text">Buscar en LDAP</p>
-                                            <p class="card-text"><small class="text-muted">Que monita card</small></p>
+                                            <p class="card-text"><small class="text-muted"><!--Que monita card--></small></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <br>                            
-                            <div id="LDAPUserTable">xxxxxxxxxx</div>
+                            <div id="LDAPUserTable"><!--xxxxxxxxxx--></div>
 
                         </div>
                         <div id="LDAPGroups" style="display:none;">
@@ -1005,7 +1005,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                             <div class="row">
                                 <div class="col-md-6 col-lg-3">
                                     <div class="card">
-                                                <img class="img-fluid" src="images/big/img1.jpg" alt="">
+                                                <img class="img-fluid" src="images/big/group.jpg" alt="">
                                         <div class="card-body">
                                             <h5 class="card-title"><div id="encabezadobusq"></div></h5>
                                             <div class="frmSearch">
@@ -1014,7 +1014,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                                     <input type="hidden" id="GrpSrchTip" name="GrpSrchTip" value="DUNNO">
                                             </div>
                                             <p class="card-text">Buscar en LDAP</p>
-                                            <p class="card-text"><small class="text-muted">Que monita card</small></p>
+                                            <p class="card-text"><small class="text-muted"><!--Que monita card--></small></p>
                                         </div>
                                     </div>
                                 </div>
