@@ -561,7 +561,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     <b class="logo-abbr"><img src="images/logo-color.png" alt="Logo pitic"> </b>
                     <span class="logo-compact"><img src="./images/logo-color.png" alt="Logo pitic"></span>
                     <span class="brand-title">
-                        <img src="images/pitic.png" alt="Logo pitic" width="155" height="50">
+                        <img src="images/Pitic.png" alt="Logo pitic" width="155" height="50">
                     </span>
                 </a>
             </div>
