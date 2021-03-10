@@ -1,5 +1,34 @@
 <?php
 
+
+function SaveMamboUser($datos) {
+    //print_r($datos);
+    $conn=ConectaSQL('globaldb');
+    $nom = $datos['cn'].' '.$datos['givenName'];
+    $sql="SELECT COUNT(*) AS entradas FROM only_users WHERE username = '".$datos["uid"]."'";
+    $passAleatorio='tpitic';
+    $q = "INSERT INTO only_users VALUES(NULL,'".$nom."','".$datos['uid']."','".$datos['uid']."@transportespitic.com','".md5($passAleatorio)."','Registered',0,1,18,NOW(),'','','',null,'1','".$datos['oficina']."',null,'0','0')";
+    $result = $conn->query($sql);
+    while($row = $result->fetch_assoc()) {
+        echo $row["entradas"];
+        if ($row["entradas"] == 0) {
+            //print_r($row);
+            $qr = $conn->query($q);
+            if ($qr) {
+                return "OK";    
+            } else {
+                return "FAIL";
+                //echo $row["entradas"]." <-- entradas";
+            }
+        } else {
+            return "FAIL";
+            //echo $row["entradas"]." <-- entradas";
+        }
+    }
+    //echo "xxxxxxxxx";
+    //return false;
+}
+
 function VerifyMAC($mac) {
     include 'configuraciones.class.php';
     $err='';
@@ -30,6 +59,11 @@ function ConectaSQL($base) {
         $mysqlhost="mysqlo";
         $mysqluser="ocs";
         $mysqlpass="#sistemaspitiC#123";
+    }
+    if ($base == "globaldb") {
+        $mysqlhost="dbmysql.transportespitic.com";
+        $mysqluser="adminusertpitic";
+        $mysqlpass="adminusertpitic";
     }
     $conn = new mysqli($mysqlhost, $mysqluser, $mysqlpass, $base);
     if ($conn->connect_error) {
@@ -355,6 +389,17 @@ function UserForm($ldata) {
     if (isset($ldata[0]["uid"][0])) {
         $mail = $ldata[0]["mail"][0];
         $uid = $ldata[0]["uid"][0];
+        if ($ldata[0]['sambapasswordhistory'][0] == "0000000000000000000000000000000000000000000000000000000000000000") {
+            $haveSAMBA="SI";
+        } else {
+            $haveSAMBA="NO";
+        }
+        //$haveSAMBA=$ldata[0]['sambapasswordhistory'][0];
+        /*
+        echo "<pre>";
+        print_r($ldata);
+        echo "</pre>";
+        */
         $servs = $ldata[0]["servicios"][0];
         if ($servs == "Drupal") {
             $srvDrypalchk='checked';
@@ -459,16 +504,19 @@ function UserForm($ldata) {
                             <!-- Primer Reglon -->
                             <div class="form-group row">
                                 <div class="col">
-                                    <label class="col-lg-4 col-form-label" for="val-uid">Username: </label>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-uid">Username: </label></div>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="val-uid" name="val-uid" placeholder="Nombre de usuario.." value="'.$uid.'" '.$rouser.'>
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="text" class="form-control" id="val-uid" name="val-uid" placeholder="Nombre de usuario.." value="'.$uid.'" '.$rouser.'>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <label class="col-lg-4 col-form-label" for="val-userpassword">Validar Password:</label>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-userpassword">Validar Password:</label></div>
                                     <div class="col-lg-6">
-                                        <input type="password" class="form-control" id="val-userpassword" name="val-userpassword" placeholder="Teclear Password.." >'.$validate.'
-
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="password" class="form-control" id="val-userpassword" name="val-userpassword" placeholder="Teclear Password.." >'.$validate.'
+                                        </div>
                                     </div>
 
                                 </div>
@@ -678,13 +726,13 @@ function UserForm($ldata) {
                                     </div>
                                 </div>
                                 ';
-                                $cu='sambaacctflags';
+                                $cu='SAMBA';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">sambaacctflags: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Acceso Samba: </label><div id="edit-'.$cu.'"><a href="#" onclick="UVal('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$haveSAMBA.'" value="'.$haveSAMBA.'" '.$haveSAMBA.' '.$rouser.'>
                                         </div>
                                     </div>
                                 </div>
@@ -693,6 +741,7 @@ function UserForm($ldata) {
                             <!-- Onceavo Reglon Servicios (Drupal) -->
                             <div class="form-group row">';
                                 $cu='Drupal';
+                                $cus='Samba';
                                 $forma .='
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Servicios: </label></div>
@@ -700,6 +749,11 @@ function UserForm($ldata) {
                                         <div class="form-row form-check-label" id="elservicio-'.$cu.'">
                                             <input type="checkbox" class="form-check-input" id="val-'.$cu.'" name="val-'.$cu.'" onclick="EnableService('."'$dn'".','."'$cu'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  Drupal 
                                         </div>
+                                        <!--
+                                        <div class="form-row form-check-label" id="elservicio-'.$cus.'">
+                                            <input type="checkbox" class="form-check-input" id="val-'.$cus.'" name="val-'.$cus.'" onclick="EnableService('."'$dn'".','."'$cus'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  Drupal 
+                                        </div>
+                                        -->
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-row form-check-label" id="nuke-'.$cu.'">
@@ -767,31 +821,6 @@ function UserForm($ldata) {
 
 
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
@@ -799,126 +828,10 @@ function UserForm($ldata) {
 
 
 
-                                        <div class="form-group row">
- <label class="col-lg-4 col-form-label" for="val-password">Grupo <span class="text-danger">*</span>
-                                            </label>
-
-                                            <div class="col-lg-6">
-<div class="input-group">
-  <div class="input-group-btn">
-    <!-- Buttons -->
-  </div>
-  <input type="text" class="form-control" value="xxx" aria-label="...">
-</div>      
-                                            </div>
-                                        </div>
 
 
 
 
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-email">Email <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="val-email" name="val-email" placeholder="Your valid email.." value="'.$mail.'">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-password">Password <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="password" class="form-control" id="val-password" name="val-password" placeholder="Choose a safe one..">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-confirm-password">Confirm Password <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="password" class="form-control" id="val-confirm-password" name="val-confirm-password" placeholder="..and confirm it!">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-suggestions">Suggestions <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <textarea class="form-control" id="val-suggestions" name="val-suggestions" rows="5" placeholder="What would you like to see?"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-skill">Best Skill <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <select class="form-control" id="val-skill" name="val-skill">
-                                                    <option value="">Please select</option>
-                                                    <option value="html">HTML</option>
-                                                    <option value="css">CSS</option>
-                                                    <option value="javascript">JavaScript</option>
-                                                    <option value="angular">Angular</option>
-                                                    <option value="angular">React</option>
-                                                    <option value="vuejs">Vue.js</option>
-                                                    <option value="ruby">Ruby</option>
-                                                    <option value="php">PHP</option>
-                                                    <option value="asp">ASP.NET</option>
-                                                    <option value="python">Python</option>
-                                                    <option value="mysql">MySQL</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-currency">Currency <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="val-currency" name="val-currency" placeholder="$21.60">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-website">Website <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="val-website" name="val-website" placeholder="http://example.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-phoneus">Phone (US) <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="val-phoneus" name="val-phoneus" placeholder="212-999-0000">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-digits">Digits <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="val-digits" name="val-digits" placeholder="5">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-number">Number <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="val-number" name="val-number" placeholder="5.0">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for="val-range">Range [1, 5] <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-6">
-                                                <input type="text" class="form-control" id="val-range" name="val-range" placeholder="4">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label"><a href="#">Terms &amp; Conditions</a>  <span class="text-danger">*</span>
-                                            </label>
-                                            <div class="col-lg-8">
-                                                <label class="css-control css-control-primary css-checkbox" for="val-terms">
-                                                    <input type="checkbox" class="css-control-input" id="val-terms" name="val-terms" value="1"> <span class="css-control-indicator"></span> I agree to the terms</label>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-lg-8 ml-auto">
-                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                            </div>
-                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -926,7 +839,7 @@ function UserForm($ldata) {
                     </div>
                 </div>';
 
-    $aforma = array($forma, $alertlan, $alertwifi);
+$aforma = array($forma, $alertlan, $alertwifi);
 return $aforma;
 
 }
@@ -934,6 +847,22 @@ return $aforma;
 function phpAlert($msg) {
     echo '<script type="text/javascript">alert("' . $msg . '")</script>';
 }
+
+function CheckSMBServiceForUser($dn) {
+    $ldapBind=ConectaLDAP();
+    if (preg_match('/uid=(\w+),ou=People/', $dn, $match) == 1) {
+        $uid = $match[1];
+    }    
+    $srchSamba=ldap_search($ldapBind, "dc=transportespitic,dc=com","(&(objectClass=sambaSamAccount)(uid=".$uid."))");
+    $tieneSamba = ldap_count_entries($ldapBind, $srchSamba);
+    if($tieneSamba == 0){
+        $RES="NO";
+    } else {
+        $RES="SI";
+    }
+    return $RES;
+}
+
 
 function UpdateLDAPVAl($dn,$value,$vname) {
     $ldapBind=ConectaLDAP();
@@ -986,6 +915,20 @@ function DeleteLDAPUser($dn) {
     }
     return $RES;
 }
+
+function GetLastLDAPUid() {
+    $ldapBindx=ConectaLDAP();
+    $sr=ldap_search($ldapBindx, "ou=People,dc=transportespitic,dc=com", "uid=*");
+    $numero=ldap_count_entries($ldapBindx, $sr);
+    $info = ldap_get_entries($ldapBindx, $sr);
+    $stack=Array();
+    for ($i=0; $i<$info["count"]; $i++) {
+        array_push($stack,$info[$i]['uidnumber'][0]);
+    }
+    $max=max($stack);
+    return  $max;
+}
+
 
 
 function UpdateDelFeria($dn,$value,$vname) {
@@ -1122,7 +1065,15 @@ function NewUserForm() {
             <div class="card">
                 <div class="card-body">
                     <div class="form-validation">
-                        <form class="form-valide" name="newuser" id=="newuser" action="#" method="post">
+                        <form class="form-valide" name="newuser" id="newuser" action="#" method="post">
+
+
+<!-- CARD -->
+<div class="card"><div class="card-body"><h4 class="card-title">Informacion del Usuario</h4>
+
+
+
+
                             <!-- Primer Reglon -->
                             <div class="form-group row">';
                                 $cu='uid';
@@ -1130,7 +1081,9 @@ function NewUserForm() {
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Username: </label></div>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="val-uid" name="val-'.$cu.'" placeholder="Nombre de usuario" onchange="validarinput('."'palabra','$cu'".','."'SI'".')" '.$rouser.'>
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="text" class="form-control" id="val-uid" name="val-'.$cu.'" placeholder="Nombre de usuario" onchange="validarinput('."'palabra','$cu'".','."'SI'".')" '.$rouser.'>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -1164,7 +1117,8 @@ function NewUserForm() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>                                
+                            </div>
+
                             <!-- Tercer Reglon Oficina y No Empleado -->
                             <div class="form-group row">';
                                 $cu='noempleado';
@@ -1252,14 +1206,15 @@ function NewUserForm() {
                                     </div>
                                 </div>
                                 ';
-                                $cu='anfitrion';
+                                $cu='samba';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Anfitrion: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Acceso a Samba: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="'.$ldata[0][$cu][0].'" '.$ldata[0][$cu][0].' '.$rouser.'>-->
                                             <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
+                                                <option value="SELECCIONE">SELECCIONE</option>
                                                 <option value="0">NO</option>
                                                 <option value="1">SI</option>
                                             </select>
@@ -1280,6 +1235,7 @@ function NewUserForm() {
                                                 <option value="NINGUNA">NINGUNA</option>
                                                 <option value="BASIC">BASIC</option>
                                                 <option value="LITE">LITE</option>
+                                                <option value="BUSSINESS">BUSSINESS</option>
                                             </select>
                                     </div>
                                     <!--
@@ -1345,7 +1301,7 @@ function NewUserForm() {
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">MAC Address LAN: </p></label><div id="edit-'.$cu.'"><a href="#/"" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'><br>--><input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" readonly><div id="lanmacsel">Waiting for info</div>
+                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'><br>--><input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'"  onchange="validarinput('."'mac','$cu'".','."'SI'".')" readonly><div id="lanmacsel">Waiting for info</div><div id="selnetdiv"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1369,7 +1325,7 @@ function NewUserForm() {
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">MAC Address Wifi: </p></label><div id="edit-'.$cu.'"><a href="#/"" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'>--><input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" readonly><div id="wifimacsel">Waiting for info</div>
+                                            <!--<input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'mac','$cu'".','."'SI'".')" '.$rouser.'>--><input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'"  onchange="validarinput('."'mac','$cu'".','."'SI'".')" readonly><div id="wifimacsel">Waiting for info</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1399,20 +1355,86 @@ function NewUserForm() {
                                 </div>
                             </div>
 
+                            <!-- Onceavo Reglon SERVICIOS -->
+                            <div class="form-group row">';
+                                $cu='Drupal';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Drupal: </label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                            <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
+                                                <option value="SELECCIONE">SELECCIONE</option>
+                                                <option value="SI">SI</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                    </div>
+                                </div>
+                                ';
+                                $cu='EmailService';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Email Corp: </label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                            <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
+                                                <option value="SELECCIONE">SELECCIONE</option>
+                                                <option value="SI">SI</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                    </div>
+                                </div>
+                            </div>                                
+
+                            <!-- Doceavo Reglon -->
+                            <div class="form-group row">';
+                                $cu='PerfilDrupal';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Perfil Drupal Primario: </label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                            <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
+                                                <option value="SELECCIONE">SELECCIONE</option>
+                                                <option value="GerenteCyC">Gerente CyC</option>
+                                                <option value="AuxiliarCyC">Auxiliar CyC</option>
+                                                <option value="JefeCyC">Jefe CyC</option>
+                                                <option value="Gerente">Gerente</option>
+                                                <option value="GerenteRegional">Gerente Regional</option>
+                                                <option value="AuxiliarGerenteCyC">Auxiliar Gerente CyC</option>
+                                                <option value="DirectorDAF">Director DAF</option>
+                                            </select>
+                                    </div>
+                                </div>
+                                ';
+                                $cu='Empresa';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Email Corp: </label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                            <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
+                                                <option value="tpitic">Transportes Pitic</option>
+                                                <option value="tractoremolques">Tractoremolques Del Noroeste</option>
+                                            </select>
+                                    </div>
+                                </div>
+                            </div>                                
+
+</form>
+
+
 
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">Empresas</h4>
+                                        <h4 class="card-title">Acciones</h4>
                                         <div class="basic-form">
                                             <div class="form-group">
                                                 <div class="form-check mb-3 ">
                                                     <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="tpitic"> Transportes Pitic</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="tractoremolques"> Tractoremolques</label>
+                                                        <button type="button" id="BtnSaveNewUser" class="btn btn-primary mb-2" onclick="SaveNewUser()">Agregar</button>
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1420,67 +1442,7 @@ function NewUserForm() {
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Servicios</h4>
-                                        <div class="basic-form">
-                                            <div class="form-group">
-                                                <div class="form-check mb-3 ">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="Portales"> Portales</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="Email"> Correo Electronico</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Perfil Drupal</h4>
-                                        <div class="basic-form">
-                                            <div class="form-group">
-                                                <div class="form-check mb-3 ">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="GerenteCyC">    Gerente CyC</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="AuxiliarCyC">Auxiliar CyC</label>
-                                                </div>
-
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="JefeCyC">Jefe CyC</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="Gerente">Gerente</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="Gerente Regional">Gerente Regional</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="AuxiliarGerenteCyC">Auxiliar Gerente CyC</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input cbox" value="DirectorDAF">Director DAF</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1511,7 +1473,7 @@ function CheckExistentValueLDAP($base,$what,$val) {
 }
 
 function GetThirdOctetForOficina($ofi,$db) {
-     global $conn;
+    global $conn;
     $sql = "select idoficina,lan from oficinas where abrev = '$ofi' ";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -1519,7 +1481,11 @@ function GetThirdOctetForOficina($ofi,$db) {
             //echo $row["idoficina"];
             $oc = explode('.', $row["lan"]);
             //echo "xxxx".$oc[2];
-            return $oc[2];
+            $to=$oc[2];
+            if (strlen($oc[2]) < 1) {
+                $to='NO'; 
+            }
+            return $to;
         }
     }
  }
@@ -1561,7 +1527,7 @@ function GetAvailHardware($name,$tag) {
     } else {
         $ret="NO";
     }
-    $out.="</SELECT><br><div ID='$name-netscombo' NAME='$name-netscombo'></div><button type='button' class='btn mb-1 btn-primary btn-xs' onclick=".'"'."SaveMacChange('$name');".'"'.">Guarda</button>";
+    $out.="</SELECT><br><div ID='$name-netscombo' NAME='$name-netscombo'></div><button id='".$name."-BtnMacChn' type='button' class='btn mb-1 btn-primary btn-xs' onclick=".'"'."SaveMacChange('$name');".'"'.">Guarda</button>";
     //return $pila;
     //return $ret;
     //echo "12345".$conn;

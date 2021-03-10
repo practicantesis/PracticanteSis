@@ -28,7 +28,7 @@ function DeleteUser(dn) {
 }
 
 function ShowOPENVPN() {
-    Limpia2();
+    Limpia();
 
     $.ajax({
             type: "POST",
@@ -64,7 +64,7 @@ function ShowOPENVPN() {
 
 
 function ShowTravel() {
-    Limpia2();
+    Limpia();
      $.ajax({
             type: "POST",
             url: 'php/ShowTravellers.php',
@@ -88,7 +88,7 @@ function ShowTravel() {
 }
 
 function Show(what,where) {
-    Limpia2();
+    Limpia();
     //alert(what);
     //alert(what);
     $.ajax({
@@ -125,9 +125,9 @@ function Show(what,where) {
 }
 
 function ShowLDAP(what) {
-    Limpia2();
-   // $("#LDAPGroups").hide();
-   // $("#SrchLDAPGp").hide();
+    Limpia();
+    $("#LDAPGroups").hide();
+    $("#SrchLDAPGp").hide();
     if (what == "LDAPUsers") {
         $("#LDAPUser").show();    
     }
@@ -354,20 +354,6 @@ function Limpia() {
         $('#BOTTDIV').html('');
         $('#MEDDIV').html('');
         $('#teibol').html('');
-       
-}
-
-function Limpia2() {
-     $('#TOPDIV').html('');
-     $('#NewLDAPUser').html('');
-     $("#LDAPUser").hide();
-     $("#LDAPAlias").hide();
-     $('#VPNTable').html('');
-     $('#BOTTDIV').html('');
-     $('#MEDDIV').html('');
-     $('#teibol').html('');
-     $('#LDAPGroups').hide(); 
-     $("#SrchLDAPGp").hide(); 
 }
 
 
@@ -532,9 +518,6 @@ function SVal(value) {
         }
         //return false;
     }
-
-
-
     //Crear lapiz para ip al salvar MAC
     if (value == 'lanmac') {
         var lapiziplan='<a href="#" onclick="UVal('+"'"+dn+"'"+','+"'"+'lanip'+"'"+')"><span class="fa fa-pencil"></span></a>';
@@ -548,7 +531,6 @@ function SVal(value) {
     }
     //alert('false para que no grabe la mac en pruebas');
     //return false;
-
     if (value == 'wifimac') {
         //var lapiziplan='<a href="#" onclick="UVal('+"'"+dn+"'"+','+"'"+'lanip'+"'"+')"><span class="fa fa-pencil"></span></a>';
         //alert(lapiziplan);
@@ -561,8 +543,9 @@ function SVal(value) {
         //$lapizlanip='<a href="#" onclick="UVal('."'$dn'".','."lanip".')"><span class="fa fa-pencil"></span>';
     }
 
-
-
+    if (value == 'SAMBA') {
+        alert('samba!');
+    }    
     //alert(value);
     $.ajax({
             type: "POST",
@@ -758,12 +741,42 @@ function validarinput(tipo,valor,chkexist) {
         var err = "11:22:33:44:55";   
     }
 
-
-
     //alert(chkexist);
     if (re.test(va)) {
+
+        var exist = "DUNNO";
+        if (chkexist == "SI") {
+            $.ajax({
+                    type: "POST",
+                    url: 'php/CheckExistentValueLDAP.php',
+                    data: { what: valor, value: va },
+                    dataType: "json",
+                    async: false,
+                    beforeSend: function() {
+                        $('#TOPDIV').html('');
+                        $("#loaderDiv").show();
+                    },            
+                    success: function(data) {
+                        $("#loaderDiv").hide();
+                        if (data[0].success == "NO") { 
+                            alert(valor+' '+va+' EXISTE');
+                            $('#val-uid').html('');
+                            //$('#BtnSaveNewUser').prop('disabled', 'disabled');
+                            //$("#BtnSaveNewUser").attr('value', 'Corrija User');
+                            exist="YES";
+                        } else {
+                            //$('#BtnSaveNewUser').prop('disabled', 'false');
+                        }
+                        if (data[0].success == "YES") {
+                            //alert('USUARIO NO EXISTE');
+                            //$('#BtnSaveNewUser').prop('disabled', 'false');
+                        } 
+                   }
+            });
+        }
+        //alert (exist);
         console.log("Valid");
-        if (valor == "uid") {
+        if ((valor == "uid")&&(exist != "YES")) {
             $("#val-mail").val(va+'@tpitic.com.mx');    
             $.ajax({
                 type: "POST",
@@ -777,10 +790,14 @@ function validarinput(tipo,valor,chkexist) {
                         } else {
                             alert('TAG OCS PARA '+va+' ENCONTRADO: '+data[0].valor);
                             //$('#lanmacsel').html(data[0].lanmac);
-                            
                         }
                         $('#lanmacsel').html(data[0].lanmac);
                         $('#wifimacsel').html(data[0].wifimac);
+                        $('#wifimac-sel').prop('disabled', 'disabled');
+                        $('#lanmac-BtnMacChn').prop('disabled', 'disabled');
+                        $('#wifimac-BtnMacChn').prop('disabled', 'disabled');
+                        //$('#pizza_kind').prop('disabled', false);
+
                     }
                 }
             });
@@ -793,6 +810,8 @@ function validarinput(tipo,valor,chkexist) {
                 alert( "ELIJA LA OFICINA" );
                 $("#val-lanmac").val('');
             } else {
+                CalcularIP(selectedofi,valor);
+                /*
                 $.ajax({
                     type: "POST",
                     url: 'php/GetAvIPForOficina.php',
@@ -805,6 +824,7 @@ function validarinput(tipo,valor,chkexist) {
                             if (valor == "lanmac") {
                                 $("#val-lanip").val(nvalue);
                                 $('#val-lanip').attr('readonly', true);
+                                $('#wifimac-sel').prop('disabled', false);
                             }
                             if (valor == "wifimac") {
                                 $("#val-wifiip").val(nvalue);
@@ -814,40 +834,84 @@ function validarinput(tipo,valor,chkexist) {
                         }
                     }
                 });
-
-
+                */
             }
         }
 
 
-        if (chkexist == "SI") {
-            $.ajax({
-                    type: "POST",
-                    url: 'php/CheckExistentValueLDAP.php',
-                    data: { what: valor, value: va },
-                    dataType: "json",
-                    beforeSend: function() {
-                        $('#TOPDIV').html('');
-                        $("#loaderDiv").show();
-                    },            
-                    success: function(data) {
-                        $("#loaderDiv").hide();
-                        if (data[0].success == "NO") { 
-                            alert(valor+' '+va+' EXISTE');
-                            return false;
-                        }
-                        if (data[0].success == "YES") {
-                            //alert('USUARIO NO EXISTE');
-                        } 
-                   }
-            });
-        }
-        
     } else {
         console.log("Invalid");
         alert('Entrada invalida ('+err+')');
     }
 }
+
+// CalcularIP(oficina,lanmac o wifimac)
+function CalcularIP(ofi,valor) {
+    alert('Calculando ip '+ofi+'->'+valor);
+    if (valor == "wifimac") {
+        $("#val-wifiip").val('N/A');
+        $('#val-wifiip').attr('readonly', true);
+        return false;
+    }
+    if(ofi == 666) {
+        var e = document.getElementById("seleredes");
+        var multi = e.options[e.selectedIndex].value;
+        ofi=multi;
+    }
+    $.ajax({
+        type: "POST",
+        url: 'php/GetAvIPForOficina.php',
+        data: { ofi: ofi, valor: valor },
+        dataType: "json",
+        success: function(data) {
+            if (data[0].success == "YES") {
+                nvalue=data[0].nvalue;
+                alert ("Nueva IP "+valor+" de la oficina "+ofi+" generada para usuario: "+nvalue);
+                if (valor == "lanmac") {
+                    $("#val-lanip").val(nvalue);
+                    $('#val-lanip').attr('readonly', true);
+                    $('#wifimac-sel').prop('disabled', false);
+                }
+                if (valor == "wifimac") {
+                    $("#val-wifiip").val(nvalue);
+                    $('#val-wifiip').attr('readonly', true);
+                }
+            }
+            if (data[0].success == "MULTI") {
+                //alert(data[0].sele); 
+                $('#selnetdiv').html(data[0].sele);
+                alert('El departamento que intenta registrar tiene varias redes, seleccione la red del nuevo usuario');
+            }
+        }
+    });
+}
+
+
+function SelectNetSegment() {
+   var e = document.getElementById("seleredes");
+    var multi = e.options[e.selectedIndex].value;
+    alert('Red multiple= '+multi);
+}
+
+function SaveNewUser() {
+    var data = $("#newuser").serializeArray();
+    alert(data);
+    $.ajax({
+        type: "POST",
+        url: 'php/SaveNewUser.php',
+        data: { data: data },
+        dataType: "json",
+        async: false,
+        success: function(data) {
+            if (data[0].success == "YES") {
+                alert('Usuario Guardado');
+            } else {
+                alert(data[0].success);
+            }
+        }
+    });
+}    
+
 
 
 function SaveMacChange(tipo) {
@@ -880,7 +944,6 @@ function SaveMacChange(tipo) {
             }
         }
     });
-
 }
 
 function ValidateMacSet(tipo) {
@@ -905,11 +968,19 @@ function ValidateMacSet(tipo) {
         var re = new RegExp("^([0-9a-fA-F]{2}[:.-]){5}[0-9a-fA-F]{2}$");
         if (re.test(multi)) {
             alert("MAC!!");
+            var selectedofi = $( "#val-oficina" ).val();
+            if ($( "#val-oficina" ).val() == "SELECCIONE") {
+                alert( "ELIJA LA OFICINA" );
+                $("#"+tipo+"-sel").val("SELECCIONE");
+                return false;
+            }
             //$( "#val-"+tipo ).prop( "readonly", false );
             $( "#val-"+tipo ).attr('value', 'Definido con valor OCS');
             $( "#val-"+tipo ).prop( "readonly", true );
+            CalcularIP(selectedofi,tipo);
+            // calcular ip aki
         }
-         
+        
         //alert (multi);
     } else {
         //alert ('No Existe Check de redes');

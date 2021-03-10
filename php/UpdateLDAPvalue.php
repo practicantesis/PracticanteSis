@@ -201,6 +201,57 @@ if ($_POST['value'] == "mail") {
 	$success="Valor NO editable!";
 }
 
+
+if ($_POST['value'] == "SAMBA") {
+	$hassmb=CheckSMBServiceForUser($_POST['dn']);
+	$success= "Activando Samba para ".$_POST['dn']." dice que ".$_POST['value']." y ".$_POST['nvalue']." has samba is ".$hassmb;
+	if ($_POST['nvalue'] == $hassmb) {
+		$success="Es el mismo valor que tiene el usuario";
+	} else {
+		$con=ConectaLDAP();
+		if ($_POST['nvalue'] == "SIx") {
+			$sambaArray = array();
+			$sambaArray['objectClass'][0] = "sambaSamAccount";
+			$sambaArray['sambaSID'] = "S-1-5-21-2286529612-1239631486-3098793819-1002";
+			$sambaArray['objectClass'][1] = "shadowAccount";
+			$sambaArray['sambaPasswordHistory'] = "0000000000000000000000000000000000000000000000000000000000000000";
+			$sambaArray['sambaAcctFlags'] = "[U          ]";
+			$sambaArray['shadowLastChange'] = "16207";
+			$sambaArray['sambaPwdLastSet'] = "1400916704";
+			$smbReq = @ldap_mod_add($con,$_POST['dn'],$sambaArray);
+			$success="Samba activado";
+		}
+		if ($_POST['nvalue'] == "NxxO") {
+			$userdataModifydelSamba = array();
+			$userdataModifydelSamba['objectClass'] = array();
+			$userdataModifydelSamba['objectClass'][6] = 'sambaSamAccount';
+			//$userdataModifydelSamba['objectClass'][1] = 'shadowAccount';
+			$userdataModifydelSamba['sambaSID'] = array();
+			$userdataModifydelSamba['sambaPwdLastSet'] = array();
+			$userdataModifydelSamba['sambaNTPassword'] = array();
+			$userdataModifydelSamba['sambaPasswordHistory'] = array();
+			$userdataModifydelSamba['sambaAcctFlags'] = array();
+			$userdataModifydelSamba['shadowLastChange'] = array();
+			$sucess = ldap_mod_del($con, $_POST['dn'], $userdataModifydelSamba);
+
+
+        echo "<pre>";
+        echo $_POST['dn'];
+        print_r($sambaArray);
+        echo "</pre>";
+
+			$smbReq = ldap_mod_del($con,$_POST['dn'], $sambaArray);
+			$success="Samba eliminado";
+		}
+		if(!$smbReq){
+			$success="Ocurrio error al grabar en LDAP:".ldap_error($con);
+		}
+	}
+	$valid='NO';	
+}
+
+
+
 if ($valid=="YES") {
 	if ($_POST['value'] == "aliascuentagoogle") {
 		$success=AppendLDAPVAl($_POST['dn'],$_POST['nvalue'],$_POST['value']);
@@ -210,6 +261,7 @@ if ($valid=="YES") {
 	
 	//UpdateDelFeria($_POST['dn'],$_POST['nvalue'],$_POST['value']);
 }
+
 
 
 
