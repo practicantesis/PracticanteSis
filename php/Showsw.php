@@ -107,7 +107,7 @@ if ($success == "SABE") {
                                         <div class="card-body">
                                             <blockquote class="blockquote mb-0">
                                                     <p>';
-                                                        $data.='<br><b>System IP: </b> '.$ip.'<br>';
+	    						$data.='<br><b>System IP: </b> <a href="http://'.$ip.'" target="_blank" >'.$ip.'</a> <br>';
                                                         $data.='<br><b>System Name:</b> '.$name; 
                                                         $data.='<br><b>System Description:</b> '.$sysdesc;
                                                         $data.='<br><b>System Up Time:</b> '.$up;
