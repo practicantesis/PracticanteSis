@@ -147,6 +147,27 @@ function ShowLDAP(what) {
     }
 }
 
+function ShowCells(what) {
+    Limpia();
+    $("#LDAPGroups").hide();
+    $("#SrchLDAPGp").hide();
+    $.ajax({
+        type: "POST",
+        url: 'php/GetCellTable.php',
+        dataType: "json",
+        success: function(data) {
+            //alert(data[0].success);
+            if (data[0].success == "YES") {
+                $('#NewLDAPUser').html(data[0].data);
+                //$('#celltable').dataTable();
+                $('#celltable').dataTable( { "lengthMenu": [[150, -1], [150, "All"]]  } );
+                //alert(data[0].data);
+            }
+        }
+    });
+}
+
+
 function ShowLDAPG() {
     Limpia();
     $("#LDAPGroups").show();

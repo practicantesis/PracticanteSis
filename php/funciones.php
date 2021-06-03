@@ -1535,6 +1535,24 @@ function GetAvailHardware($name,$tag) {
     return $out;
 }
 
+function GetOCSTAG($serial,$conn) {
+    $fnt1="<font face='Trebuchet MS, Arial, Helvetica' size='1'>";
+    $sql = "select HARDWARE_ID from bios where SSN='$serial'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $sqlb = "select TAG from accountinfo where HARDWARE_ID='".$row["HARDWARE_ID"]."'";
+            $resultb = $conn->query($sqlb);
+            if ($resultb->num_rows > 0) {
+                while($rowb = $resultb->fetch_assoc()) {
+                    return "<td> $fnt1 ***".$rowb["TAG"]."</td><td> $fnt1 ***".$row["HARDWARE_ID"]."</td>";
+                }
+            } else {
+                return "NO TAG";
+            }
+        }
+    }
+}
 
 /*
 Array

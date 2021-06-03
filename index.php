@@ -762,22 +762,26 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
             <div class="nk-nav-scroll">
                 <ul class="metismenu" id="menu">
 
-                    <li class="nav-label">LDAP</li>
-                        <!--<li><a href="#" onclick="ShowLDAP('LDAPAlias')">Alias LDAP</a></li>-->
-                        <li><a href="#" onclick="ShowLDAPG('LDAPGroup')">
+            <li class="nav-label">LDAP</li>
+                <li><a href="#" onclick="ShowLDAPG('LDAPGroup')">
 				 <i class="icon-grid menu-icon"></i><span class="nav-text">Grupos LDAP </span>
 				</a></li>
                         
-			<li><a href="#" onclick="ShowLDAP('LDAPUsers')">
+				<li><a href="#" onclick="ShowLDAP('LDAPUsers')">
 				<i class="icon-people menu-icon"></i><span class="nav-text">Usuarios LDAP </span>
 				</a></li>
                         
-			<li><a href="#" onclick="ShowLDAP('AddLDAPUsers')">
+				<li><a href="#" onclick="ShowLDAP('AddLDAPUsers')">
 				<i class="icon-user-follow menu-icon"></i><span class="nav-text">Agregar usuario </span>
 				</a></li>
 
+			<li class="nav-label">DEVICES</li>
+				<li><a href="#" onclick="ShowCells('x')">
+				<i class="icon-user-follow menu-icon"></i><span class="nav-text">Celulares</span>
+				</a></li>
 
-                    <li class="nav-label">OPENVPN</li>
+
+            <li class="nav-label">OPENVPN</li>
                         <li><a href="#" onclick="ShowOPENVPN()">
 				 <i class="icon-shuffle menu-icon"></i><span class="nav-text">Conexiones </span>
 				</a></li>
