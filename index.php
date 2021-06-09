@@ -660,7 +660,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </div>
                 </div>
                 <div class="header-left mambo">
-                <a href="http://192.168.120.179/INFRAESTRUCTURA-DESARROLLO/gsalazar/reportes_mambo/reportes_mambo.php" target="_blank">Reportes mambo</a>
+                <a href="https://www.tpitic.com.mx/reportes_mambo.php" target="_blank">Reportes mambo</a>
                 </div>
                 <div class="header-left mambo">
                 <a href="http://extensiones.tpitic.com.mx/" target="_blank" >Extensiones</a>
