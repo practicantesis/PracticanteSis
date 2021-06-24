@@ -822,7 +822,8 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                             echo '<ul aria-expanded="false">';
                             //xx//echo "<li><a href=\"#\" onclick=\"Show('sw','$valor')\">$valor</a></li>";
                             $html='<ul aria-expanded="false"><li><a href="#" onclick="Show('."'sw','$valor'".')">'.$valor.'</a></li></ul>';
-                            $valor = preg_match('/^[A-Z]+[0-9]+([A-Z]{3})/', $valor, $matches);
+                            //$valor = preg_match('/^[A-Z]+[0-9]+([A-Z]{3})/', $valor, $matches);
+                            $valor = preg_match('/^[A-Z]+[0-9]+([A-Z]{2}[A-Z0-9]{1})/', $valor, $matches);
                             $oficina = $matches[1];
                             $regional=GetRegionaleFromOficina($oficina,'NONE');
                             //array_push($arreglo[$regional], $html."x");

@@ -1008,3 +1008,21 @@ function ValidateMacSet(tipo) {
         var multi = 'DUNNO';
     }
 }    
+
+
+function GetComment() {
+    $.ajax({
+        type: "POST",
+        url: 'php/GetComment.php',
+        dataType: "json",
+        success: function(data) {
+            //alert(data[0].success);
+            if (data[0].success == "YES") {
+                $('#NewLDAPUser').html(data[0].data);
+                //$('#celltable').dataTable();
+                $('#celltable').dataTable( { "lengthMenu": [[150, -1], [150, "All"]]  } );
+                //alert(data[0].data);
+            }
+        }
+    });
+}
