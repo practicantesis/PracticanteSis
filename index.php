@@ -19,7 +19,7 @@ session_destroy();
 return false;
 */
 
-header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Origin: *');
 
 require('php/funciones.php');
 include('php/configuraciones.class.php');
