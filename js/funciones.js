@@ -87,6 +87,12 @@ function ShowTravel() {
        });
 }
 
+function ShowHtml(what) {
+    //$("#TOPDIV").html('<object data="http://192.168.120.173/term/temp"/>');
+    $("#TOPDIV").load('http://192.168.120.173/term/temp/index.php');
+}
+
+
 function Show(what,where) {
     Limpia();
     //alert(what);

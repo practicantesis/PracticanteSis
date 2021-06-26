@@ -18,6 +18,9 @@ unset($_SESSION['user']);
 session_destroy();
 return false;
 */
+
+header('Access-Control-Allow-Origin: *');
+
 require('php/funciones.php');
 include('php/configuraciones.class.php');
 //error_reporting(E_ALL);
@@ -872,9 +875,16 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </li>
 
                     <li class="nav-label">HARDWARE</li>
-                            <li><a href="#" onclick="Show('print')">
-				     <i class="icon-printer menu-icon"></i><span class="nav-text">Impresoras </span>
+                    <!-- IMPRESORAS -->
+                    <li><a href="#" onclick="Show('print')">
+				    <i class="icon-printer menu-icon"></i><span class="nav-text">Impresoras </span>
 				    </a>
+
+                    <!-- SENSORES -->
+                    <li><a href="#" onclick="ShowHtml('sensor')">
+                    <i class="icon-printer menu-icon"></i><span class="nav-text">Sensor de Temperatura</span>
+                    </a>
+
                     </li>
 
 
@@ -956,7 +966,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                   </div>
                 </div>
             </div>
-            <DIV ID='TOPDIV'></DIV>
+            <DIV class='topdivclass' ID='TOPDIV'></DIV>
             <DIV ID='MEDDIV'></DIV>
 
             <div class="container-fluid mt-6">
