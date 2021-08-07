@@ -20,10 +20,10 @@ function DeleteUser(dn) {
             });
         } else {
           alert("Abusado!!");
-        }    
+        }
     } else {
       alert("Abusado!!");
-    }    
+    }
     return false;
 }
 
@@ -38,12 +38,12 @@ function ShowOPENVPN() {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
                 //alert(data[0].error);
                 //alert(data[0].success);
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 //alert(data[0].error);
                 //$('#LDAPUserTable').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -55,7 +55,7 @@ function ShowOPENVPN() {
                 $('#TablaVPN').dataTable( { "lengthMenu": [[150, -1], [150, "All"]]  } );
                 //alert(data[0].data);
             }
- 
+
            }
        });
 
@@ -74,7 +74,7 @@ function ShowTravel() {
             {
             //alert(data[0].error);
             //alert(data[0].success);
-            if (data[0].success == "NO") { 
+            if (data[0].success == "NO") {
                 alert(data[0].error);
             }
                 if (data[0].success == "YES") {
@@ -82,7 +82,7 @@ function ShowTravel() {
                 //alert(data[0].data);
                 $('#teibol').dataTable();
             }
- 
+
            }
        });
 }
@@ -105,7 +105,7 @@ function Show(what,where) {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
                 if (what =='print') {
@@ -113,7 +113,7 @@ function Show(what,where) {
                 }
                 //alert(data[0].error);
                 //alert(data[0].success);
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 alert(data[0].error);
                 $('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -123,7 +123,7 @@ function Show(what,where) {
                 $('#teibol').dataTable( { "lengthMenu": [[50, -1], [50, "All"]]  } );
                 //alert(data[0].data);
             }
- 
+
            }
        });
 
@@ -135,7 +135,7 @@ function ShowLDAP(what) {
     $("#LDAPGroups").hide();
     $("#SrchLDAPGp").hide();
     if (what == "LDAPUsers") {
-        $("#LDAPUser").show();    
+        $("#LDAPUser").show();
     }
     if (what == "AddLDAPUsers") {
         $.ajax({
@@ -183,13 +183,13 @@ function LoadGroupQuery(type) {
     Limpia();
     $("#SrchLDAPGp").show();
     document.getElementById("GrpSrchTip").value = type;
-    $('#encabezadobusq').html('Buscar '+type);    
+    $('#encabezadobusq').html('Buscar '+type);
 }
 
 
 function selectUserGrp(user) {
     var grp = document.getElementById("SelectedGroup").value;
-    
+
     alert(user);
     $.ajax({
         type: "POST",
@@ -199,10 +199,10 @@ function selectUserGrp(user) {
         beforeSend: function() {
             $('#TOPDIV').html('');
             $("#loaderDiv").show();
-        },            
+        },
         success: function(data) {
             $("#loaderDiv").hide();
-            if (data[0].success == "NO") { 
+            if (data[0].success == "NO") {
                 alert(data[0].error);
                 //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -225,12 +225,12 @@ function selectUser(user) {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
                 //alert(data[0].error);
                 //alert(data[0].success);
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 alert(data[0].error);
                 $('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -256,7 +256,7 @@ function selectUser(user) {
             '<td><input type="text" class="form-control" name="newvalue" id="newvalue"></td>' +
             '<td>' + actions + '</td>' +
         '</tr>';
-        $("table").append(row);     
+        $("table").append(row);
         $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
         $('[data-toggle="tooltip"]').tooltip();
     });
@@ -276,17 +276,17 @@ function selectUser(user) {
         if(!empty){
             input.each(function(){
                 $(this).parent("td").html($(this).val());
-            });         
+            });
             $(this).parents("tr").find(".add, .edit").toggle();
             $(".add-new").removeAttr("disabled");
-        }       
+        }
     });
     // Edit row on edit button click
     /*
-    $(document).on("click", ".edit", function(){        
+    $(document).on("click", ".edit", function(){
         $(this).parents("tr").find("td:not(:last-child)").each(function(){
             $(this).html('<input type="text" class="form-control" id="tochange" value="' + $(this).text() + '">');
-        });     
+        });
         $(this).parents("tr").find(".add, .edit").toggle();
         $(".add-new").attr("disabled", "disabled");
     });
@@ -300,7 +300,7 @@ function selectUser(user) {
 //
 
             }
- 
+
            }
        });
 
@@ -318,12 +318,12 @@ function selectGroup(group,tipo) {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
                 //alert(data[0].error);
                 //alert(data[0].success);
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 alert(data[0].error);
                 $('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -332,33 +332,34 @@ function selectGroup(group,tipo) {
                 $('#teibol').dataTable();
                 //alert(data[0].data);
             }
- 
+
            }
-       });    
+       });
 }
 
 
 function ValidateLDAPass() {
     var pas = document.getElementById("val-userpassword").value;
     var passwd = document.getElementById("passwd").value;
+    var user = document.getElementById("val-uid").value;
     //alert(pas);
     $.ajax({
             type: "POST",
             url: 'php/ValidatePass.php',
-            data: { pas: pas, passwd: passwd },
+            data: { pas: pas, passwd: passwd, user: user },
             dataType: "json",
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 alert('INCORRECTO');
                 //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
                 if (data[0].success == "YES") {
-                    alert('CAMBIO CORRECTO');
+                    alert('CORRECTO');
                 //$('#TOPDIV').html(data[0].data);
                 //$('#teibol').empty();
                 //$('#teibol').dataTable( { "lengthMenu": [[50, -1], [50, "All"]]  } );
@@ -366,10 +367,44 @@ function ValidateLDAPass() {
             } else {
                 alert(data[0].success);
             }
- 
+
            }
        });
+}
 
+function ResetLDAPass() {
+    var pas = document.getElementById("val-userpassword").value;
+    var passwd = document.getElementById("passwd").value;
+    var user = document.getElementById("val-uid").value;
+    //alert(pas);
+    $.ajax({
+            type: "POST",
+            url: 'php/ResetPass.php',
+            data: { pas: pas, passwd: passwd, user: user },
+            dataType: "json",
+            beforeSend: function() {
+                $('#TOPDIV').html('');
+                $("#loaderDiv").show();
+            },
+            success: function(data) {
+                $("#loaderDiv").hide();
+                alert(data[0].passct);
+                if (data[0].success == "NO") {
+                alert('INCORRECTO');
+                //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
+            }
+                if (data[0].success == "YES") {
+                    alert('CORRECTO');
+                //$('#TOPDIV').html(data[0].data);
+                //$('#teibol').empty();
+                //$('#teibol').dataTable( { "lengthMenu": [[50, -1], [50, "All"]]  } );
+                //alert(data[0].data);
+            } else {
+                alert(data[0].success);
+            }
+
+           }
+       });
 }
 
 function Limpia() {
@@ -397,10 +432,10 @@ function EnableService(dn,nuevo,initial) {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                     alert('INCORRECTO');
                 }
                 if (data[0].success == "YES") {
@@ -410,7 +445,7 @@ function EnableService(dn,nuevo,initial) {
                 }
             }
         });
-    } 
+    }
 
 }
 
@@ -440,13 +475,13 @@ function UVal(dn,value) {
     }
     if (value == 'servicios') {
         alert (value);
-    }        
+    }
 
     //alert(but);
     $(Tagedit).html(but);
-    $(Tagval).prop("readonly", false); 
+    $(Tagval).prop("readonly", false);
     if (value == 'lanip') {
-        $(Tagval).prop("readonly", true); 
+        $(Tagval).prop("readonly", true);
     }
 }
 
@@ -466,7 +501,7 @@ function DelIPVal(value,ip) {
                 $('#val-lanip').val('IP BORRADO');
                 $('#edit-lanip').html(data[0].lapiz);
                 $('#validlanip').val('NO');
-                
+
                 alert('IP BORRADO');
             } else {
                 alert(data[0].success);
@@ -506,7 +541,7 @@ function SVal(value) {
                 async: false,
                 success: function(data) {
                     //$("#loaderDiv").hide();
-                    //if (data[0].success == "NO") { 
+                    //if (data[0].success == "NO") {
                     //alert('INCORRECTO');
                     //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
                     //}
@@ -517,7 +552,7 @@ function SVal(value) {
                         //var Tagval="#val-"+value;
                         //var but='<a href="#" onclick="UVal('+"'"+dn+"'"+','+"'"+value+"'"+')"><span class="fa fa-pencil"></span></a>';
                         //$(Tagedit).html(but);
-                        //$(Tagval).prop("readonly", true); 
+                        //$(Tagval).prop("readonly", true);
                         if (data[0].multi == "YES") {
                             alert('El departamento asignado al usuario tiene varios segmentos de red disponibles, seleccione el segmento de red en donde darlo de alta');
                             $('#selevale').html(data[0].sele);
@@ -533,7 +568,7 @@ function SVal(value) {
                     } else {
                         alert(data[0].success);
                     }
-     
+
                }
         });
         //alert('False para que no grabe ip');
@@ -541,7 +576,7 @@ function SVal(value) {
             alert ('IP NO ASIGNADO AUN');
             return false;
         } else {
-            document.getElementById("val-lanip").value = nvalue;    
+            document.getElementById("val-lanip").value = nvalue;
         }
         //return false;
     }
@@ -572,7 +607,7 @@ function SVal(value) {
 
     if (value == 'SAMBA') {
         alert('samba!');
-    }    
+    }
     //alert(value);
     $.ajax({
             type: "POST",
@@ -582,10 +617,10 @@ function SVal(value) {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 alert('INCORRECTO');
                 //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -606,7 +641,7 @@ function SVal(value) {
                 } else {
                     alert(data[0].success);
                 }
- 
+
            }
        });
 
@@ -630,10 +665,10 @@ function DelUserFromGroup(value,grupo,indice) {
                 beforeSend: function() {
                     $('#TOPDIV').html('');
                     $("#loaderDiv").show();
-                },            
+                },
                 success: function(data) {
                     $("#loaderDiv").hide();
-                    if (data[0].success == "NO") { 
+                    if (data[0].success == "NO") {
                     alert('INCORRECTO');
                     //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
                 }
@@ -642,9 +677,9 @@ function DelUserFromGroup(value,grupo,indice) {
                     } else {
                         alert(data[0].success);
                     }
-     
+
                }
-           });    
+           });
 
 
     } else {
@@ -677,7 +712,7 @@ function AddUserToGroup(value,grupo,indice) {
       }
     });
   });
-    
+
 }
 
 
@@ -694,10 +729,10 @@ function DelAlias(nvalue) {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 alert('INCORRECTO');
                 //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -706,9 +741,9 @@ function DelAlias(nvalue) {
                 } else {
                     alert('Succ! '+data[0].success);
                 }
- 
+
            }
-       });    
+       });
     //var alias=document.getElementById('eldn').value;
 }
 
@@ -725,10 +760,10 @@ function AddAlias() {
             beforeSend: function() {
                 $('#TOPDIV').html('');
                 $("#loaderDiv").show();
-            },            
+            },
             success: function(data) {
                 $("#loaderDiv").hide();
-                if (data[0].success == "NO") { 
+                if (data[0].success == "NO") {
                 alert('INCORRECTO');
                 //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
             }
@@ -737,9 +772,9 @@ function AddAlias() {
                 } else {
                     alert(data[0].success);
                 }
- 
+
            }
-       });    
+       });
 }
 
 function validarinput(tipo,valor,chkexist) {
@@ -749,23 +784,23 @@ function validarinput(tipo,valor,chkexist) {
     //alert(valor);
     if (tipo == 'palabra') {
         var re = new RegExp("^([a-zA-Z]+)$");
-        var err = "Solo letras";   
+        var err = "Solo letras";
     }
     if (tipo == 'palabrasp') {
         var re = new RegExp("^[a-zA-Z]([\\s]|[a-zA-Z])+[a-zA-Z]$");
-        var err = "Solo letras y Espacios";   
+        var err = "Solo letras y Espacios";
     }
     if (tipo == 'palabraspforce') {
         var re = new RegExp("^([a-zA-Z]+)([\\s])([\\s]|[a-zA-Z])+[a-zA-Z]$");
-        var err = "Solo letras y Espacios, DOS Palabras";   
+        var err = "Solo letras y Espacios, DOS Palabras";
     }
     if (tipo == 'numero') {
         var re = new RegExp("^[\\d]+$");
-        var err = "Solo numeros";   
+        var err = "Solo numeros";
     }
     if (tipo == 'mac') {
         var re = new RegExp("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$");
-        var err = "11:22:33:44:55";   
+        var err = "11:22:33:44:55";
     }
 
     //alert(chkexist);
@@ -782,10 +817,10 @@ function validarinput(tipo,valor,chkexist) {
                     beforeSend: function() {
                         $('#TOPDIV').html('');
                         $("#loaderDiv").show();
-                    },            
+                    },
                     success: function(data) {
                         $("#loaderDiv").hide();
-                        if (data[0].success == "NO") { 
+                        if (data[0].success == "NO") {
                             alert(valor+' '+va+' EXISTE');
                             $('#val-uid').html('');
                             //$('#BtnSaveNewUser').prop('disabled', 'disabled');
@@ -797,14 +832,14 @@ function validarinput(tipo,valor,chkexist) {
                         if (data[0].success == "YES") {
                             //alert('USUARIO NO EXISTE');
                             //$('#BtnSaveNewUser').prop('disabled', 'false');
-                        } 
+                        }
                    }
             });
         }
         //alert (exist);
         console.log("Valid");
         if ((valor == "uid")&&(exist != "YES")) {
-            $("#val-mail").val(va+'@tpitic.com.mx');    
+            $("#val-mail").val(va+'@tpitic.com.mx');
             $.ajax({
                 type: "POST",
                 url: 'php/ChkOCSTag.php',
@@ -874,6 +909,7 @@ function validarinput(tipo,valor,chkexist) {
 
 // CalcularIP(oficina,lanmac o wifimac)
 function CalcularIP(ofi,valor) {
+
     alert('Calculando ip '+ofi+'->'+valor);
     if (valor == "wifimac") {
         $("#val-wifiip").val('N/A');
@@ -905,7 +941,7 @@ function CalcularIP(ofi,valor) {
                 }
             }
             if (data[0].success == "MULTI") {
-                //alert(data[0].sele); 
+                //alert(data[0].sele);
                 $('#selnetdiv').html(data[0].sele);
                 alert('El departamento que intenta registrar tiene varias redes, seleccione la red del nuevo usuario');
             }
@@ -922,7 +958,7 @@ function SelectNetSegment() {
 
 function SaveNewUser() {
     var data = $("#newuser").serializeArray();
-    alert(data);
+    //alert(data);
     $.ajax({
         type: "POST",
         url: 'php/SaveNewUser.php',
@@ -937,31 +973,48 @@ function SaveNewUser() {
             }
         }
     });
-}    
+}
 
 
 
 function SaveMacChange(tipo) {
-    var e = document.getElementById(tipo+"-sel");
-    var multi = e.options[e.selectedIndex].value;
-    var v=document.getElementById('val-'+tipo).value;
-    var va = v.toUpperCase();
-    var dn=document.getElementById('eldn').value;
-    var ofi=document.getElementById('val-oficina').value;
-    alert(tipo+' -> '+multi+' -> '+va+' -> '+dn+' -> '+ofi);
-    var re = new RegExp("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$");
-    if (re.test(va)) {
-        console.log("Valid Mac");
-    } else {
+
+  //val-lanmac
+
+  if (tipo == "wifimac") {
+    // Revisar que este declarada el valor de la MAC LAN
+    var lmvalc = document.getElementById("val-lanmac").value;
+    alert(lmvalc);
+    if (lmvalc == "NO EXISTE MAC LAN EN LDAP") {
+      alert('Declare primero el valor de la LAN MAC antes de continuar con la MAC Wifi');
+      return false;
+    }
+  }
+  if (tipo == "lanmac") {
+    var lanip=document.getElementById('val-lanip').value;
+  } else {
+    var lanip='DUNNO';
+  }
+  var e = document.getElementById(tipo+"-sel");
+  var multi = e.options[e.selectedIndex].value;
+  var v=document.getElementById('val-'+tipo).value;
+  var va = v.toUpperCase();
+  var dn=document.getElementById('eldn').value;
+  var ofi=document.getElementById('val-oficina').value;
+  alert(tipo+' -> '+multi+' -> '+va+' -> '+dn+' -> '+ofi);
+  var re = new RegExp("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$");
+  if (re.test(va)) {
+    console.log("Valid Mac");
+  } else {
         //alert(va);
         if (va != "NO") {
-            alert("INVALID MAC VALUE");    
+            alert("INVALID MAC VALUE, este mensaje no aplica si se escogio la mac desde el combo de OCS, si ves este mensaje, por favor toma un screenshot y mandalo a jferia");
         }
     }
     $.ajax({
         type: "POST",
         url: 'php/UpdateMacAddress.php',
-        data: { dn: dn, va: va, multi: multi, ofi: ofi },
+        data: { dn: dn, va: va, multi: multi, ofi: ofi, tipo: tipo, lanip: lanip },
         dataType: "json",
         async: false,
         success: function(data) {
@@ -974,14 +1027,14 @@ function SaveMacChange(tipo) {
 }
 
 function ValidateMacSet(tipo) {
-    alert(tipo);
+    //alert(tipo);
     var e = document.getElementById(tipo+"-sel");
-    alert (e);
+    //alert (e);
     if (e) {
         var multi = e.options[e.selectedIndex].value;
         if (multi == "NO") {
             $( "#val-"+tipo ).prop( "readonly", true );
-            $( "#val-"+tipo ).attr('value', 'NO APLICA');
+            $( "#val-"+tipo ).attr('value', 'NO');
         }
         if (multi == "SELECCIONE") {
             alert('Selecciona algo con una chingada!!!');
@@ -994,7 +1047,7 @@ function ValidateMacSet(tipo) {
         }
         var re = new RegExp("^([0-9a-fA-F]{2}[:.-]){5}[0-9a-fA-F]{2}$");
         if (re.test(multi)) {
-            alert("MAC!!");
+            //alert("MAC!!");
             var selectedofi = $( "#val-oficina" ).val();
             if ($( "#val-oficina" ).val() == "SELECCIONE") {
                 alert( "ELIJA LA OFICINA" );
@@ -1007,13 +1060,13 @@ function ValidateMacSet(tipo) {
             CalcularIP(selectedofi,tipo);
             // calcular ip aki
         }
-        
+
         //alert (multi);
     } else {
         //alert ('No Existe Check de redes');
         var multi = 'DUNNO';
     }
-}    
+}
 
 
 function GetComment() {

@@ -15,6 +15,18 @@ if(preg_match("/^\d+$/",$_POST['multi'])) {
 	$toctet=$_POST['multi'];
 	$asignado="SI";
 } else {
+	//echo "aki ando nets es: $nets -  multi es: $multi ";
+	if ($nets == "NO") {
+		// Hacemos update a lanmac y lanip
+		if ($_POST['tipo'] == "lanmac") {
+			UpdateLDAPVAl($_POST['dn'],$_POST['multi'],'lanmac');
+			if (filter_var($_POST['lanip'], FILTER_VALIDATE_IP)) {
+			    //echo($_POST['lanip']." is a valid IP address");
+			    UpdateLDAPVAl($_POST['dn'],$_POST['lanip'],'lanip');
+			}			
+
+		}
+	}		
 	if ($nets != "NO") {
 		$multi='YES';
 		$sele="<select name='seleredes' id='seleredes'>";
@@ -27,13 +39,13 @@ if(preg_match("/^\d+$/",$_POST['multi'])) {
 }
 
 $jsonSearchResults[] =  array(
-    'success' => 'YES',
-    'error' => 'err',
-    'newip' => $newIP,
-    'multi' => $multi,
+  'success' => 'YES',
+  'error' => 'err',
+  'newip' => $newIP,
+  'multi' => $multi,
 	'nets' => $nets,
 	'asignado' => $asignado,
-    'sele' => $sele   
+  'sele' => $sele
 );
 echo json_encode ($jsonSearchResults);
 

@@ -45,6 +45,9 @@ if(!isset($_SESSION['user'])) {
         $con = ldap_connect('ldap.tpitic.com.mx');
         $bind=ldap_bind($con, $dn, $password);
         $filter = "(&(uid=".$_POST['user'].")(oficina=SIS))";
+        if ($_POST['user'] == 'eresendiz') {
+            $filter = "(uid=".$_POST['user'].")";
+        }
         $srch =ldap_search($con, "ou=People,dc=transportespitic,dc=com",$filter);
         $numero=ldap_count_entries($con, $srch);
         $info = ldap_get_entries($con, $srch);

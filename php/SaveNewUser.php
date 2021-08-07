@@ -30,21 +30,14 @@ $fullname=$forma['givenname']." ".$forma['sn'];
 $lastuid=GetLastLDAPUid();
 $ERROR="NO";
 
-
-
-
-
 /*
-
 echo "<pre>";
 print_r($forma);
 echo "</pre>";
 return false;
-
 */
-
-
-
+$shapass = "{SHA}".base64_encode(sha1($forma['userpassword'], TRUE));
+$entry['userPassword']=$shapass;
 $entry['uid']=$forma['uid'];
 $entry['cn']=$fullname;
 $entry['employeeType']="user";
@@ -59,6 +52,7 @@ $entry['oficina']=$forma['oficina'];
 $entry['noempleado'] = $forma['noempleado'];
 $entry['deptorh']="NO";
 $entry['accesovh']="NO";
+$entry['licenciagoogle']=$forma['licenciagoogle'];
 $entry['objectClass'][0] = "top";
 $entry['objectClass'][1] = "posixAccount";
 $entry['objectClass'][2] = "inetOrgPerson";
@@ -132,7 +126,7 @@ $entry['accesostemporales'] = "NO";
 
 // MAIL
 if ($forma['EmailService'] == "SELECCIONE") {
-	$ERROR="EMAIL ERROR";
+	$ERROR="ERROR: INDIQUE SI EL USUARIO TENDRA EMAIL";
 } 
 if ($forma['EmailService'] == "SI") {
 	//$entry['EmailService']= $forma['EmailService'];
@@ -146,10 +140,26 @@ $entry['correo'] = 1;
 $entry['homeDirectory']="/home/directorynotset";
 $entry['aliasdecorreo'][0] = $forma['oficina'];
 
+// OFICINA
+if ($forma['oficina'] == "SELECCIONE") {
+  $ERROR="ERROR: SELECCIONE OFICINA";
+} 
+
+// SAMBA
+if ($forma['samba'] == "SELECCIONE") {
+  $ERROR="ERROR: SELECCIONE ACCESO A SAMBA";
+} 
+
+// licenciagoogle
+if ($forma['licenciagoogle'] == "SELECCIONE") {
+  $ERROR="ERROR: SELECCIONE LICENCIA GOOGLE";
+} 
+
+
 
 // DRUPAL
 if ($forma['Drupal'] == "SELECCIONE") {
-	$ERROR="ERROR DRUPAL";
+	$ERROR="ERROR EN VALOR DRUPAL";
 } 
 if ($forma['Drupal'] == "SI") {
 	$entry['servicios']= "DRUPAL";
@@ -162,6 +172,30 @@ $entry['feriacustom1']=0;
 $entry['nivelscup']=0;
 $entry['accesosdered'] = $forma['accesosdered'];
 $entry['jabber'] = "0";
+
+
+if (strlen($forma['uid']) < 1) {
+  $ERROR="CAPTURE USUARIO!!!";
+} 
+
+if (strlen($forma['sn']) < 1) {
+  $ERROR="CAPTURE APELLIDO!!!".strlen($forma['sn']);
+} 
+
+if (strlen($forma['givenname']) < 1) {
+  $ERROR="CAPTURE NOMBRE!!!";
+} 
+
+if (is_numeric($forma['noempleado'])) {
+  
+} else {
+  $ERROR="CAPTURE NUMERO DE EMPLEADO (SOLO NUMEROS)";
+}
+
+if (strlen($forma['lanmac']) < 1) {
+  $ERROR="CAPTURE LAN MAC!!!";
+} 
+
 
 
 /*

@@ -1,7 +1,9 @@
 <?php
 require('funciones.php');
 //print_r($_POST);
-if (check_password($_POST['pas'],$_POST['passwd'])) {
+$response=ValidatePassword($_POST['pas'],$_POST['passwd']);
+
+if ($response == "SI") {
 	$success='YES';
 } else {
 	$success='NO';

@@ -7,6 +7,9 @@ $db=ConectaSQL('firewall');
 
 $toctet = GetThirdOctetForOficina($_POST["ofi"],$db);
 
+if ($_POST["ofi"] == "VHL") {
+	$toctet == "82";
+}
 
 if ($_POST["valor"] == "lanmac") {
 	$q="lanip";
@@ -27,6 +30,7 @@ if ($toctet == "NO") {
     	$sele .= "<option value='$valor'>Red $valor</option>";
 	}
 	$sele .="</select>";
+	//echo $sele;
 	$success="MULTI";
 }
 

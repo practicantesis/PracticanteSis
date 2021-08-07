@@ -6,11 +6,12 @@ function SaveMamboUser($datos) {
     $conn=ConectaSQL('globaldb');
     $nom = $datos['cn'].' '.$datos['givenName'];
     $sql="SELECT COUNT(*) AS entradas FROM only_users WHERE username = '".$datos["uid"]."'";
-    $passAleatorio='tpitic';
+    //$passAleatorio='tpitic';
+    $passAleatorio=$datos["userPassword"];
     $q = "INSERT INTO only_users VALUES(NULL,'".$nom."','".$datos['uid']."','".$datos['uid']."@transportespitic.com','".md5($passAleatorio)."','Registered',0,1,18,NOW(),'','','',null,'1','".$datos['oficina']."',null,'0','0')";
     $result = $conn->query($sql);
     while($row = $result->fetch_assoc()) {
-        echo $row["entradas"];
+        //echo $row["entradas"];
         if ($row["entradas"] == 0) {
             //print_r($row);
             $qr = $conn->query($q);
@@ -385,6 +386,14 @@ function GetHardwareIDFromUsername($user) {
 
 function UserForm($ldata) {
     $conx=ConectaSQL('ocsweb');
+    $connglobal=ConectaSQL('globaldb');
+    $mambo=ChkExistMamboUser($ldata[0]["uid"][0],$connglobal);
+    if ($mambo == "SI") {
+        $gdbinfo = "<div id='NOTAGDB' class='alert alert-primary' role='alert'>Se encontro user en Mambo</div><br><div id='selegdb'></div>";
+    } else {
+        $gdbinfo = "<div id='NOTAGDB' class='alert alert-danger' role='alert'>No se encontro user en Mambo</div><br><div id='selegdb'></div>";
+    }
+
     error_reporting(1);
     if (isset($ldata[0]["uid"][0])) {
         $mail = $ldata[0]["mail"][0];
@@ -426,6 +435,8 @@ function UserForm($ldata) {
         }
         $rouser="readonly";
         $validate='<button type="button" class="btn btn-primary mb-2" onclick="ValidateLDAPass()">Validar</button><input type="hidden" id="passwd" value="'.$userpassword.'">';
+        $validate .='<button type="button" class="btn btn-primary mb-2" onclick="ResetLDAPass()">Resetear</button>';
+
         // RED
         $hwid=GetHardwareIDFromUsername($uid);
         if (preg_match("/^(?:\d+)$/i",$hwid)) {
@@ -508,7 +519,7 @@ function UserForm($ldata) {
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="text" class="form-control" id="val-uid" name="val-uid" placeholder="Nombre de usuario.." value="'.$uid.'" '.$rouser.'>
-                                        </div>
+                                        </div>'.$gdbinfo.'
                                     </div>
                                 </div>
                                 <div class="col">
@@ -1057,6 +1068,8 @@ function NewUserForm() {
     $CmbOfi="";
     $abs=GetOfficeAbrevs('x');
     $pass=plainPassword();
+    $newpass=randomPassword();
+
     foreach ($abs as $value) {
         $CmbOfi .= '<OPTION VALUE="'.$value.'">'.$value.'</OPTION>';
     }
@@ -1089,7 +1102,7 @@ function NewUserForm() {
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-userpassword">Password:</label></div>
                                     <div class="col-lg-6">
-                                        <input type="password" class="form-control" id="val-userpassword" name="val-userpassword" placeholder="Autogenerado" value="'.$pass.'" readonly>
+                                        <input type="text" class="form-control" id="val-userpassword" name="val-userpassword" placeholder="Autogenerado" value="'.$newpass.'">
                                     </div>
                                 </div>
                             </div>
@@ -1396,6 +1409,7 @@ function NewUserForm() {
                                     <div class="col-lg-6">
                                             <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
                                                 <option value="SELECCIONE">SELECCIONE</option>
+                                                <option value="NINGUNO">NINGUNO</option>
                                                 <option value="GerenteCyC">Gerente CyC</option>
                                                 <option value="AuxiliarCyC">Auxiliar CyC</option>
                                                 <option value="JefeCyC">Jefe CyC</option>
@@ -1410,7 +1424,7 @@ function NewUserForm() {
                                 $cu='Empresa';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Email Corp: </label>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Empresa: </label>
                                     </div>
                                     <div class="col-lg-6">
                                             <select style="width:5" class="form-control" name="'.$cu.'" id="'.$cu.'">
@@ -1552,6 +1566,77 @@ function GetOCSTAG($serial,$conn) {
             }
         }
     }
+}
+
+function GetUserFromDN($dn) {
+    if (preg_match("/uid=(.+)\,ou=People,/i",$dn,$mat)) {
+        $val=$mat['1'];
+    } else {
+        $val="NO";
+    }
+    return $val;
+}
+
+function ChkExistMamboUser($user,$conn) {
+    $sql="SELECT * FROM only_users WHERE username = '".$user."'";
+    $result = $conn->query($sql);
+    //echo $result->num_rows;
+    if ($result->num_rows > 0) {
+        return "SI";
+    } else {
+        return "NO";
+    }        
+}
+
+function DeleteMamboUser($user,$conn) {
+    $sql="DELETE FROM only_users WHERE username = '".$user."'";
+    $result = $conn->query($sql);
+    if ($result) {
+        return "SI";
+    } else {
+        return "NO";
+    }        
+}
+
+
+function ChgPasswdMamboUser($user,$pass) {
+    $conn=ConectaSQL('globaldb');
+    $sql="UPDATE only_users set password='$pass' WHERE username = '".$user."'";
+    //$result = $conn->query($sql);
+    if ($result) {
+        return "SI";
+    } else {
+        return "NO";
+    }        
+}
+
+
+function hash_password($password) {
+    $salt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',4)),0,4);
+    return '{SSHA}' . base64_encode(sha1( $password.$salt, TRUE ). $salt);
+}
+
+
+function randomPassword() {
+    $alphabet = 'a#bcdefghijklmnopqrstuvwx#yzABCDEFGHIJKLMNOPQRSTUVWX#YZ1234567890#';
+    $pass = array(); //remember to declare $pass as an array
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 8; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+    }
+    return implode($pass); //turn the array into a string
+}
+
+function ResetPasswordLDAP($user,$pass) {
+    $ldapconn=ConectaLDAP();
+    $shapass = "{SHA}".base64_encode(sha1($pass, TRUE));
+    $sambaNTPassword = strtoupper(hash('md4', iconv('UTF-8','UTF-16LE',$pass)));
+    $update['userPassword']=$shapass;
+    $update['sambaNTPassword']=strtoupper(hash('md4', iconv('UTF-8','UTF-16LE',$pass)));
+    $userldap = "uid=".$user.",ou=People,dc=transportespitic,dc=com";
+    //$mod=ldap_modify($ldapconn,$userldap, $update);
+    return $mod;
 }
 
 /*
