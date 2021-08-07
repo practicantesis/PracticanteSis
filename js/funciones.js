@@ -416,6 +416,8 @@ function Limpia() {
         $('#BOTTDIV').html('');
         $('#MEDDIV').html('');
         $('#teibol').html('');
+        $('#LDAPGroups').hide(); 
+       $("#SrchLDAPGp").hide();
 }
 
 
