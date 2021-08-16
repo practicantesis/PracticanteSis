@@ -403,6 +403,7 @@ function UserForm($ldata) {
         } else {
             $haveSAMBA="NO";
         }
+        $haveINFRAESTRUCTURA="SI";
         //$haveSAMBA=$ldata[0]['sambapasswordhistory'][0];
         /*
         echo "<pre>";
@@ -751,14 +752,21 @@ function UserForm($ldata) {
 
                             <!-- Onceavo Reglon Servicios (Drupal) -->
                             <div class="form-group row">';
+                            	if ($haveINFRAESTRUCTURA == "SI") {
+                            		$ifchk="checked";
+                            	}
                                 $cu='Drupal';
                                 $cus='Samba';
+                                $cui='INFRAESTRUCTURA';
                                 $forma .='
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Servicios: </label></div>
                                     <div class="col-lg-6">
                                         <div class="form-row form-check-label" id="elservicio-'.$cu.'">
                                             <input type="checkbox" class="form-check-input" id="val-'.$cu.'" name="val-'.$cu.'" onclick="EnableService('."'$dn'".','."'$cu'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  Drupal 
+                                        </div>
+                                        <div class="form-row form-check-label" id="elservicio-INFRAESTRUCTURA">
+                                            <input type="checkbox" class="form-check-input" id="val-INFRAESTRUCTURA" '.$ifchk.' name="val-INFRAESTRUCTURA" onclick="EnableService('."'$dn'".','."'$cui'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  INFRAESTRUCTURA 
                                         </div>
                                         <!--
                                         <div class="form-row form-check-label" id="elservicio-'.$cus.'">
