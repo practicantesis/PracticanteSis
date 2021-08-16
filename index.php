@@ -702,7 +702,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                 <a href="http://192.168.120.119/cobradores/" target="_blank" >Cobradores</a>
                 </div>
                 <div class="header-left mambo">
-                <a href="http://192.168.120.119/en_desarrollo.html" target="_blank" >Seguros</a>
+                <a href="http://192.168.120.119/seguros/" target="_blank" >Seguros</a>
                 </div>
                 <div class="header-left mambo">
                 <a href="http://192.168.120.170/celulares/tabla-dos/" target="_blank" >Moviles</a>
