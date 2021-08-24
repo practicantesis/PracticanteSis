@@ -12,7 +12,7 @@ $fnt1="<font face='Trebuchet MS, Arial, Helvetica' size='1'>";
 $fnt2="<font face='Trebuchet MS, Arial, Helvetica' size='2'>";
 
 
-$html  = "<table class='table table-striped table-bordered' id='celltable'><thead>";
+$html  = "<table class='table table-striped table-bordered table-responsive' id='celltable'><thead>";
 $html .= "<tr><th>Tag</th><th>Assignedto</th><th>Brand</th><th>Dept</th><th>Imei</th><th>IP</th><th>lastenroll</th><th>lastseen</th><th>mac</th><th>office</th><th>Serial</th><th>ofi en user</th><th>no emp en user</th><th>nombre<en deviceuser/td><th>OCS TAG</th><th>OCS HW ID</th><th>NOTES</th></tr></thead><tbody>";
 
 for ($i=0; $i<$ldata["count"]; $i++) {
