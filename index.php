@@ -692,12 +692,23 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                         </div>
                     </div>
                 </div>
+                <!--Menu de enlaces-->
                 <div class="header-left mambo">
                 <a href="https://www.tpitic.com.mx/reportes_mambo.php" target="_blank">Reportes mambo</a>
                 </div>
                 <div class="header-left mambo">
                 <a href="http://extensiones.tpitic.com.mx/" target="_blank" >Extensiones</a>
                 </div>
+                <div class="header-left mambo">
+                <a href="http://192.168.120.119/cobradores/" target="_blank" >Cobradores</a>
+                </div>
+                <div class="header-left mambo">
+                <a href="http://192.168.120.119/seguros/" target="_blank" >Seguros</a>
+                </div>
+                <div class="header-left mambo">
+                <a href="http://192.168.120.170/celulares/tabla-dos/" target="_blank" >Moviles</a>
+                </div>
+                <!--Menu de enlaces-->
                 <div class="header-right">
                     <ul class="clearfix">
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
