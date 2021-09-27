@@ -1,6 +1,50 @@
 <?php
 
 
+function QueryToAirwatchAPI($tipo,$serie) {
+    //$basic_auth = base64_encode("jferia:xxx");
+    $basic_auth='amZlcmlhOkxldHR5b3J0ZWdh';
+    $ch = curl_init();
+    $api_key='Zbh2S+e0ejNOibdtwlFDFssflXSeCniu2oh1/7lVg5A=';
+    $baseurl="https://as257.awmdm.com";
+    if ($tipo == "ALLDEVS") {
+        $endpoint="/API/mdm/devices/search";    
+    }
+    if ($tipo == "DEVICE") {
+        $endpoint="/api/mdm/devices/?searchby=Serialnumber&id=".$serie;
+    }
+
+
+
+    $url = $baseurl.$endpoint;
+    $headers = ['aw-tenant-code: '.$api_key,'Authorization: Basic '.$basic_auth,'Accept: application/json'];
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+    $ch_result = curl_exec($ch);
+    $infos = curl_getinfo($ch);
+    //If http_code is not 200, then there's an error
+    if ($infos['http_code'] != 200) {
+        $result['status'] = AIRWATCH_API_RESULT_ERROR;
+        $result['error']  = $infos['http_code'];
+    } else {
+        $result['status'] = AIRWATCH_API_RESULT_OK;
+        $result['data'] = $ch_result;
+    }
+    //print_r($result);
+    curl_close($ch);
+    return $result['data'];
+}
+
+
+
 function SaveMamboUser($datos) {
     //print_r($datos);
     $conn=ConectaSQL('globaldb');
@@ -403,6 +447,7 @@ function UserForm($ldata) {
         } else {
             $haveSAMBA="NO";
         }
+        $haveINFRAESTRUCTURA="SI";
         //$haveSAMBA=$ldata[0]['sambapasswordhistory'][0];
         /*
         echo "<pre>";
@@ -751,14 +796,21 @@ function UserForm($ldata) {
 
                             <!-- Onceavo Reglon Servicios (Drupal) -->
                             <div class="form-group row">';
+                            	if ($haveINFRAESTRUCTURA == "SI") {
+                            		$ifchk="checked";
+                            	}
                                 $cu='Drupal';
                                 $cus='Samba';
+                                $cui='INFRAESTRUCTURA';
                                 $forma .='
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Servicios: </label></div>
                                     <div class="col-lg-6">
                                         <div class="form-row form-check-label" id="elservicio-'.$cu.'">
                                             <input type="checkbox" class="form-check-input" id="val-'.$cu.'" name="val-'.$cu.'" onclick="EnableService('."'$dn'".','."'$cu'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  Drupal 
+                                        </div>
+                                        <div class="form-row form-check-label" id="elservicio-INFRAESTRUCTURA">
+                                            <input type="checkbox" class="form-check-input" id="val-INFRAESTRUCTURA" '.$ifchk.' name="val-INFRAESTRUCTURA" onclick="EnableService('."'$dn'".','."'$cui'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  INFRAESTRUCTURA 
                                         </div>
                                         <!--
                                         <div class="form-row form-check-label" id="elservicio-'.$cus.'">
@@ -1638,6 +1690,53 @@ function ResetPasswordLDAP($user,$pass) {
     //$mod=ldap_modify($ldapconn,$userldap, $update);
     return $mod;
 }
+
+
+//function GetCellsFromLDAP($base,$how) {
+function GetCellsFromLDAP() {
+    include 'configuraciones.class.php';
+    $how="array";
+    $err='';
+    $data='';
+    $out='';
+    if ($how == "array") {
+        $out=array();
+        $outb=array();
+    }
+    $ldapconn=ConectaLDAP();
+    //error_reporting(E_ALL);
+    //ini_set('display_errors', 'On');
+    set_time_limit(30);
+    $array1= array();
+    $result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com", "(DeviceTAG=*)");
+    $err=ldap_error($ldapconn);
+    $ldata = ldap_get_entries($ldapconn, $result);
+    //echo $ldata["count"];
+    for ($i=0; $i<$ldata["count"]; $i++) {
+        //array_push($array1,$ldata[$i][$what][0]);
+        //echo "<pre>";
+        //print_r($ldata);
+        //echo "</pre>";        
+        if ($how == "htmltable") {
+            $out .= "<tr><td>".$ldata[$i]['uid'][0]."</td></tr>";    
+        }
+        if ($how == "array") {
+            array_push($out,$ldata[$i]['devicelastseen'][0]);
+            $serie=$ldata[$i]['deviceserial'][0];
+            //$tag=$ldata[$i]['devicetag'][0];
+            $outb[$serie]['devicelastseen']=$ldata[$i]['devicelastseen'][0];
+            $outb[$serie]['deviceserial']=$ldata[$i]['deviceserial'][0];
+            $outb[$serie]['devicetag']=$ldata[$i]['devicetag'][0];
+        }
+        
+        
+        //return false;
+    }
+    //echo $out;
+    return $outb;
+}
+
+
 
 /*
 Array

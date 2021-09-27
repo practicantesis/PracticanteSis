@@ -19,6 +19,8 @@ session_destroy();
 return false;
 */
 
+
+
 //header('Access-Control-Allow-Origin: *');
 
 require('php/funciones.php');
@@ -32,29 +34,54 @@ ConectaSQL('firewall');
 session_start();
 if(!isset($_SESSION['user'])) {
     if(isset($_POST['user'])) {
+
 /*
         echo "<pre>";
         print_r($_POST);
         print_r($_SESSION);
         echo "xxxx".$_SESSION['user'];
         echo "</pre>";
-*/        
+return false;
+*/
+
+
         $ldap_server = "ldap.tpitic.com.mx";
         $dn = "cn=feria,dc=transportespitic,dc=com";
         $password = "sistemaspitic";
         $con = ldap_connect('ldap.tpitic.com.mx');
         $bind=ldap_bind($con, $dn, $password);
         $filter = "(&(uid=".$_POST['user'].")(oficina=SIS))";
+/*
         if ($_POST['user'] == 'eresendiz') {
             $filter = "(uid=".$_POST['user'].")";
         }
+*/
         $srch =ldap_search($con, "ou=People,dc=transportespitic,dc=com",$filter);
         $numero=ldap_count_entries($con, $srch);
         $info = ldap_get_entries($con, $srch);
+        // SERVICIOS ATTR = INFRAESTRUCTURA
+
+
+        if ($numero == 0) {
+            $filterb = "(&(uid=".$_POST['user'].")(servicios=INFRAESTRUCTURA))";
+            $srchb =ldap_search($con, "ou=People,dc=transportespitic,dc=com",$filterb);
+            $numero=ldap_count_entries($con, $srchb);
+            $info = ldap_get_entries($con, $srchb);
+            //echo $numero;
+            //return false;
+
+        }
+
+
+
         if ($numero != 0){
             $logstate = validatePassword($_POST['pass'],$info[0]["userpassword"][0]);
 //echo "xx".$_POST['pass']."ssss".$info[0]["userpassword"][0]."ttt".$logstate."xxx";
 //die();
+
+	//		echo "XXXXXX $logstate XXXXXXXXXX";
+			//return false;
+
 
             if($logstate == "SI"){
                 $_SESSION['user'] = $info[0]["uid"][0];
@@ -139,15 +166,15 @@ if(!isset($_SESSION['user'])) {
     <script src="https://unpkg.com/@popperjs/core@2"></script>
 
 
-    <script src="js/funciones.js"> </script> 
+    <script src="js/funciones.js"> </script>
 
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"> </script> 
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"> </script>
     <link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 
-    <script src="bootstrap-4.3.1/js/bootstrap.min.js"> </script> 
+    <script src="bootstrap-4.3.1/js/bootstrap.min.js"> </script>
     <link rel="stylesheet" href= "bootstrap-4.3.1//css/bootstrap.min.css">
 
     <!-- Font Awesome -->
@@ -187,7 +214,7 @@ if(!isset($_SESSION['user'])) {
         width: 700px;
         margin: 30px auto;
         background: #fff;
-        padding: 20px;  
+        padding: 20px;
         box-shadow: 0 1px 1px rgba(0,0,0,.05);
     }
 
@@ -239,7 +266,7 @@ if(!isset($_SESSION['user'])) {
         display: inline-block;
         margin: 0 5px;
         min-width: 24px;
-    }  
+    }
 
     table.table td a.add {
         color: #27C46B;
@@ -262,7 +289,7 @@ if(!isset($_SESSION['user'])) {
         margin-right: -1px;
         position: relative;
         top: 3px;
-    }  
+    }
 
     table.table .form-control {
         height: 32px;
@@ -286,8 +313,8 @@ if(!isset($_SESSION['user'])) {
         margin: auto;
         align-content: center;
     }
-    
-    .link {   
+
+    .link {
         padding: auto;
         text-decoration: none;
         text-align: center;
@@ -311,7 +338,7 @@ if(!isset($_SESSION['user'])) {
         text-decoration: none;
         color:#464A53;
     }
-    
+
     .buscador{
         display:flex;
         margin: auto;
@@ -419,7 +446,7 @@ $(document).ready(function() {
         type:  'text',
                                pk:    1,
                                name:  'username',
-                               url:   'post.php',  
+                               url:   'post.php',
                                title: 'Enter username'
     });
 });
@@ -596,7 +623,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 
 
 ///////////////////////////////
- 
+
 
 </script>
 
@@ -617,7 +644,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
         Preloader end
     ********************-->
 
-    
+
     <!--**********************************
         Main wrapper start
     ***********************************-->
@@ -644,9 +671,9 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
         <!--**********************************
             Header start
         ***********************************-->
-        <div class="header">    
+        <div class="header">
             <div class="header-content clearfix">
-                
+
                 <div class="nav-control">
                     <div class="hamburger">
                         <span class="toggle-icon"><i class="icon-menu"></i></span>
@@ -679,7 +706,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class="">3 New Messages</span>  
+                                    <span class="">3 New Messages</span>
                                     <a href="javascript:void()" class="d-inline-block">
                                         <span class="badge badge-pill gradient-1">3</span>
                                     </a>
@@ -727,7 +754,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                             </a>
                                         </li>
                                     </ul>
-                                    
+
                                 </div>
                             </div>
                         </li>
@@ -737,7 +764,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class="">2 New Notifications</span>  
+                                    <span class="">2 New Notifications</span>
                                     <a href="javascript:void()" class="d-inline-block">
                                         <span class="badge badge-pill gradient-2">5</span>
                                     </a>
@@ -749,7 +776,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                                 <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
                                                 <div class="notification-content">
                                                     <h6 class="notification-heading">Events near you</h6>
-                                                    <span class="notification-text">Within next 5 days</span> 
+                                                    <span class="notification-text">Within next 5 days</span>
                                                 </div>
                                             </a>
                                         </li>
@@ -758,7 +785,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                                 <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
                                                 <div class="notification-content">
                                                     <h6 class="notification-heading">Event Started</h6>
-                                                    <span class="notification-text">One hour ago</span> 
+                                                    <span class="notification-text">One hour ago</span>
                                                 </div>
                                             </a>
                                         </li>
@@ -776,12 +803,12 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                                 <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
                                                 <div class="notification-content">
                                                     <h6 class="notification-heading">Events to Join</h6>
-                                                    <span class="notification-text">After two days</span> 
+                                                    <span class="notification-text">After two days</span>
                                                 </div>
                                             </a>
                                         </li>
                                     </ul>
-                                    
+
                                 </div>
                             </div>
                         </li>
@@ -814,7 +841,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                                 <i class="icon-envelope-open"></i> <span>Inbox</span> <div class="badge gradient-3 badge-pill gradient-1">3</div>
                                             </a>
                                         </li>
-                                        
+
                                         <hr class="my-2">
                                         <li>
                                             <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock Screen</span></a>
@@ -835,7 +862,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
         <!--**********************************
             Sidebar start
         ***********************************-->
-        <div class="nk-sidebar">           
+        <div class="nk-sidebar">
             <div class="nk-nav-scroll">
                 <ul class="metismenu" id="menu">
 
@@ -843,11 +870,11 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                 <li><a href="#" onclick="ShowLDAPG('LDAPGroup')">
 				 <i class="icon-grid menu-icon"></i><span class="nav-text">Grupos LDAP </span>
 				</a></li>
-                        
+
 				<li><a href="#" onclick="ShowLDAP('LDAPUsers')">
 				<i class="icon-people menu-icon"></i><span class="nav-text">Usuarios LDAP </span>
 				</a></li>
-                        
+
 				<li><a href="#" onclick="ShowLDAP('AddLDAPUsers')">
 				<i class="icon-user-follow menu-icon"></i><span class="nav-text">Agregar usuario </span>
 				</a></li>
@@ -924,7 +951,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </li>
 
 
-                    <?php 
+                    <?php
                         $regios= GetRegionalesFromOficinas();
                         foreach ($regios as &$valor) {
                             echo '<li>';
@@ -992,7 +1019,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                                     </div>
                                 </div>
                             </div>
-                            <br>                            
+                            <br>
                             <div id="LDAPUserTable"><!--xxxxxxxxxx--></div>
 
                         </div>
@@ -1000,7 +1027,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                             <div class="btn-group" role="group" aria-label="Basic example">
                               <button type="button" class="btn btn-secondary" onclick="LoadGroupQuery('Poruser')">Buscar Grupos Por Usuario</button>
                               <button type="button" class="btn btn-secondary" onclick="LoadGroupQuery('Pornombre')">Buscar Grupo Por Nombre</button>
-                            </div>                            
+                            </div>
                         </div>
 
                         <div id="AddUserLDAP" style="display:none;">
@@ -1012,21 +1039,21 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 				<div class="col-md-6">
 
 						<div class="form-group">
-							 
+
 							<label for="exampleInputEmail1">
 								Email address
 							</label>
 							<input type="email" class="form-control" id="exampleInputEmail1">
 						</div>
 						<div class="form-group">
-							 
+
 							<label for="exampleInputPassword1">
 								Password
 							</label>
 							<input type="password" class="form-control" id="exampleInputPassword1">
 						</div>
 						<div class="form-group">
-							 
+
 							<label for="exampleInputFile">
 								File input
 							</label>
@@ -1036,32 +1063,32 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 							</p>
 						</div>
 						<div class="checkbox">
-							 
+
 							<label>
 								<input type="checkbox"> Check me out
 							</label>
-						</div> 
+						</div>
 						<button type="submit" class="btn btn-primary">
 							Submit
 						</button>
 				</div>
 				<div class="col-md-6">
 						<div class="form-group">
-							 
+
 							<label for="exampleInputEmail1">
 								Email address
 							</label>
 							<input type="email" class="form-control" id="exampleInputEmail1">
 						</div>
 						<div class="form-group">
-							 
+
 							<label for="exampleInputPassword1">
 								Password
 							</label>
 							<input type="password" class="form-control" id="exampleInputPassword1">
 						</div>
 						<div class="form-group">
-							 
+
 							<label for="exampleInputFile">
 								File input
 							</label>
@@ -1071,18 +1098,18 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 							</p>
 						</div>
 						<div class="checkbox">
-							 
+
 							<label>
 								<input type="checkbox"> Check me out
 							</label>
-						</div> 
+						</div>
 						<button type="submit" class="btn btn-primary">
 							Submit
 						</button>
 
 				</div>
 			</div>
-      </form>        
+      </form>
 		</div>
 	</div>
 </div>
@@ -1112,7 +1139,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 
 
 <!--
--->                            
+-->
 
 
 
@@ -1133,8 +1160,8 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
         <!--**********************************
             Content body end
         ***********************************-->
-        
-        
+
+
         <!--**********************************
             Footer start
         ***********************************-->
@@ -1166,7 +1193,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
     <script src="./plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
     <script src="./plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
 
-  
+
 </body>
 
 </html>

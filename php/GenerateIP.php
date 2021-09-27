@@ -25,6 +25,14 @@ if(preg_match("/^\d+$/",$_POST['multi'])) {
 	}
 }
 
+
+
+
+if ($_POST['multi'] == "DUNNO") {
+	$toctet=GetThirdOctetForOficina($_POST['valueofi'],$db);
+	$chg=UpdateLDAPVAl($_POST['dn'],$newIP,$_POST['value']); 
+	$asignado="SI";
+}
 $newIP = GetAvailableIPFromSegment($toctet,'lanip');
 
 $jsonSearchResults[] =  array(
