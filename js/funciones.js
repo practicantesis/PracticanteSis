@@ -1,3 +1,30 @@
+
+function SmbGrpMemberAction (valor,dn,accion) {
+    var user = document.getElementById("newsmbgrpuser").value;
+    //alert(valor+dn+accion+"----"+user);
+    $.ajax({
+            type: "POST",
+            url: 'php/ChangeSmbLDAPGrp.php',
+            data: { dn: dn, accion: accion, user: user, valor: valor  },
+            dataType: "json",
+            success: function(data) {
+                if (data[0].success == "NO") {
+                    alert(data[0].data);
+                    //$('#LDAPUserTable').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
+                }
+                if (data[0].success == "YES") {
+                    alert(data[0].data);
+                    //$('#teibol').empty();
+                    //$('#TablaVPN').dataTable();
+                    //$('#TablaVPN').dataTable( { "lengthMenu": [[150, -1], [150, "All"]]  } );
+                    //alert(data[0].data);
+                }
+            }
+       });
+
+
+}    
+
 function DeleteUser(dn) {
     //alert(dn);
     var r = confirm("Esta seguro que quiere borrar a "+dn+"????");
@@ -133,10 +160,16 @@ function Show(what,where) {
 function ShowLDAP(what) {
     Limpia();
     $("#LDAPGroups").hide();
+    $("#SmbLDAPGroups").hide();
     $("#SrchLDAPGp").hide();
     if (what == "LDAPUsers") {
         $("#LDAPUser").show();
     }
+    if (what == "LDAPDevUsers") {
+        alert('xxx');
+        $("#LDAPDevUser").show();
+    }
+
     if (what == "AddLDAPUsers") {
         $.ajax({
             type: "POST",
@@ -151,11 +184,26 @@ function ShowLDAP(what) {
             }
         });
     }
+    if (what == "AddLDAPDevUsers") {
+        $.ajax({
+            type: "POST",
+            url: 'php/NewDevUser.php',
+            dataType: "json",
+            success: function(data) {
+                //alert(data[0].success);
+                if (data[0].success == "YES") {
+                    $('#NewLDAPDevUser').html(data[0].data);
+                    //alert(data[0].data);
+                }
+            }
+        });
+    }
 }
 
 function ShowCells(what) {
     Limpia();
     $("#LDAPGroups").hide();
+    $("#SmbLDAPGroups").hide();
     $("#SrchLDAPGp").hide();
     $.ajax({
         type: "POST",
@@ -179,11 +227,23 @@ function ShowLDAPG() {
     $("#LDAPGroups").show();
 }
 
+function ShowLDAPG() {
+    Limpia();
+    $("#SmbLDAPGroups").show();
+}
+
 function LoadGroupQuery(type) {
     Limpia();
     $("#SrchLDAPGp").show();
     document.getElementById("GrpSrchTip").value = type;
     $('#encabezadobusq').html('Buscar '+type);
+}
+
+function SmbLoadGroupQuery(type) {
+    Limpia();
+    $("#SmbSrchLDAPGp").show();
+    document.getElementById("smbGrpSrchTip").value = type;
+    $('#smbencabezadobusq').html('Buscar '+type);
 }
 
 
@@ -213,6 +273,104 @@ function selectUserGrp(user) {
     });
     return false;
 }
+
+
+
+function selectDevUser(user) {
+    alert(user);
+    $("#LDAPDevUser").hide();
+    $('#TOPDIV').html('Trabajando con '+user);
+    $.ajax({
+            type: "POST",
+            url: 'php/ShowDevUser.php',
+            data: { user: user },
+            dataType: "json",
+            beforeSend: function() {
+                $('#TOPDIV').html('');
+                $("#loaderDiv").show();
+            },
+            success: function(data) {
+                $("#loaderDiv").hide();
+                //alert(data[0].error);
+                //alert(data[0].success);
+                if (data[0].success == "NO") {
+                alert(data[0].error);
+                $('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
+            }
+                if (data[0].success == "YES") {
+                    if (data[0].alertlan == "YES") {
+                        alert('LAN MAC NO DECLARADA, EL USUARIO FUE MAL DADO DE ALTA, FAVOR DE PONER VALOR O DAR VALOR NO SI NO TIENE MAC');
+                    }
+                    if (data[0].alertwifi == "YES") {
+                        alert('WIFI MAC NO DECLARADA, EL USUARIO FUE MAL DADO DE ALTA, FAVOR DE PONER VALOR O DAR VALOR NO SI NO TIENE MAC');
+                    }
+                $('#MEDDIV').html(data[0].data);
+                $('#teibol').dataTable();
+                //alert(data[0].data);
+
+//
+    $('[data-toggle="tooltip"]').tooltip();
+    var actions = $("table td:last-child").html();
+    // Append table with add row form on add new button click
+    $(".add-new").click(function(){
+        $(this).attr("disabled", "disabled");
+        var index = $("table tbody tr:last-child").index();
+        var row = '<tr>' +
+            '<td><input type="text" class="form-control" name="newvalue" id="newvalue"></td>' +
+            '<td>' + actions + '</td>' +
+        '</tr>';
+        $("table").append(row);
+        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    // Add row on add button click
+    $(document).on("click", ".add", function(){
+        var empty = false;
+        var input = $(this).parents("tr").find('input[type="text"]');
+        input.each(function(){
+            if(!$(this).val()){
+                $(this).addClass("error");
+                empty = true;
+            } else{
+                $(this).removeClass("error");
+            }
+        });
+        $(this).parents("tr").find(".error").first().focus();
+        if(!empty){
+            input.each(function(){
+                $(this).parent("td").html($(this).val());
+            });
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").removeAttr("disabled");
+        }
+    });
+    // Edit row on edit button click
+    /*
+    $(document).on("click", ".edit", function(){
+        $(this).parents("tr").find("td:not(:last-child)").each(function(){
+            $(this).html('<input type="text" class="form-control" id="tochange" value="' + $(this).text() + '">');
+        });
+        $(this).parents("tr").find(".add, .edit").toggle();
+        $(".add-new").attr("disabled", "disabled");
+    });
+    */
+    // Delete row on delete button click
+    $(document).on("click", ".delete", function(){
+        $(this).parents("tr").remove();
+        $(".add-new").removeAttr("disabled");
+    });
+
+//
+
+            }
+
+           }
+       });
+
+}
+
+
+
 
 function selectUser(user) {
     $("#LDAPUser").hide();
@@ -332,9 +490,38 @@ function selectGroup(group,tipo) {
                 $('#teibol').dataTable();
                 //alert(data[0].data);
             }
+        }
+    });
+}
 
-           }
-       });
+function SmbselectGroup(group,tipo) {
+    $("#smbLDAPUser").hide();
+    $("#LDAPAlias").hide();
+    $('#TOPDIV').html('Trabajando con '+group+' -> '+tipo);
+    $.ajax({
+            type: "POST",
+            url: 'php/smbShowGrpEdit.php',
+            data: { group: group, tipo: tipo },
+            dataType: "json",
+            beforeSend: function() {
+                $('#TOPDIV').html('');
+                $("#loaderDiv").show();
+            },
+            success: function(data) {
+                $("#loaderDiv").hide();
+                //alert(data[0].error);
+                //alert(data[0].success);
+                if (data[0].success == "NO") {
+                alert(data[0].error);
+                $('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
+            }
+                if (data[0].success == "YES") {
+                $('#BOTTDIV').html(data[0].data);
+                $('#teibol').dataTable();
+                //alert(data[0].data);
+            }
+        }
+    });
 }
 
 
@@ -410,13 +597,16 @@ function ResetLDAPass() {
 function Limpia() {
         $('#TOPDIV').html('');
         $('#NewLDAPUser').html('');
+        $('#NewLDAPDevUser').html('');
         $("#LDAPUser").hide();
+        $("#LDAPDevUser").hide();
         $("#LDAPAlias").hide();
         $('#VPNTable').html('');
         $('#BOTTDIV').html('');
         $('#MEDDIV').html('');
         $('#teibol').html('');
         $('#LDAPGroups').hide(); 
+        $('#SmbLDAPGroups').hide();
        $("#SrchLDAPGp").hide();
 }
 
@@ -452,7 +642,11 @@ function EnableService(dn,nuevo,initial) {
 }
 
 function UValn(dn,value) {
-    alert('boo!');
+    alert('boo!'+dn+value);
+}
+
+function UValnn(dn,value) {
+    alert('boo!'+dn+value);
 }
 
 function UVal(dn,value) {
@@ -780,6 +974,7 @@ function AddAlias() {
 }
 
 function validarinput(tipo,valor,chkexist) {
+    //validarinput('numero','dunumeroempleado','SI')
     var va=document.getElementById('val-'+valor).value;
     //alert(va);
     //alert(tipo);
@@ -839,7 +1034,39 @@ function validarinput(tipo,valor,chkexist) {
             });
         }
         //alert (exist);
+        //dunumeroempleado
         console.log("Valid");
+
+        if ((valor == "dunumeroempleado")&&(exist != "YES")) {
+            alert('NUMERO DE EMPLEADO NO EXISTE, CREANDO NUEVO REGISTRO');
+            $('#val-duusernname').prop('readonly', false);
+            $('#val-dunombre').prop('readonly', false);
+            $('#val-duoficina').prop('readonly', false);
+        }
+        if ((valor == "dunumeroempleado")&&(exist == "YES")) {
+            alert('NUMERO DE EMPLEADO EXISTE, TOMANDO INFORMACION DE USERS');
+            //$('#val-duusernname').prop('readonly', false);
+            //$('#val-dunombre').prop('readonly', false);
+            //$('#val-duoficina').prop('readonly', false);
+            $.ajax({
+                type: "POST",
+                url: 'php/GetNoEmpInfoFromLDAP.php',
+                data: { valor: va },
+                dataType: "json",
+                success: function(data) {
+                    if (data[0].success == "YES") {
+                        $("#val-duusernname").val(data[0].uid);
+                        $("#val-dunombre").val(data[0].cn);
+                        $("#val-duoficina").val(data[0].oficina);
+
+
+
+                    }
+                }
+            });
+            
+        }
+
         if ((valor == "uid")&&(exist != "YES")) {
             $("#val-mail").val(va+'@tpitic.com.mx');
             $.ajax({
@@ -964,6 +1191,26 @@ function SaveNewUser() {
     $.ajax({
         type: "POST",
         url: 'php/SaveNewUser.php',
+        data: { data: data },
+        dataType: "json",
+        async: false,
+        success: function(data) {
+            if (data[0].success == "YES") {
+                alert('Usuario Guardado');
+            } else {
+                alert(data[0].success);
+            }
+        }
+    });
+}
+
+
+function SaveNewDevUser() {
+    var data = $("#newdevuser").serializeArray();
+    //alert(data);
+    $.ajax({
+        type: "POST",
+        url: 'php/SaveNewDevUser.php',
         data: { data: data },
         dataType: "json",
         async: false,

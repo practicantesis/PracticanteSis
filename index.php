@@ -384,6 +384,26 @@ $(document).ready(function() {
   });
 });
 
+$(document).ready(function() {
+  $("#search-box-du").keyup(function() {
+    //alert( "Handler for .keyup() called." );
+    $.ajax({
+      type: "POST",
+      url: "php/searchDevuser.php",
+      data: 'keyword=' + $(this).val(),
+      beforeSend: function() {
+        $("#search-box").css("background", "#FFF url(LoaderIcon.gif) no-repeat 165px");
+      },
+      success: function(data) {
+        $("#suggesstion-box-du").show();
+        $("#suggesstion-box-du").html(data);
+        $("#search-box-du").css("background", "#FFF");
+      }
+    });
+  });
+});
+
+
 $(function() {
    $("#addlus").autocomplete({
         source: "./php/search.php",
@@ -431,6 +451,30 @@ $(document).ready(function() {
     });
   });
 });
+
+$(document).ready(function() {
+  $("#smbgsearch-box").keyup(function() {
+    //GrpSrchTip
+    var qtip = document.getElementById("smbGrpSrchTip").value;
+    //alert(qtip);
+    //alert( "Handler for .keyup() called." );
+    $.ajax({
+      type: "POST",
+      url: "php/smbsearchgroup.php",
+      //data: { 'qtip: qtip, keyword=' + $(this).val() },
+      data: 'keyword=' + $(this).val()+qtip,
+      beforeSend: function() {
+        $("#smbgsearch-box").css("background", "#FFF url(LoaderIcon.gif) no-repeat 165px");
+      },
+      success: function(data) {
+        $("#smbgsuggesstion-box").show();
+        $("#smbgsuggesstion-box").html(data);
+        $("#smbgsearch-box").css("background", "#FFF");
+      }
+    });
+  });
+});
+
 
 
  $.fn.editable.defaults.mode = 'inline';
@@ -895,6 +939,20 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
 				<i class="icon-user-follow menu-icon"></i><span class="nav-text">Celulares</span>
 				</a></li>
 
+                <li><a href="#" onclick="ShowLDAP('AddLDAPDevUsers')">
+                <i class="icon-user-follow menu-icon"></i><span class="nav-text">Agregar DevUser </span>
+                </a></li>
+
+                <li><a href="#" onclick="ShowLDAP('LDAPDevUsers')">
+                <i class="icon-people menu-icon"></i><span class="nav-text">Device Users</span>
+                </a></li>
+
+            <li class="nav-label">SAMBA</li>
+                <li><a href="#" onclick="ShowLDAPG('SMBLDAPGroup')">
+                 <i class="icon-grid menu-icon"></i><span class="nav-text">Grupos LDAP Samba</span>
+                </a></li>
+
+
 
             <li class="nav-label">OPENVPN</li>
                         <li><a href="#" onclick="ShowOPENVPN()">
@@ -998,60 +1056,81 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
             style="display:none;
         ***********************************-->
         <div class="content-body">
-
             <div id="loaderDiv" style="display:none;">
                 CONECTANDO...
                 <div class="d-flex justify-content-center">
-                  <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
             <DIV class='topdivclass' ID='TOPDIV'></DIV>
-            <DIV ID='MEDDIV'></DIV>
-
-            <div class="container-fluid mt-6">
-                        <div id="VPNTable"></div>
-                        <div id="NewLDAPUser"></div>
-                        <div id="LDAPUser" style="display:none;">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-3">
-                                    <div class="card">
-                                                <img class="img-fluid" src="images/big/pankaj.jpg" alt="">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Buscar Usuario</h5>
-                                            <div class="frmSearch">
-                                                    <input type="text" id="search-box" autocomplete="off" placeholder="User" />
-                                                    <div id="suggesstion-box"></div>
-                                            </div>
-                                            <p class="card-text">Buscar en LDAP</p>
-                                            <p class="card-text"><small class="text-muted"><!--Que monita card--></small></p>
+                <DIV ID='MEDDIV'></DIV>
+                <div class="container-fluid mt-6">
+                    <div id="VPNTable"></div>
+                    <div id="NewLDAPUser"></div>
+                    <div id="NewLDAPDevUser"></div>
+                    <div id="LDAPUser" style="display:none;">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card">
+                                    <img class="img-fluid" src="images/big/pankaj.jpg" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Buscar Usuario</h5>
+                                        <div class="frmSearch">
+                                            <input type="text" id="search-box" autocomplete="off" placeholder="User" />
+                                            <div id="suggesstion-box"></div>
                                         </div>
+                                        <p class="card-text">Buscar en LDAP</p>
+                                        <p class="card-text"><small class="text-muted"></small></p>
                                     </div>
                                 </div>
                             </div>
-                            <br>
-                            <div id="LDAPUserTable"><!--xxxxxxxxxx--></div>
-
                         </div>
-                        <div id="LDAPGroups" style="display:none;">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                              <button type="button" class="btn btn-secondary" onclick="LoadGroupQuery('Poruser')">Buscar Grupos Por Usuario</button>
-                              <button type="button" class="btn btn-secondary" onclick="LoadGroupQuery('Pornombre')">Buscar Grupo Por Nombre</button>
+                        <br>
+                        <div id="LDAPUserTable"><!--xxxxxxxxxx--></div>
+                    </div>
+                    <div id="LDAPDevUser" style="display:none;">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="card">
+                                    <img class="img-fluid" src="images/big/pankaj.jpg" alt="">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Buscar Usuario De Devices</h5>
+                                        <div class="frmSearch">
+                                            <input type="text" id="search-box-du" autocomplete="off" placeholder="DevUser" />
+                                            <div id="suggesstion-box-du"></div>
+                                        </div>
+                                        <p class="card-text">Buscar en LDAP Dev Users</p>
+                                        <p class="card-text"><small class="text-muted"></small></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div id="AddUserLDAP" style="display:none;">
-  <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-      <form role="form">
-			<div class="row">
-				<div class="col-md-6">
-
-						<div class="form-group">
-
-							<label for="exampleInputEmail1">
+                        <br>
+                        <div id="LDAPDevUserTable"><!--xxxxxxxxxx--></div>
+                    </div>
+                    <div id="SmbLDAPGroups" style="display:none;">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <!--<button type="button" class="btn btn-secondary" onclick="SmbLoadGroupQuery('Poruser')">Buscar Grupo SMB Por Usuario</button>-->
+                            <button type="button" class="btn btn-secondary" onclick="SmbLoadGroupQuery('Pornombre')">Buscar Grupo SMB Por Nombre</button>
+                        </div>
+                    </div>
+                    <div id="LDAPGroups" style="display:none;">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-secondary" onclick="LoadGroupQuery('Poruser')">Buscar Grupos Por Usuario</button>
+                            <button type="button" class="btn btn-secondary" onclick="LoadGroupQuery('Pornombre')">Buscar Grupo Por Nombre</button>
+                        </div>
+                    </div>
+                    <div id="AddUserLDAP" style="display:none;">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form role="form">
+                                        <div class="row">
+				                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">
 								Email address
 							</label>
 							<input type="email" class="form-control" id="exampleInputEmail1">
@@ -1148,6 +1227,25 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                             </div>
                         </div>
 
+                        <div id="SmbSrchLDAPGp" style="display:none;">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-3">
+                                    <div class="card">
+                                                <img class="img-fluid" src="images/big/group.jpg" alt="">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><div id="smbencabezadobusq"></div></h5>
+                                            <div class="frmSearch">
+                                                    <input type="text" id="smbgsearch-box" autocomplete="off" placeholder="Grupo" />
+                                                    <div id="smbgsuggesstion-box"></div>
+                                                    <input type="hidden" id="smbGrpSrchTip" name="smbGrpSrchTip" value="DUNNO">
+                                            </div>
+                                            <p class="card-text">Buscar smb en LDAP</p>
+                                            <p class="card-text"><small class="text-muted"><!--Que monita card--></small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 <!--
 -->
