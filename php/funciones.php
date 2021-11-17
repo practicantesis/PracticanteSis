@@ -1,9 +1,28 @@
 <?php
 
 
-function QueryToAirwatchAPI($tipo,$serie) {
-    //$basic_auth = base64_encode("jferia:xxx");
-    $basic_auth='amZlcmlhOkxldHR5b3J0ZWdh';
+function GetBrandFromModel($model) {
+    switch ($model) {
+    case (preg_match('/HUAWEI/', $model) ? true : false) :
+        $brand="Huawei";
+        break;
+    case (preg_match('/ZTE/', $model) ? true : false) :
+        $brand="ZTE";
+        break;
+
+    case 1:
+        echo "i equals 1";
+        break;
+    case 2:
+        echo "i equals 2";
+        break;
+    }
+    return $brand;
+}
+
+function QueryToAirwatchAPI($tipo,$val) {
+    $basic_auth = base64_encode("jferia:TP1nghm0R1hM0");
+    //$basic_auth='amZlcmlhOkxldHR5b3J0ZWdh';
     $ch = curl_init();
     $api_key='Zbh2S+e0ejNOibdtwlFDFssflXSeCniu2oh1/7lVg5A=';
     $baseurl="https://as257.awmdm.com";
@@ -11,11 +30,11 @@ function QueryToAirwatchAPI($tipo,$serie) {
         $endpoint="/API/mdm/devices/search";    
     }
     if ($tipo == "DEVICE") {
-        $endpoint="/api/mdm/devices/?searchby=Serialnumber&id=".$serie;
+        $endpoint="/api/mdm/devices/?searchby=Serialnumber&id=".$val;
     }
-
-
-
+    if ($tipo == "DEVICEperIMEI") {
+        $endpoint="/api/mdm/devices/?searchby=ImeiNumber&id=".$val;
+    }
     $url = $baseurl.$endpoint;
     $headers = ['aw-tenant-code: '.$api_key,'Authorization: Basic '.$basic_auth,'Accept: application/json'];
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -447,10 +466,45 @@ function GetDeviceListFromLDAP($base,$what) {
     if($ldapconn) {
         $ldapbind = ldap_bind($ldapconn, $ldapuser, $ldappass) or die ("Error trying to bind: ".ldap_error($ldapconn));
         if ($ldapbind) {
-            $result = ldap_search($ldapconn,$ldaptree, "($what=*)") or die ("Error in search query: ".ldap_error($ldapconn));
+            //$result = ldap_search($ldapconn,$ldaptree, "($what=*)") or die ("Error in search query: ".ldap_error($ldapconn));
+            // Buscar solo deice sin ofic. BAJA
+            if ($what == "activetag" ) {
+                $result = ldap_search($ldapconn,$ldaptree, "(!(deviceoffice=BAJA_*))") or die ("Error in search query: ".ldap_error($ldapconn));
+                $what="devicetag";
+            } else {
+                $result = ldap_search($ldapconn,$ldaptree, "($what=*)") or die ("Error in search query: ".ldap_error($ldapconn));
+            }
             $ldata = ldap_get_entries($ldapconn, $result);
             for ($i=0; $i<$ldata["count"]; $i++) {
                 array_push($array1,$ldata[$i][$what][0]);
+                //echo "<pre>";
+                //print_r($ldata);
+                //echo "XXX".$ldata[$i][$what][0];
+                //echo "</pre>";
+                //return false;
+            }
+        }
+    }
+    return $array1;
+}
+
+function GetFilteredDeviceListFromLDAP($base,$what,$value,$whatreturn) {
+    $err='';
+    $data='';
+    set_time_limit(30);
+    $ldapserver = 'ldap.tpitic.com.mx';
+    $ldapuser      = 'cn=feria,dc=transportespitic,dc=com';  
+    $ldappass     = 'sistemaspitic';
+    $ldaptree    = $base;
+    $ldapconn = ldap_connect($ldapserver) or die("Could not connect to LDAP server.");
+    $array1= array();
+    if($ldapconn) {
+        $ldapbind = ldap_bind($ldapconn, $ldapuser, $ldappass) or die ("Error trying to bind: ".ldap_error($ldapconn));
+        if ($ldapbind) {
+            $result = ldap_search($ldapconn,$ldaptree, "($what=$value)") or die ("Error in search query: ".ldap_error($ldapconn));
+            $ldata = ldap_get_entries($ldapconn, $result);
+            for ($i=0; $i<$ldata["count"]; $i++) {
+                array_push($array1,$ldata[$i][$whatreturn][0]);
                 //echo "<pre>";
                 //print_r($ldata);
                 //echo "XXX".$ldata[$i][$what][0];
@@ -478,14 +532,14 @@ function GetDeviceInfoFromLDAP($base,$what,$tag) {
             $result = ldap_search($ldapconn,$ldaptree, "($what=$tag)") or die ("Error in search query: ".ldap_error($ldapconn));
             $ldata = ldap_get_entries($ldapconn, $result);
             
-            for ($i=0; $i<$ldata["count"]; $i++) {
+            //for ($i=0; $i<$ldata["count"]; $i++) {
                 //array_push($array1,$ldata[$i][$what][0]);
                 //echo "<pre>";
                 //print_r($ldata);
                 //echo "XXX".$ldata[$i][$what][0];
                 //echo "</pre>";
                 //return false;
-            }
+            //}
         }
     }
     return $ldata;
@@ -719,6 +773,14 @@ function UserForm($ldata) {
         if ($servs == "Drupal") {
             $srvDrypalchk='checked';
         }
+        $livemeeting  = $ldata[0]["livemeeting"][0];
+        if ($livemeeting  == "OpenVPN") {
+            $srvOPENVPNchk='checked';
+            $vpnstat='ON';
+        } else {
+            $vpnstat='OFF';
+        }
+
         $userpassword = $ldata[0]["userpassword"][0];
         $dn=$ldata[0]["dn"];
         $cntaliascuentagoogle=$ldata[0]["aliascuentagoogle"]["count"];
@@ -829,7 +891,7 @@ function UserForm($ldata) {
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-userpassword">Validar Password:</label></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-userpassword"></small>Validar Password: (Si hace cambios necesita recargar para validar</small>)</label></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
                                             <input type="password" class="form-control" id="val-userpassword" name="val-userpassword" placeholder="Teclear Password.." >'.$validate.'
@@ -1063,6 +1125,7 @@ function UserForm($ldata) {
                                 $cu='Drupal';
                                 $cus='Samba';
                                 $cui='INFRAESTRUCTURA';
+                                $vpn='OpenVPN';
                                 $forma .='
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Servicios: </label></div>
@@ -1073,6 +1136,10 @@ function UserForm($ldata) {
                                         <div class="form-row form-check-label" id="elservicio-INFRAESTRUCTURA">
                                             <input type="checkbox" class="form-check-input" id="val-INFRAESTRUCTURA" '.$ifchk.' name="val-INFRAESTRUCTURA" onclick="EnableService('."'$dn'".','."'$cui'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  INFRAESTRUCTURA 
                                         </div>
+                                        <div class="form-row form-check-label" id="elservicio-OPENVPN">
+                                            <input type="checkbox" class="form-check-input" id="val-OPENVPN" '.$srvOPENVPNchk.' name="val-OPENVPN" onclick="EnableService('."'$dn'".','."'$vpn'".','."'$vpnstat'".')"  '.$srvOPENVPNchk.' > . .  OPENVPN 
+                                        </div>
+
                                         <!--
                                         <div class="form-row form-check-label" id="elservicio-'.$cus.'">
                                             <input type="checkbox" class="form-check-input" id="val-'.$cus.'" name="val-'.$cus.'" onclick="EnableService('."'$dn'".','."'$cus'".','."'$servs'".')"  '.$srvDrypalchk.' > . .  Drupal 
@@ -1475,6 +1542,143 @@ function NewDevUserForm() {
     return $forma;                            
 
 }
+
+
+//
+
+function NewCellForm() {
+
+    //2-Crear telefono en ldap con la ofi del usuario y el consecutivoque le toca el valor de imei sera PORASIGNAR, si existe en api ponerle valor de imei, serie, y el usuario, si no existe el usuario validar que existe en deviceusers, tambien verificar que no tenga otro celular asignado, capturar el numero de telefono, y el device dept
+
+    $rocell="";
+    $cu="NU";
+    $cn="NU";
+    $CmbOfi="";
+    $abs=GetOfficeAbrevs('x');
+    foreach ($abs as $value) {
+        $CmbOfi .= '<OPTION VALUE="'.$value.'">'.$value.'</OPTION>';
+    }
+    $forma='<div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-validation">
+                        <form class="form-valide" name="newcell" id="newcell" action="#" method="post">
+                            <!-- CARD -->
+                            <div class="card"><div class="card-body"><h4 class="card-title">Informacion del Dispositivo</h4>
+                            <!-- Primer Reglon -->
+                            <div class="form-group row">';
+                                $cu='newtag';
+                                $rouser="readonly";
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Tag: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'palabrasp','$cu'".','."'NO'".')" '.$rouser.'>
+                                        </div>
+                                    </div>
+                                </div>
+                                ';
+                                $rouser="";
+                                $cu='deviceassignedto';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Device User: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" onchange="validarinput('."'validadeviceuser','$cu'".','."'NO'".')" '.$rouser.'>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Segundo Reglon  -->
+                            <div class="form-group row">';
+                                $cu='devicenumber';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Numero de telefono: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'"  '.$ldata[0][$cu][0].' onchange="validarinput('."'numero','$cu'".','."'SI'".')" '.$rouser.'>
+                                        </div>
+                                    </div>
+                                </div>
+                                ';
+                                $cu='oficina';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">Oficina: </p></label><div id="edit-'.$cu.'"><a href="#" onclick="SelCelOfi('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            
+
+
+                                            <select style="width:5" class="form-control" name="val-'.$cu.'" id="val-'.$cu.'" onchange="SelCelOfi('."'$dn'".','."'$cu'".')">
+                                                <option value="SELECCIONE">SELECCIONE</option>'.$CmbOfi.'
+
+                                            </select>
+
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
+
+                            <!-- Tercer Reglon  -->
+                            <div class="form-group row">';
+                                $cu='devicedept';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Departamento: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'"  '.$ldata[0][$cu][0].' onchange="validarinput('."'palabrasp','$cu'".','."'SI'".')" '.$rouser.'>
+                                        </div>
+                                    </div>
+                                </div>
+                                ';
+                                $rouser="readonly";
+                                $cu='devicimei';
+                                $forma .='
+                                <div class="col">
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Device IMEI: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="col-lg-6">
+                                        <div class="form-row" id="elinput-'.$cu.'">
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="'.$cu.'" value="PORASIGNAR" onchange="validarinput('."'validadeviceuser','$cu'".','."'NO'".')" '.$rouser.'>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
+                        </form>
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Acciones</h4>
+                                        <div class="basic-form">
+                                            <div class="form-group">
+                                                <div class="form-check mb-3 ">
+                                                    <label class="form-check-label">
+                                                        <button type="button" id="BtnSaveNewCell" class="btn btn-primary mb-2" onclick="SaveNewCell()">Agregar</button>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>';
+    return $forma;
+
+}
+//
+
 
 
 function NewUserForm() {
@@ -1889,6 +2093,9 @@ function CheckExistentValueLDAP($base,$what,$val) {
     if ($what == "duusernname") {
         $LDAPUserBase="ou=DeviceUsers,dc=transportespitic,dc=com";
     }
+    if ($what == "deviceassignedto") {
+        $LDAPUserBase="ou=Celulares,ou=Devices,dc=transportespitic,dc=com";
+    }
 
 
 
@@ -1989,6 +2196,31 @@ function GetOCSTAG($serial,$conn) {
     }
 }
 
+
+
+function GetOCSInfoFromTAG($tag,$what,$conn) {
+    $fnt1="<font face='Trebuchet MS, Arial, Helvetica' size='1'>";
+    $sql = "select $what from accountinfo where TAG='$tag'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            return $row[$what];
+        #    $sqlb = "select TAG from accountinfo where HARDWARE_ID='".$row["HARDWARE_ID"]."'";
+        #    $resultb = $conn->query($sqlb);
+        #    if ($resultb->num_rows > 0) {
+        #        while($rowb = $resultb->fetch_assoc()) {
+        #            return "<td> $fnt1 ***".$rowb["TAG"]."</td><td> $fnt1 ***".$row["HARDWARE_ID"]."</td>";
+        #        }
+        #    } else {
+        #        return "NO TAG";
+        #    }
+        } 
+    } else {
+        return "NO TAG ON OCS";
+    }
+}
+
+
 function GetUserFromDN($dn) {
     if (preg_match("/uid=(.+)\,ou=People,/i",$dn,$mat)) {
         $val=$mat['1'];
@@ -2023,11 +2255,12 @@ function DeleteMamboUser($user,$conn) {
 function ChgPasswdMamboUser($user,$pass) {
     $conn=ConectaSQL('globaldb');
     $sql="UPDATE only_users set password='$pass' WHERE username = '".$user."'";
-    //$result = $conn->query($sql);
+    $result = $conn->query($sql);
     if ($result) {
         return "SI";
     } else {
-        return "NO";
+        //return "NO";
+         return$conn -> error;
     }        
 }
 
@@ -2056,13 +2289,13 @@ function ResetPasswordLDAP($user,$pass) {
     $update['userPassword']=$shapass;
     $update['sambaNTPassword']=strtoupper(hash('md4', iconv('UTF-8','UTF-16LE',$pass)));
     $userldap = "uid=".$user.",ou=People,dc=transportespitic,dc=com";
-    //$mod=ldap_modify($ldapconn,$userldap, $update);
+    $mod=ldap_modify($ldapconn,$userldap, $update);
     return $mod;
 }
 
 
 //function GetCellsFromLDAP($base,$how) {
-function GetCellsFromLDAP() {
+function GetCellsFromLDAP($como) {
     include 'configuraciones.class.php';
     $how="array";
     $err='';
@@ -2077,10 +2310,19 @@ function GetCellsFromLDAP() {
     //ini_set('display_errors', 'On');
     set_time_limit(30);
     $array1= array();
-    $result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com", "(DeviceTAG=*)");
+    //echo $how;
+    if ($como == "active" ) {
+        $result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com", "(!(deviceoffice=BAJA_*))") or die ("Error in search query: ".ldap_error($ldapconn));
+    } else {
+$result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com","(DeviceTAG=*)");
+    }
     $err=ldap_error($ldapconn);
     $ldata = ldap_get_entries($ldapconn, $result);
-    //echo $ldata["count"];
+    echo $ldata["count"]."<br>";
+//echo "<pre>";
+//print_r($ldata);
+//echo "</pre>";
+
     for ($i=0; $i<$ldata["count"]; $i++) {
         //array_push($array1,$ldata[$i][$what][0]);
         //echo "<pre>";
@@ -2094,6 +2336,7 @@ function GetCellsFromLDAP() {
             $serie=$ldata[$i]['deviceserial'][0];
             $imei=$ldata[$i]['deviceimei'][0];
             //$tag=$ldata[$i]['devicetag'][0];
+//echo "perroi ".$ldata[$i]['devicetag'][0]."--".$imei."--"."<br>";
             $outb[$imei]['devicelastseen']=$ldata[$i]['devicelastseen'][0];
             $outb[$imei]['deviceserial']=$ldata[$i]['deviceserial'][0];
             $outb[$imei]['devicetag']=$ldata[$i]['devicetag'][0];

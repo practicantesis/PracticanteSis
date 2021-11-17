@@ -1,211 +1,199 @@
-CELCCN100###2021-10-14T19:58:48.320###320186693335###298600###9288###CCN###armando javier lopez###ajlopez###CCN###
-CELCCN102###2021-10-14T20:04:29.567###321077201531###315439###10353###CCN###Inocente Chable###ichable###CCN###
-CELCCN103###No Encontrado en API###320177273353######8363###CCN###Pedro Escalante###pescalante###BAJA_CEL_SUR###
-CELCCN104###2021-10-14T20:02:08.687###320185723854###300500###10711###CCN###Irma Rosa Guerrero Chavez###iguerrero###CCN###
-CELCHI100###No Encontrado en API###MXRNU19720108085######11156###CHI###Chihuahua mercadolibre5###chimer5###CHI###
-CELCHI101###2021-10-14T20:18:07.953###MXRNU19720106780###437438###11149###CHI###Chihuahua mercadolibre4###chimer4###CHI###
-CELCHI102###No Encontrado en API###MXRNU19720104463######11063###CHI###Oscar Alejandro Marin###omarin###CHI###
-CELCHI103###No Encontrado en API###MXRNU19720108120######0#########jarey###CHI###
-CELCHI104###No Encontrado en API###MXRNU19802106108######0#########chimer1###CHI###
-CELCHI105###2021-10-09T00:08:59.687###MXRNU19629109182###443118###11055###CHI###CHI MER3###chimer3###CHI###
-CELCHI106###2021-10-14T20:23:16.467###MXRNU19629112017###439520###11155###CHI###CHI MER2###chimer2###CHI###
-CELCHI110###No Encontrado en API###320177154599######7057###CHI###Omar Horacio Lechuga###olechuga###BAJA_CEL_NOR###
-CELCHI111###No Encontrado en API###320177273669######2712###CHI###arnulfo alcantar gamez###aalcantar###BAJA_CEL_NOR###
-CELCHI112###2021-10-14T12:27:34.807###LGK200a2be531###304383###9823###CHI###Jose Calvillo salas###jcalvillo###CHI###
-CELCUL100###2021-10-14T19:55:50.933###MXRNU19720108373###418356###838###CUL###miguel apolinar###mapolinar###CUL###
-CELCUL101###2021-10-14T19:33:27.960###MXRNU19720106440###386152###11188###CUL###Jose Barrera Ziga###jbarrera###CUL###
-CELCUL102###2021-10-14T20:17:49.187###MXRNU19802105818###449976###10709###CUL###julio niebla###mcarrillo###CUL###
-CELCUL104###No Encontrado en API###320186693345######10821###CUL###Rafael Carrillo###racarrillo###CUL###
-CELCUL106###2021-10-14T19:55:21.513###320977073259###252246###8530###CUL###Francisco Javier Ruiz Ibarra###fjruiz###CUL###
-CELCUL107###2021-10-07T17:53:57.743###320977074123###379191###8819###CUL###Horacio Plata###hplata###CUL###
-CELCUL108###No Encontrado en API###320977074751######0#########rquintero###BAJA_CEL_OCT###
-CELCUL109###2021-10-14T19:41:19.690###320177274230###308829###0#########flafarga###CUL###
-CELCUL111###2021-10-14T18:55:17.567###320183724505###302719###0#########rzamora###CUL###
-CELCUL112###2021-10-14T19:54:21.977###320183724788###302698###0#########jdorador###CUL###
-CELCUL113###2021-10-14T19:14:47.457###320283741353###278626###0#########mttapia###CUL###
-CELCUL114###2021-10-14T20:08:09.753###320283741365###278446###0#########mespinoza###CUL###
-CELCUL115###2021-10-14T20:00:11.560###320485991582###281723###0#########marrellanes###CUL###
-CELCUL116###2021-10-14T19:19:00.837###320485992306###362474###0#########avaldez###CUL###
-CELCUL117###2021-10-14T20:01:59.630###320485995480###300101###0#########dbarajas###CUL###
-CELGDL100###No Encontrado en API###YHWCMF55VCJ79LLB######0#########jjrosales###GDL###
-CELGDL102###No Encontrado en API###E6GMJFOFHQBAFY7H######0#########gramos###GDL###
-CELGDL103###No Encontrado en API###MXRNU19720106089######0#########gdlmer2###GDL###
-CELGDL104###No Encontrado en API###MXRNU19730106571######0#########gdlmer11###GDL###
-CELGDL105###No Encontrado en API###MXRNU19802105459######0#########gdlmer7###GDL###
-CELGDL106###No Encontrado en API###MXRNU19802106478######0#########gdlmer1###GDL###
-CELGDL107###No Encontrado en API###MXRNU19802105639######0#########gdlmer4###GDL###
-CELGDL108###No Encontrado en API###MXRNU19802104810######0#########gdlmer5###GDL###
-CELGDL109###No Encontrado en API###MXRNU19802106965######0#########gdlmer8###GDL###
-CELGDL110###No Encontrado en API###MXRNU19802100161######0#########gdlmer10###GDL###
-CELGDL111###No Encontrado en API###MXRNU19802106450######0#########gdlmer3###GDL###
-CELGDL112###No Encontrado en API###MXRNU19629107280######0#########gdlmer14###GDL###
-CELGDL113###No Encontrado en API###MXRNU19629107812######0#########gdlmer12###GDL###
-CELGDL114###2021-09-13T23:16:47.367###MXRNU19629108893###368837###0#########gdlmer13###GDL###
-CELGDL115###No Encontrado en API###MXRNU19629111699######0#########gdlmer6###GDL###
-CELGDL116###No Encontrado en API###MXRNU19703102053######0#########gdlmer9###GDL###
-CELGDL120###2021-10-08T19:34:03.783###320177154422###257418###0#########arojas###GDL###
-CELGDL121###No Encontrado en API###320177154612######0#########jdelacruz###GDL###
-CELGDL122###No Encontrado en API###320177154613######0#########hvega###GDL###
-CELGDL126###No Encontrado en API###320177274257######0#########edramirez###GDL###
-CELGDL129###No Encontrado en API###320485991401######5106###GDL###Hector Hernadez Loza###hhloza###GDL###
-CELGDL132###2021-10-14T18:02:40.713###LGK200336a881###96389###0#########jcalvarez###GDL###
-CELGDL134###No Encontrado en API###80d4b132######0#########mtvillanueva###GDL###
+CELCCN100###2021-11-08T18:49:53.340###320186693335###298600###9288###CCN###armando javier lopez###ajlopez###CCN###
+CELCCN102###2021-11-08T18:03:27.740###321077201531###315439###10353###CCN###Inocente Chable###ichable###CCN###
+CELCCN104###2021-11-08T18:39:09.807###320185723854###300500###10711###CCN###Irma Rosa Guerrero Chavez###iguerrero###CCN###
+CELCHI101###2021-11-08T16:15:45.367###MXRNU19720106780###437438###11149###CHI###RAFAEL ANTONIO NAVARRETE GARAY###chimer4###CHI###
+CELCHI105###2021-11-03T23:06:50.637###MXRNU19629109182###443118###11055###CHI###CHI MER3###chimer3###CHI###
+CELCHI106###2021-11-08T18:41:40.617###MXRNU19629112017###439520###11155###CHI###HEBER FERNANDO PEREZ GARCIA###chimer2###CHI###
+CELCHI112###2021-10-31T12:11:44.643###LGK200a2be531###304383###9823###CHI###Jose Calvillo salas###jcalvillo###CHI###
+CELCUL100###2021-11-08T19:14:02.630###MXRNU19720108373###418356###838###CUL###miguel apolinar###mapolinar###CUL###
+CELCUL101###2021-11-08T18:44:13.400###MXRNU19720106440###386152###11188###CUL###Jose Barrera Ziga###jbarrera###CUL###
+CELCUL102###2021-11-08T18:54:12.710###MXRNU19802105818###449976###10709###CUL###julio niebla###mcarrillo###CUL###
+CELCUL106###2021-11-08T18:48:42.577###320977073259###252246###8530###CUL###Francisco Javier Ruiz Ibarra###fjruiz###CUL###
+CELCUL107###2021-11-07T17:21:03.347###320977074123###379191###8819###CUL###Horacio Plata###hplata###CUL###
+CELCUL109###2021-11-08T15:27:51.967###320177274230###308829###0#########flafarga###CUL###
+CELCUL111###2021-11-08T18:43:00.183###320183724505###302719###0#########rzamora###CUL###
+CELCUL112###2021-11-08T12:59:59.580###320183724788###302698###0#########jdorador###CUL###
+CELCUL113###2021-11-05T19:19:56.533###320283741353###278626###0#########mttapia###CUL###
+CELCUL114###2021-11-08T19:21:06.017###320283741365###278446###0#########mespinoza###CUL###
+CELCUL115###2021-11-08T19:09:55.817###320485991582###281723###10523###CUL###manuela arrellanes###marrellanes###CUL###
+CELCUL116###2021-11-08T19:24:53.613###320485992306###362474###0#########avaldez###CUL###
+CELCUL117###2021-11-08T18:43:57.357###320485995480###300101###5576###CUL###Danilo Barajas###dbarajas###CUL###
+CELGDL120###2021-10-19T16:42:23.720###320177154422###257418###0#########arojas###GDL###
+CELGDL132###2021-11-08T19:02:22.187###LGK200336a881###96389###0#########jcalvarez###GDL###
 CELHLO100###No Encontrado en API###MXRNU19720105267######0#########abrabo###HLO###
-CELHLO102###2021-10-06T16:30:14.207###MXRNU19802100143###363216###0#########stanori###HLO###
-CELHLO103###2021-09-06T23:33:15.273###MXRNU19629111598###353291###0#########fuvalenzuela###HLO###
-CELHLO104###2021-10-14T18:04:29.653###MXRNU19629111322###461200###11139###HLO###Angel Falcon###agarcia###HLO###
-CELHLO108###2021-10-14T20:11:24.233###320977074015###331106###0#########gbarreras###HLO###
-CELHLO110###No Encontrado en API###320177154407######0#########rmiranda###HLO###
-CELHLO111###No Encontrado en API###320177154825######0#########izazueta###BAJA_CEL_NST###
-CELHLO116###2021-10-14T20:21:29.740###320183724733###331041###0#########ftorres###HLO###
-CELHLO117###No Encontrado en API###320485992304######0############BAJA_CEL_NST###
-CELHLO119###2021-10-14T20:16:13.007###2de3a2ca###209059###0#########aherrera###HLO###
-CELIZT100###No Encontrado en API###MXRNU19720109256######0#########lrocha###IZT###
-CELIZT101###2021-10-14T19:16:20.360###MXRNU19629111604###468122###0#########isalazar###IZT###
-CELIZT102###No Encontrado en API###MXRNU19629109278######0#########folvera###IZT###
-CELIZT105###2021-10-14T19:54:16.893###320186693228###277601###0#########jdominguez###IZT###
-CELIZT107###2021-09-16T16:36:51.473###320977074357###279996###0#########jcruz###IZT###
-CELIZT108###No Encontrado en API###320977074529######0#########casoto###BAJA_CEL_CNT###
-CELIZT109###No Encontrado en API###320177154385######0#########maguilar###BAJA_CEL_CNT###
-CELIZT111###2021-10-14T10:40:02.893###320183724727###308188###0#########jgomez###IZT###
-CELIZT114###2021-10-14T20:02:20.060###320485992277###377775###0#########maperez###IZT###
-CELIZT115###No Encontrado en API###320485992327######0#########nbenitez###IZT###
+CELHLO102###2021-11-08T19:25:19.330###MXRNU19802100143###363216###0#########stanori###HLO###
+CELHLO103###2021-11-08T19:26:06.443###MXRNU19629111598###476534###0#########fuvalenzuela###HLO###
+CELHLO108###2021-11-08T19:00:18.320###320977074015###331106###0#########gbarreras###HLO###
+CELHLO116###2021-11-08T19:21:00.990###320183724733###331041###0#########ftorres###HLO###
+CELHLO119###2021-11-08T19:15:17.310###2de3a2ca###209059###0#########aherrera###HLO###
+CELIZT101###2021-11-08T19:24:14.367###MXRNU19629111604###468122###0#########isalazar###IZT###
+CELIZT105###2021-11-08T18:48:58.490###320186693228###277601###0#########jdominguez###IZT###
+CELIZT111###2021-11-08T10:34:37.430###320183724727###308188###0#########jgomez###IZT###
+CELIZT114###2021-10-15T22:05:31.453###320485992277###377775###0#########maperez###IZT###
 CELJUA100###2021-10-13T13:06:58.963###MXRNU19720101392###373642###0#########hmcampirano###JUA###
-CELJUA101###No Encontrado en API###MXRNU19720107534######0#########caolivares###JUA###
-CELJUA102###No Encontrado en API###320186693212######0#########alramirez###BAJA_CEL_NOR###
-CELLGT104###2021-10-14T20:14:40.837###3ddea2ca###224622###0#########jhernandez###LGT###
-CELMAZ100###No Encontrado en API###320977072999######0#########atapia###BAJA_CEL_OCT###
-CELMAZ101###No Encontrado en API###320177263832######7241###MAZ###Ramón lozano osuna###rosuna###BAJA_CEL_OCT###
-CELMAZ102###No Encontrado en API###320183751620######0#########ceprueba7###BAJA_CEL_OCT###
-CELMAZ104###No Encontrado en API###320183752994######0#########ceprueba3###BAJA_CEL_OCT###
-CELMCH102###2021-10-14T19:07:02.283###320177273778###309877###0#########jovizcarra###MCH###
-CELMER100###No Encontrado en API###MXRNU19720106030######0#########mereco4###MER###
-CELMER101###2021-10-14T20:09:40.463###MXRNU19720107540###356741###0#########agaspar###MER###
-CELMER102###2021-10-14T20:00:10.990###MXRNU19730106427###353860###0#########aarcos###MER###
-CELMER103###No Encontrado en API###MXRNU19802105226######0#########mereco8###MER###
+CELJUA103###No Encontrado en API###320186693212######9253###JUA###Alejandro Ramirez Urrutia###alramirez###JUA###
+CELLGT104###2021-11-08T19:28:07.923###3ddea2ca###224622###0#########jhernandez###LGT###
+CELMCH102###2021-11-08T19:23:40.243###320177273778###309877###0#########jovizcarra###MCH###
+CELMER101###2021-11-08T17:56:15.163###MXRNU19720107540###356741###0#########agaspar###MER###
+CELMER102###2021-11-08T19:06:48.647###MXRNU19730106427###353860###0#########aarcos###MER###
 CELMER104###2021-10-08T23:02:38.760###MXRNU19802105712###366460###0#########mereco5###MER###
-CELMER105###No Encontrado en API###MXRNU19802104366######0#########mereco3###MER###
-CELMER106###No Encontrado en API###MXRNU19802104040######0#########mereco2###MER###
-CELMER107###No Encontrado en API###MXRNU19629109485######0#########mereco7###MER###
-CELMER108###No Encontrado en API###MXRNU19629109908######0#########mereco6###MER###
-CELMER109###No Encontrado en API###MXRNU19629109224######0#########mereco1###MER###
-CELMER110###2021-10-14T20:19:05.523###320186693073###327491###0#########fcanche###MER###
-CELMER111###No Encontrado en API###320977073110######0#########jmontejo###BAJA_CEL_SUR###
-CELMER112###2021-10-14T15:00:25.030###320977074716###362319###3709###MER###Julio Aguilar Cantillo###jaguilar###MER###
-CELMER113###No Encontrado en API###320977074750######3606###MER###russel armando canche###rucanche###BAJA_CEL_SUR###
-CELMER114###2021-10-14T20:17:21.910###320177154742###255479###0#########rhcasanova###MER###
-CELMER115###2021-10-14T20:00:48.140###320183722990###303029###0#########gcaballero###MER###
-CELMER117###No Encontrado en API###320485995610######0#########msolis###MER###
-CELMER118###2021-10-14T19:57:42.883###45a0abb2###217511###0#########fheredia###MER###
-CELMEX101###2021-10-14T20:19:02.423###MXRNU19720102054###402331###9222###MEX###Fortino valladares###fvalladares###MEX###
-CELMAZ107###No Encontrado en API###MXRNU19720107545######11173###MAZ###Mazatlan Ecommerce3###mazec3###MAZ###
-CELMEX103###No Encontrado en API###MXRNU19720105255######0#########dsrivera###MEX###
-CELMEX105###No Encontrado en API###MXRNU19720105244######0#########jjconde###BAJA_CEL_CNT###
+CELMER110###2021-11-08T18:46:57.300###320186693073###327491###0#########fcanche###MER###
+CELMER112###2021-11-08T05:05:34.830###320977074716###362319###3709###MER###Julio Aguilar Cantillo###jaguilar###MER###
+CELMER114###2021-11-08T18:52:28.987###320177154742###255479###0#########rhcasanova###MER###
+CELMER115###2021-11-08T19:06:54.547###320183722990###303029###0#########gcaballero###MER###
+CELMER118###2021-11-04T17:20:17.450###45a0abb2###217511###0#########fheredia###MER###
+CELMEX101###2021-11-08T19:08:23.503###MXRNU19720102054###402331###9222###MEX###Fortino valladares###fvalladares###MEX###
 CELMEX107###2021-09-06T05:24:56.467###MXRNU19720107248###376235###1888###MEX###Ricardo Prado###rprado###MEX###
-CELMEX111###2021-10-14T16:00:50.663###320186692875###333182###0#########gpimentel###MEX###
-CELMEX117###2021-10-14T11:05:59.563###320186693375###321606###0#########mpacheco###MEX###
-CELMEX118###No Encontrado en API###320186693434######0#########roperez###BAJA_CEL_CNT###
-CELMEX119###No Encontrado en API###320196284675######0#########rrojas###MEX###
-CELMEX120###2021-10-13T18:01:28.257###320196285121###396454###9976###MEX###Roberto Abrego###rabrego###MEX###
-CELMEX123###No Encontrado en API###321077206555######0#########alima###BAJA_CEL_CNT###
-CELMEX124###No Encontrado en API###320183724514######7482###MEX###Miguel Polo###mpolo###MEX###
-CELMEX125###No Encontrado en API###320183724686######5518###MEX###Lorenzo Castillo###locastillo###BAJA_CEL_CNT###
-CELMEX126###2021-10-14T12:36:11.867###320183724986###309467###0#########lalcivar###MEX###
-CELMEX127###No Encontrado en API###320183752818######0#########marzate###BAJA_CEL_CNT###
-CELMEX132###No Encontrado en API###320285713830######0#########mjalvarez###MEX###
-CELMEX133###No Encontrado en API###320285713897######0#########rmartinez###BAJA_CEL_CNT###
-CELMEX134###No Encontrado en API###320185723867######0#########lcamacho###BAJA_CEL_CNT###
+CELMEX111###2021-11-08T12:57:26.903###320186692875###333182###0#########gpimentel###MEX###
+CELMEX117###2021-11-08T10:42:10.623###320186693375###321606###0#########mpacheco###MEX###
+CELMEX120###2021-11-06T17:49:46.597###320196285121###396454###9976###MEX###Roberto Abrego###rabrego###MEX###
+CELMEX126###2021-11-08T17:28:44.907###320183724986###309467###0#########lalcivar###MEX###
 CELMEX135###2021-10-07T06:17:36.240###320485992156###285409###0#########ocarreon###MEX###
 CELMEX136###2021-10-08T22:48:02.967###320485992161###283659###0#########jmedina###MEX###
-CELMEX139###No Encontrado en API###NO######0############BAJA_CEL_CNT###
-CELMEX140###2021-10-14T19:36:05.120###320485995528###375733###0#########ctorres###MEX###
-CELMEX143###No Encontrado en API###320485995575######0#########plmendoza###BAJA_CEL_CNT###
-CELMEX145###No Encontrado en API###3a9eaba2######0#########dcruz###BAJA_CEL_CNT###
-CELMEX146###No Encontrado en API###a7d4b12a######0#########htepoz###BAJA_CEL_CNT###
-CELMTY101###No Encontrado en API###SG8LZ9AE5PBEW48P######0#########efernandez###MTY###
+CELMEX169###No Encontrado en API###320196284675######000###MEX###Sandra Saucedo###ssaucedo###MEX###
 CELMTY103###2021-10-04T19:21:10.533###MXRNU19802110163###370644###0#########lmontes###MTY###
-CELMTY104###No Encontrado en API###MXRNU19629110108######0#########navila###MTY###
-CELMTY105###No Encontrado en API###320186693414######0#########jhlara###MTY###
-CELMTY108###No Encontrado en API###320177264210######0#########jlgarza###MTY###
-CELMTY109###No Encontrado en API###320485995681######0#########azmartinez###MTY###
 CELMXL100###2021-09-03T02:07:27.657###MXRNU19720102887###374270###0#########dcastro###MXL###
-CELMXL101###No Encontrado en API###MXRNU19703100340######0#########ocontreras###MXL###
-CELMXL102###2021-10-14T18:07:00.107###320186692863###324592###0#########algarcia###MXL###
-CELMXL103###2021-10-13T18:42:55.137###320196283700###335620###0#########jponce###MXL###
-CELMXL104###2021-10-13T20:57:22.573###320196284871###335619###0#########mvalladolid###MXL###
-CELMXL105###2021-10-14T19:25:13.083###320177015637###297373###0#########atorres###MXL###
-CELMXL106###2021-10-13T23:29:03.553###320977073782###302617###0#########rvillegas###MXL###
-CELMXL107###2021-10-14T19:36:08.127###320177081745###330214###0#########abojorquez###MXL###
-CELMXL108###2021-10-14T19:27:06.100###320177265420###309152###0#########mleyva###MXL###
-CELMXL109###No Encontrado en API###320183754651######0#########ydiaz###BAJA_CEL_NST###
-CELNOG101###2021-10-14T20:03:51.647###13c3a2c2###217247###0#########rduran###NOG###
-CELOBR100###2021-10-14T20:24:10.130###MXRNU19802101231###369992###0#########jzamorano###OBR###
-CELOBR102###2021-10-12T19:14:59.307###MXRNU19629111659###375374###0#########jamendoza###OBR###
-CELOBR104###2021-10-14T19:57:56.620###320177154619###297031###393###OBR###ponciano gallardo###pogallardo###OBR###
-CELOBR105###2021-10-14T19:30:16.717###320183751414###299095###0#########ediaz###OBR###
-CELOBR106###No Encontrado en API###320485992517######0#########rdelatoba###OBR###
-CELPUE100###2021-10-14T20:24:42.700###A64DM7SCUCFIDEJ7###358562###0#########vmflores###PUE###
-CELPUE102###2021-10-14T20:08:46.430###320186692874###330066###0#########jogarcia###PUE###
-CELPUE103###No Encontrado en API###320186693354######0#########ftejada###BAJA_CEL_CNT###
-CELPUE104###No Encontrado en API###320186693378######0#########mrangel###BAJA_CEL_CNT###
-CELPUE105###2021-10-11T11:17:13.427###320186693511###341112###0#########rmoreno###PUE###
-CELPUE108###No Encontrado en API###320283741361######0#########raperalta###BAJA_CEL_CNT###
-CELPUE109###No Encontrado en API###320183754652######0#########hpzepeda###BAJA_CEL_CNT###
-CELQUE100###No Encontrado en API###5PTC89JVT4BAVKDY######0#########vgonzalez###BAJA_CEL_CNT###
-CELQUE101###No Encontrado en API###MXRNU19720105370######0#########glozano###QUE###
-CELQUE102###No Encontrado en API###320186693419######0#########eviveros###BAJA_CEL_CNT###
-CELQUE103###2021-10-13T21:17:27.520###320196284727###339398###0#########vigonzalez###QUE###
-CELQUE104###2021-10-14T18:00:40.097###320177155238###259273###0#########aguerrero###QUE###
-CELQUE105###No Encontrado en API###320183752817######0#########oguerrero###BAJA_CEL_CNT###
-CELQUE106###No Encontrado en API###MXRNU19618104226######0#########mrrodriguez###QUE###
-CELSTA100###2021-08-27T00:59:43.947###320186693171###276717###0#########amartinez###STA###
-CELSTA102###2021-10-14T19:48:10.533###320183751362###253452###0#########rpalafox###STA###
-CELTEP100###No Encontrado en API###320196283799######000###RH###capital humano###capitalhumano###TEP###
-CELTEP101###2021-10-14T19:57:07.883###b8dca2c2###218045###0#########cgalvan###TEP###
-CELTEP102###No Encontrado en API###b8219cba######0#########fhuizar###BAJA_CEL_OCT###
-CELTIJ100###2021-10-14T20:24:47.373###MXRNU19720101572###366130###0#########sminor###TIJ###
-CELTIJ101###No Encontrado en API###MXRNU19720104083######0#########jfelix###TIJ###
-CELTIJ102###No Encontrado en API###MXRNU19720106380######0#########ECTI5###BAJA_CEL_NST###
-CELTIJ103###No Encontrado en API###MXRNU19720106462######0#########rvalenzuela###BAJA_CEL_NST###
-CELTIJ104###No Encontrado en API###MXRNU19720102684######0#########ECTI4###TIJ###
-CELTIJ105###No Encontrado en API###MXRNU19720107546######0#########dmramirez###TIJ###
-CELTIJ106###No Encontrado en API###MXRNU19720101393######6347###TIJ###Enrique Diaz###erdiaz###TIJ###
-CELTIJ107###No Encontrado en API###MXRNU19629110102######0#########lrodriguez###BAJA_CEL_NST###
-CELTIJ108###2021-10-14T18:21:17.173###320186693385###320126###10787###TIJ###Marron Prado###mprado###TIJ###
-CELTIJ109###No Encontrado en API###320186693802######0#########vgarcia###TIJ###
-CELTIJ110###No Encontrado en API###320196283710######0#########aamendoza###TIJ###
-CELTIJ111###No Encontrado en API###320196283723######0#########traya###TIJ###
-CELTIJ112###No Encontrado en API###320196284306######0#########mahernandez###BAJA_CEL_NST###
-CELTIJ113###No Encontrado en API###320196284789######0#########jbecerra###TIJ###
-CELTIJ114###No Encontrado en API###320196284803######0#########eescamilla###TIJ###
-CELTIJ115###2021-10-14T19:36:21.660###320196285101###343107###0#########amarquez###TIJ###
-CELTIJ116###2021-10-14T18:37:55.373###320196285170###343076###0#########ECTI3###TIJ###
-CELTIJ117###2021-10-14T20:18:51.207###320183724622###338547###0#########jcardenas###TIJ###
-CELTIJ118###No Encontrado en API###LGK2004ca0469######0#########glopez###TIJ###
-CELTOL100###No Encontrado en API###CMU4C6SKUGNJIBPV######0#########rbermudez###TOL###
-CELTOL101###2021-10-14T19:25:14.570###MXRNU19720102658###442641###0#########jmanjarrez###TOL###
-CELTOL102###No Encontrado en API###MXRNU19720106392######0#########rromo###TOL###
-CELTOL104###No Encontrado en API###MXRNU19720103752######0#########jcastaneda###BAJA_CEL_CNT###
-CELTOL105###No Encontrado en API###MXRNU19802100156######0#########lehernandez###BAJA_CEL_CNT###
-CELTOL107###No Encontrado en API###320183752916######0#########amorales###TOL###
-CELTPZ100###2021-10-05T22:04:34.847###320186693210###360735###0#########calba###TPZ###
-CELTPZ101###No Encontrado en API###320186693221######0#########jjsanchez###TPZ###
-CELTPZ102###No Encontrado en API###320186693499######0#########mcallejas###TPZ###
-CELTPZ103###No Encontrado en API###320196284632######0#########vbernal###TPZ###
-CELTPZ104###No Encontrado en API###320177273352######0#########jsegovia###BAJA_CEL_CNT###
-CELTPZ106###No Encontrado en API###320485992146######0#########pvargas###BAJA_CEL_CNT###
-CELTPZ107###2021-10-14T20:20:53.620###320485992328###317967###0#########jahernandez###TPZ###
-CELVIL100###2021-10-14T19:58:47.613###MXRNU19720109000###437901###0#########VilEc5###VIL###
-CELVIL101###No Encontrado en API###MXRNU19720102907######0#########VilEc6###VIL###
-CELVIL102###No Encontrado en API###MXRNU19720102057######0#########rbalcazar###VIL###
-CELVIL103###No Encontrado en API###MXRNU19629110797######0#########lsolis###VIL###
+CELMXL102###2021-11-07T15:10:15.907###320186692863###324592###0#########algarcia###MXL###
+CELMXL103###2021-11-07T06:53:13.783###320196283700###335620###0#########jponce###MXL###
+CELMXL104###2021-11-08T08:18:58.470###320196284871###335619###0#########mvalladolid###MXL###
+CELMXL105###2021-11-08T19:07:35.437###320177015637###297373###0#########atorres###MXL###
+CELMXL107###2021-11-08T18:52:25.933###320177081745###330214###0#########abojorquez###MXL###
+CELMXL108###2021-11-08T18:54:01.947###320177265420###309152###0#########mleyva###MXL###
+CELNOG101###2021-11-08T16:01:32.203###13c3a2c2###217247###0#########rduran###NOG###
+CELOBR100###2021-11-08T19:11:30.357###MXRNU19802101231###369992###0#########jzamorano###OBR###
+CELOBR102###2021-10-12T19:14:59.307###MXRNU19629111659###375374###8038###OBR###jose alberto mendoza###jamendoza###OBR###
+CELOBR104###2021-11-08T18:24:31.560###320177154619###297031###393###OBR###ponciano gallardo###pogallardo###OBR###
+CELOBR105###2021-11-08T19:12:13.887###320183751414###299095###0#########ediaz###OBR###
+CELPUE100###No Encontrado en API###A64DM7SCUCFIDEJ7######0#########vmflores###PUE###
+CELPUE102###2021-11-08T19:28:43.120###320186692874###330066###0#########jogarcia###PUE###
+CELQUE103###2021-11-08T02:13:48.297###320196284727###339398###0#########vigonzalez###QUE###
+CELQUE104###2021-11-08T19:24:04.467###320177155238###259273###0#########aguerrero###QUE###
+CELTEP101###2021-11-08T18:39:54.653###b8dca2c2###218045###0#########cgalvan###TEP###
+CELTIJ100###2021-10-23T13:42:05.907###MXRNU19720101572###366130###0#########sminor###TIJ###
+CELTIJ108###2021-11-08T19:01:00.077###320186693385###320126###10787###TIJ###Marron Prado###mprado###TIJ###
+CELTIJ115###2021-11-08T16:30:02.310###320196285101###343107###0#########amarquez###TIJ###
+CELTIJ116###2021-11-08T19:16:02.197###320196285170###343076###0#########ECTI3###TIJ###
+CELTIJ117###2021-11-08T19:07:04.473###320183724622###338547###0#########jcardenas###TIJ###
+CELTPZ107###2021-11-08T19:12:41.727###320485992328###317967###0#########jahernandez###TPZ###
+CELVIL109###2021-09-29T14:58:01.560###MXRNU19629109554###389601###0#########areyna###VIL###
 CELVIL104###2021-09-29T14:58:01.560###MXRNU19629109554###389601###0#########jreyes###VIL###
-CELVIL105###2021-10-14T20:23:21.097###320196283628###337309###0#########rpozo###VIL###
-CELVIL106###2021-10-14T19:42:37.027###320177154583###262570###0#########dmorales###VIL###
-CELVIL107###No Encontrado en API###321077206658######0#########jchernadez###BAJA_CEL_SUR###
-CELVIL108###2021-10-14T19:20:55.330###320183752416###294755###0#########adelacruz###VIL###
-CELZAP100###2021-10-14T07:57:49.410###320186692832###324568###0#########mmora###ZAP###
-CELZAP101###No Encontrado en API###320186693220######0#########jaguerrero###ZAP###
-CELZAP103###2021-10-14T20:15:43.373###320177265271###330469###0#########ehernandezg###ZAP###
-CELZAP105###No Encontrado en API###19c4b132######0#########jmares###BAJA_CEL_OCT###
-CELMAZ106###No Encontrado en API###320183724586######11162###MAZ###Mazatlan Ecommerce1###mazec1###BAJA_CEL_OCT###
+CELVIL105###2021-11-08T19:24:24.110###320196283628###337309###0#########rpozo###VIL###
+CELVIL106###2021-11-08T16:40:57.593###320177154583###262570###0#########dmorales###VIL###
+CELVIL113###2021-09-29T14:58:01.560###MXRNU19629109554###389601###0#########adelacruz###VIL###
+CELZAP100###2021-11-08T17:00:01.587###320186692832###324568###0#########mmora###ZAP###
+CELZAP103###2021-11-08T19:28:05.590###320177265271###330469###0#########ehernandezg###ZAP###
+CELCHI113###No Encontrado en API###320177154599######7057###CHI###Omar Horacio Lechuga###olechuga###CHI###
+CELCHI117###No Encontrado en API###320177273669######2712###CHI###arnulfo alcantar gamez###aalcantar###CHI###
+CELCUL124###No Encontrado en API###320977074751######9077###CUL###Rafel quintero Castro###rquintero###CUL###
+CELMEX165###2021-10-28T17:39:31.563###MXRNU19629111322###461200###11139###HLO###Angel Falcon###agarcia###MEX###
+CELHLO120###No Encontrado en API###320177154407######6648###HLO###Rosario Miranda Ramirez###rmiranda###HLO###
+CELHLO126###No Encontrado en API###320177154825######3143###HLO###ivan zazueta |###izazueta###HLO###
+CELMAZ111###No Encontrado en API###320177263832######7241###MAZ###Ramón lozano osuna###rosuna###MAZ###
+CELMAZ113###No Encontrado en API###320183752994######000###MAZ###California Express Prueba3###ceprueba3###MAZ###
+CELMAZ114###No Encontrado en API###320183724586######11162###MAZ###JOSE GUADALUPE RODRIGUEZ GARCIA###mazec1###MAZ###
+CELMER121###No Encontrado en API###320977073110######2790###MER###Josue Ivan Montejo Alvarez###jmontejo###MER###
+CELMEX179###No Encontrado en API###320186693434######4879###MEX###Rosendo Perez###roperez###MEX###
+CELMEX176###No Encontrado en API###321077206555######9384###MEX###Arturo Lima###alima###MEX###
+CELMEX174###No Encontrado en API###320183752818######9681###MEX###Marco Arzate###marzate###MEX###
+CELMEX175###No Encontrado en API###320285713897######6953###MEX###Roberto Martinez###rmartinez###MEX###
+CELMEX156###No Encontrado en API###320485995575######9308###MEX###paz lopez mendoza###plmendoza###MEX###
+CELMEX177###No Encontrado en API###3a9eaba2######6157###MEX###David Cruz Martinez###dcruz###MEX###
+CELMEX178###No Encontrado en API###a7d4b12a######6429###MEX###hector tepoz figueroa###htepoz###MEX###
+CELMXL115###No Encontrado en API###320977073782######1818###MXL###Roberto Villegas###rvillegas###MXL###
+CELMXL111###No Encontrado en API###320183754651######7004###MXL###Yovant Diaz###ydiaz###MXL###
+CELPUE116###No Encontrado en API###A64DM7SCUCFIDEJ7######6620###PUE###veronica flores###vmflores###PUE###
+CELPUE117###No Encontrado en API###320186693354######9825###PUE###Francisco Reyes Tejada###ftejada###PUE###
+CELPUE118###No Encontrado en API###320186693511######8122###PUE###ricardo moreno brito###rmoreno###PUE###
+CELQUE107###No Encontrado en API###320183752817######10251###QUE###Oscar Trevino Guerrero###oguerrero###QUE###
+CELTEP103###No Encontrado en API###b8219cba######0#########aaceves###TEP###
+CELTIJ120###No Encontrado en API###MXRNU19720106462######0#########rvalenzuela###TIJ###
+CELTIJ121###No Encontrado en API###MXRNU19629110102######8431###TIJ###Arturo Rodriguez###lrodriguez###TIJ###
+CELTIJ125###No Encontrado en API###320196284306######8716###TIJ###Miguel Angel Hernandez###mahernandez###TIJ###
+CELTPZ108###No Encontrado en API###320186693210######10100###TPZ###Carlos Ramirez Alba###calba###TPZ###
+CELTPZ111###No Encontrado en API###320177273352######8099###TPZ###Juan Segovia###jsegovia###TPZ###
+CELTPZ109###No Encontrado en API###320485992146######9227###TPZ###Paola vargas| Navia###pvargas###TPZ###
+CELCCN105###2021-11-08T18:39:09.807###320185723854###300500###0#########ralvarez###CCN###
+CELCHI114###No Encontrado en API###320177154599######0#########chimer6###CHI###
+CELCHI115###No Encontrado en API###320177154599######0#########chimer6###CHI###
+CELCHI116###No Encontrado en API###320177154599######0#########CHIPRES###CHI###
+CELCHI118###No Encontrado en API###320177154599######0#########rrascon###CHI###
+CELGDL135###No Encontrado en API###80d4b132######0#########ribarra###GDL###
+CELGDL136###No Encontrado en API#########0#########gpalomar###GDL###
+CELGDL137###No Encontrado en API#########0#########gpalomar###GDL###
+CELGDL138###No Encontrado en API#########0#########grrincon###GDL###
+CELGDL139###No Encontrado en API#########0#########mrios###GDL###
+CELGDL140###No Encontrado en API#########0#########joliva###GDL###
+CELGDL141###No Encontrado en API#########0#########ravalos###GDL###
+CELGDL142###No Encontrado en API#########0#########vm30###GDL###
+CELGDL143###No Encontrado en API#########0#########molmedo###GDL###
+CELGDL144###No Encontrado en API#########0#########maolmedo###GDL###
+CELGDL146###No Encontrado en API#########0#########pcasillas###GDL###
+CELCCN106###No Encontrado en API###320177273353######8363###CCN###Pedro Escalante###pescalante###CCN###
+CELMAZ115###No Encontrado en API###320977072999######9277###MAZ###Adrain de jesus Tapia Valdez###atapia###MAZ###
+CELMER122###No Encontrado en API###320485995610######10335###MER###Manuel Solis###msolis###MER###
+CELMEX183###No Encontrado en API###MXRNU19720105244######9164###MEX###Jose Conde Nunez###jjconde###MEX###
+CELTIJ126###No Encontrado en API###MXRNU19720106380######11229###TIJ###Ecommerce Tijuana5###ECTI5###TIJ###
+CELGDL147###No Encontrado en API#########0#########rmaldonado###GDL###
+CELGDL148###No Encontrado en API#########0#########inavarro###GDL###
+CELGDL149###No Encontrado en API#########0#########jlozano###GDL###
+CELGDL150###No Encontrado en API#########0#########jgrajeda###GDL###
+CELGDL151###No Encontrado en API#########0#########rguevara###GDL###
+CELHLO121###No Encontrado en API###320177154825######0#########ctamayo###HLO###
+CELHLO122###No Encontrado en API###320177154825######0#########fortega###HLO###
+CELHLO123###No Encontrado en API###320177154825######0#########jbeltran###HLO###
+CELHLO124###No Encontrado en API###320177154825######0#########acervantes###HLO###
+CELHLO125###No Encontrado en API###320177154825######0#########cparra###HLO###
+CELHLO127###No Encontrado en API###320177154825######0#########rjgonzalez###HLO###
+CELHLO128###No Encontrado en API###320177154825######0#########camaya###HLO###
+CELHLO129###No Encontrado en API###320177154825######0#########jagonzalez###HLO###
+CELHLO130###No Encontrado en API###320177154825######0#########jealvarez###HLO###
+CELIZT118###No Encontrado en API###320977074529######0#########mromero###IZT###
+CELIZT119###No Encontrado en API###320977074529######9382###IZT###Carlos Soto Jimenez###casoto###IZT###
+CELMAZ110###No Encontrado en API###320177263832######0#########mazec2###MAZ###
+CELMCH103###No Encontrado en API###6681033459######0#########llau###MCH###
+CELMCH104###No Encontrado en API###6681483068######0#########alopez###MCH###
+CELMCH105###No Encontrado en API###6681483070######0#########mmarquez###MCH###
+CELMER123###No Encontrado en API###320485995610######0#########jdzib###MER###
+CELMER124###No Encontrado en API###320485995610######0#########encarrillo###MER###
+CELMER125###2021-11-03T23:06:50.637###MXRNU19629109182###443118###0#########hjadul###MER###
+CELMEX157###No Encontrado en API###320196284675######0#########ropacheco###MEX###
+CELMEX158###No Encontrado en API###320196284675######0#########rherrera###MEX###
+CELMEX159###No Encontrado en API###320196284675######0#########asanchez###MEX###
+CELMEX160###No Encontrado en API###320196284675######0#########jpina###MEX###
+CELMEX161###No Encontrado en API###320196284675######0#########brodriguez###MEX###
+CELMEX162###No Encontrado en API###320196284675######0#########rdviana###MEX###
+CELMEX163###No Encontrado en API###320196284675######0#########rrequena###MEX###
+CELMEX168###No Encontrado en API###320196284675######0#########jquintana###MEX###
+CELMEX170###No Encontrado en API###320196284675######0#########suriarte###MEX###
+CELMEX171###No Encontrado en API###320196284675######0#########gbadillo###MEX###
+CELMEX172###No Encontrado en API###320196284675######0#########fperez###MEX###
+CELMEX173###No Encontrado en API###320196284675######000###MEX###Jose Me###jmejia###MEX###
+CELMTY110###No Encontrado en API###320485995681######0#########ogarza###MTY###
+CELMTY111###No Encontrado en API###320485995681######0#########lsegovia###MTY###
+CELMTY112###No Encontrado en API###320485995681######0#########rgallegos###MTY###
+CELMTY113###No Encontrado en API###320485995681######0#########ncortez###MTY###
+CELMTY114###No Encontrado en API###320485995681######11061###MTY###JOSE LUIS FLORES###jlflores###MTY###
+CELMTY115###No Encontrado en API###320485995681######0#########jrgonzalez###MTY###
+CELMTY116###No Encontrado en API###320485995681######0#########arodriguez###MTY###
+CELMTY117###No Encontrado en API###320485995681######0#########jrangel###MTY###
+CELMXL112###No Encontrado en API###320183754651######0#########Emxl2###MXL###
+CELMXL113###No Encontrado en API###320183754651######0#########Emxl3###MXL###
+CELMXL114###No Encontrado en API###320183754651######0#########Emxl4###MXL###
+CELOBR107###No Encontrado en API###320485992517######0#########jurrutia###OBR###
+CELOBR108###No Encontrado en API###320485992517######0#########fvillareal###OBR###
+CELPUE110###No Encontrado en API###320186693354######0#########ecarmona###PUE###
+CELPUE111###No Encontrado en API###320186693354######0#########pfuentes###PUE###
+CELPUE112###No Encontrado en API###320186693354######0#########ggomez###PUE###
+CELPUE113###No Encontrado en API###320186693354######0#########jalcala###PUE###
+CELPUE114###No Encontrado en API###320186693354######0#########ivelez###PUE###
+CELPUE115###No Encontrado en API###320186693354######0#########gualvarez###PUE###
+CELVIL110###2021-09-29T14:58:01.560###MXRNU19629109554###389601###0#########nrosas###VIL###
+CELVIL111###2021-09-29T14:58:01.560###MXRNU19629109554###389601###0#########jpalacios###VIL###
+CELTRA101###2021-11-08T18:49:53.340###320186693335###298600###0#########trac2###TRA###
+CELTRA102###2021-11-08T18:49:53.340###320186693335###298600###0#########trac3###TRA###
+CELTRA103###2021-11-08T18:49:53.340###320186693335###298600###0#########trac4###TRA###
+CELTRA104###2021-11-08T18:49:53.340###320186693335###298600###0#########trac5###TRA###
+CELTRA105###2021-11-08T18:49:53.340###320186693335###298600###0#########trac6###TRA###
+CELTRA106###2021-11-08T18:49:53.340###320186693335###298600###0#########trac7###TRA###
+CELTRA107###2021-11-08T18:49:53.340###320186693335###298600###0#########trac8###TRA###
+CELTRA108###2021-11-08T18:49:53.340###320186693335###298600###0#########trac9###TRA###

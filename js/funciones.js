@@ -1,3 +1,42 @@
+function respa() {
+    var user = document.getElementById("user").value;
+    var src = document.getElementById("src").value;
+    var ps="dunno";
+    var psb="dunno";
+    if (src == "ps") {
+        var ps = document.getElementById("passa").value;
+        var psb = document.getElementById("passb").value;
+    }
+    //alert(src);
+    $.ajax({
+        type: "POST",
+        url: 'php/ResetPass.php',
+        data: { user: user, src: src,ps: ps, psb: psb },
+        dataType: "json",
+        success: function(data) {
+            if (data[0].success == "YES") {
+                alert('Password Actualizado');
+            } 
+            if (data[0].success == "ASKPASS") {
+                $('#thapass').html(data[0].html);
+                $('#src').attr('value', 'ps');
+            } 
+            if (data[0].success == "NOEXISTE") {
+                alert('Usuario no existe');
+            } 
+            if (data[0].success == "NOTRESETASK") {
+                alert('El H. Departamento De Sistemas no ha autorizado el reset del password');
+            } 
+            if (data[0].success == "DONTMATCH") {
+                alert('Password no coinciden');
+            } 
+            if (data[0].success == "WEAK") {
+                alert('Debe ser de 8 caracteres, debe contener al menos una letra Mayuscula, un numero y un caractrer especial');
+            } 
+        }
+    });
+}    
+
 
 function SmbGrpMemberAction (valor,dn,accion) {
     var user = document.getElementById("newsmbgrpuser").value;
@@ -166,8 +205,24 @@ function ShowLDAP(what) {
         $("#LDAPUser").show();
     }
     if (what == "LDAPDevUsers") {
-        alert('xxx');
+        //alert('xxx');
         $("#LDAPDevUser").show();
+    }
+    if (what == "AddLDAPCell") {
+        //alert('xxx');
+        $("#AddLDAPCell").show();
+        $.ajax({
+            type: "POST",
+            url: 'php/NewCell.php',
+            dataType: "json",
+            success: function(data) {
+                //alert(data[0].success);
+                if (data[0].success == "YES") {
+                    $('#AddLDAPCell').html(data[0].data);
+                    //alert(data[0].data);
+                }
+            }
+        });
     }
 
     if (what == "AddLDAPUsers") {
@@ -249,8 +304,7 @@ function SmbLoadGroupQuery(type) {
 
 function selectUserGrp(user) {
     var grp = document.getElementById("SelectedGroup").value;
-
-    alert(user);
+    //alert(user);
     $.ajax({
         type: "POST",
         url: 'php/AddUserToGroup.php',
@@ -277,7 +331,7 @@ function selectUserGrp(user) {
 
 
 function selectDevUser(user) {
-    alert(user);
+    //alert(user);
     $("#LDAPDevUser").hide();
     $('#TOPDIV').html('Trabajando con '+user);
     $.ajax({
@@ -575,7 +629,7 @@ function ResetLDAPass() {
             },
             success: function(data) {
                 $("#loaderDiv").hide();
-                alert(data[0].passct);
+                //alert(data[0].passct);
                 if (data[0].success == "NO") {
                 alert('INCORRECTO');
                 //$('#TOPDIV').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
@@ -600,6 +654,7 @@ function Limpia() {
         $('#NewLDAPDevUser').html('');
         $("#LDAPUser").hide();
         $("#LDAPDevUser").hide();
+        $("#AddLDAPCell").hide();
         $("#LDAPAlias").hide();
         $('#VPNTable').html('');
         $('#BOTTDIV').html('');
@@ -612,9 +667,9 @@ function Limpia() {
 
 
 function EnableService(dn,nuevo,initial) {
-    alert(dn);
-    alert(nuevo);
-    alert(initial);
+    //alert(dn);
+    //alert(nuevo);
+    //alert(initial);
     if (nuevo == "Drupal") {
         $.ajax({
             type: "POST",
@@ -638,12 +693,63 @@ function EnableService(dn,nuevo,initial) {
             }
         });
     }
-
+    if (nuevo == "OpenVPN") {
+        $.ajax({
+            type: "POST",
+            url: 'php/UpdateOpenvpn.php',
+            data: { dn: dn, nuevo: nuevo, initial: initial },
+            dataType: "json",
+            beforeSend: function() {
+                $('#TOPDIV').html('');
+                $("#loaderDiv").show();
+            },
+            success: function(data) {
+                $("#loaderDiv").hide();
+                if (data[0].success == "NO") {
+                    alert('INCORRECTO');
+                }
+                if (data[0].success == "YES") {
+                    alert('CAMBIO CORRECTO');
+                } else {
+                    alert(data[0].success);
+                }
+            }
+        });
+    }
 }
 
 function UValn(dn,value) {
     alert('boo!'+dn+value);
 }
+
+function SelCelOfi(dn,value) {
+    //alert('boo!'+dn+value);
+    var e = document.getElementById("val-oficina");
+    if (e) {
+        var multi = e.options[e.selectedIndex].value;
+        if (multi == "SELECCIONE") {
+            alert('Selecciona una oficina Mcenzie!!!');
+        }
+    }
+    $.ajax({    
+        type: "POST",
+        url: 'php/GetCellAvailableTag.php',
+        data: { ofi: multi },
+        dataType: "json",
+        success: function(data) {
+            if (data[0].success == "NO") {
+                alert('INCORRECTO');
+            }
+            if (data[0].success == "YES") {
+                //alert(data[0].tag);
+                $('#val-newtag').val(data[0].tag);
+            } else {
+                alert(data[0].success);
+            }
+        }
+    });    
+}
+
 
 function UValnn(dn,value) {
     alert('boo!'+dn+value);
@@ -685,7 +791,7 @@ function DelIPVal(value,ip) {
     // 140.100
     var ip=document.getElementById('lanipval').value;
     var eldn=document.getElementById('eldn').value;
-    alert(value+' -> '+ip);
+    //alert(value+' -> '+ip);
     $.ajax({
         type: "POST",
         url: 'php/DeleteIP.php',
@@ -1000,6 +1106,33 @@ function validarinput(tipo,valor,chkexist) {
         var err = "11:22:33:44:55";
     }
 
+    if (tipo == 'validadeviceuser') {
+        //var re = new RegExp("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$");
+        //var err = "11:22:33:44:55";
+        $.ajax({
+            type: "POST",
+            url: 'php/ValidaNewDeviceUser.php',
+            data: { what: valor, value: va },
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                if (data[0].success == "NO") {
+                    //alert(valor+' '+va+' EXISTE');
+                    alert(data[0].err);
+                    //$('#val-uid').html('');
+                    //exist="YES";
+                } else {
+                    //$('#BtnSaveNewUser').prop('disabled', 'false');
+                }
+                if (data[0].success == "YES") {
+                    //alert('USUARIO NO EXISTE');
+                    //$('#BtnSaveNewUser').prop('disabled', 'false');
+                }
+            }
+        });
+    }
+
+
     //alert(chkexist);
     if (re.test(va)) {
 
@@ -1204,6 +1337,25 @@ function SaveNewUser() {
     });
 }
 
+function SaveNewCell() {
+    var data = $("#newcell").serializeArray();
+    //alert(data);
+    $.ajax({
+        type: "POST",
+        url: 'php/SaveNewCell.php',
+        data: { data: data },
+        dataType: "json",
+        async: false,
+        success: function(data) {
+            if (data[0].success == "YES") {
+                alert('Usuario Guardado');
+            } else {
+                alert(data[0].success);
+            }
+        }
+    });
+}
+
 
 function SaveNewDevUser() {
     var data = $("#newdevuser").serializeArray();
@@ -1227,13 +1379,10 @@ function SaveNewDevUser() {
 
 
 function SaveMacChange(tipo) {
-
-  //val-lanmac
-
   if (tipo == "wifimac") {
     // Revisar que este declarada el valor de la MAC LAN
     var lmvalc = document.getElementById("val-lanmac").value;
-    alert(lmvalc);
+    //alert(lmvalc);
     if (lmvalc == "NO EXISTE MAC LAN EN LDAP") {
       alert('Declare primero el valor de la LAN MAC antes de continuar con la MAC Wifi');
       return false;
@@ -1250,7 +1399,7 @@ function SaveMacChange(tipo) {
   var va = v.toUpperCase();
   var dn=document.getElementById('eldn').value;
   var ofi=document.getElementById('val-oficina').value;
-  alert(tipo+' -> '+multi+' -> '+va+' -> '+dn+' -> '+ofi);
+  //alert(tipo+' -> '+multi+' -> '+va+' -> '+dn+' -> '+ofi);
   var re = new RegExp("^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$");
   if (re.test(va)) {
     console.log("Valid Mac");

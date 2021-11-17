@@ -750,7 +750,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                 <a href="http://192.168.120.119/seguros/" target="_blank" >Seguros</a>
                 </div>
                 <div class="header-left mambo">
-                <a href="http://192.168.120.170/celulares/tabla-dos/" target="_blank" >Moviles</a>
+                <a href="http://192.168.120.179/INFRAESTRUCTURA-DESARROLLO/gsalazar/tabla/" target="_blank" >Moviles</a>
                 </div>
                 <!--Menu de enlaces-->
                 <div class="header-right">
@@ -943,6 +943,11 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                 <i class="icon-user-follow menu-icon"></i><span class="nav-text">Agregar DevUser </span>
                 </a></li>
 
+                <li><a href="#" onclick="ShowLDAP('AddLDAPCell')">
+                <i class="icon-user-follow menu-icon"></i><span class="nav-text">Agregar Celular </span>
+                </a></li>
+
+
                 <li><a href="#" onclick="ShowLDAP('LDAPDevUsers')">
                 <i class="icon-people menu-icon"></i><span class="nav-text">Device Users</span>
                 </a></li>
@@ -1070,6 +1075,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     <div id="VPNTable"></div>
                     <div id="NewLDAPUser"></div>
                     <div id="NewLDAPDevUser"></div>
+                    <div id="AddLDAPCell"></div>
                     <div id="LDAPUser" style="display:none;">
                         <div class="row">
                             <div class="col-md-6 col-lg-3">

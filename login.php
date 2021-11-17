@@ -51,7 +51,8 @@
                                         <input type="password" name="pass" id="pass" class="form-control" placeholder="Contraseña">
                                          <center><img src="icons/botones/eye.png" alt="ojo" id="ojo"></center>
                                     </div>
-                                    <button type="submit" class="btn login-form__btn submit w-100">Ingresar</button><!--<input type="submit" />-->
+                                    <button type="submit" class="btn login-form__btn submit w-100">Ingresar</button><br> <br>
+                                    <button type="button" onclick="respa()" class="btn login-form__btn submit w-100">Reset Pass</button>
                                 </form>
                                 <!--<p class="mt-5 login-form__footer">Dont have account? <a href="page-register.html" class="text-primary">Sign Up</a> now</p>-->
                             </div>

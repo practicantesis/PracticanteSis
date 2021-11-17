@@ -7,6 +7,8 @@ $baseurl="https://as257.awmdm.com";
 $endpoint="/API/mdm/devices/search";
 $url = $baseurl.$endpoint;
 curl_setopt($ch, CURLOPT_URL, $url);
+
+
 $headers = ['aw-tenant-code: '.$api_key,'Authorization: Basic '.$basic_auth,'Accept: application/json'];
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_VERBOSE, 1);

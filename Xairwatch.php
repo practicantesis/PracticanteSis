@@ -9,7 +9,7 @@ echo "<pre>";
 //print_r($array);
 echo "</pre>";
 $fp = fopen('./work/lidn.txt', 'w');
-$celdap=GetCellsFromLDAP();
+$celdap=GetCellsFromLDAP('all');
 echo "<pre>";
 //print_r($celdap);
 $imeis=array_keys($celdap);
@@ -37,7 +37,13 @@ foreach ($imeis as &$value) {
 	$arrayuser=GetDeviceUserInfoFromLDAP($celdap[$value]['deviceassignedto']);
 	//print_r($arrayuser);
 	//echo "cccccccccccccc".$arrayuser[0]['dunombre'][0]."iiiiiiiiiiiiiiiiii";
-print " TAG: ". $celdap[$value]['devicetag']." Last seen en LDAP --> ".$celdap[$value]['devicelastseen']." Last Seen en ONE: ".$oarray['LastSeen'];
+
+if (preg_match('/BAJA/', $celdap[$value]['deviceoffice'], $matches)) {
+
+} else {
+	print " TAG: ". $celdap[$value]['devicetag']." Last seen en LDAP --> ".$celdap[$value]['devicelastseen']." Last Seen en ONE: ".$oarray['LastSeen'].' OFICINA: '.$celdap[$value]['deviceoffice'];
+
+}
 	
 	$arrayuser[0]['dunombre'][0] = trim(preg_replace('/\s\s+/', ' ', $arrayuser[0]['dunombre'][0]));
 	$celdap[$value]['deviceassignedto'] = trim(preg_replace('/\s\s+/', ' ', $celdap[$value]['deviceassignedto']));
@@ -47,7 +53,7 @@ print " TAG: ". $celdap[$value]['devicetag']." Last seen en LDAP --> ".$celdap[$
 		$arrayuser[0]['dunumeroempleado'][0] = 0000;
 	}
 
-if (preg_match('/BAJA/', $arrayuser[0]['duoficina'][0], $matches)) {
+if (preg_match('/BAJA/', $celdap[$value]['deviceoffice'], $matches)) {
 
 } else {
 	fwrite($fp, $celdap[$value]['devicetag'].'###'.$oarray['LastSeen']."###".$serie."###".$oarray['Id']['Value']."###".$arrayuser[0]['dunumeroempleado'][0]."###".$arrayuser[0]['duoficina'][0]."###".$arrayuser[0]['dunombre'][0]."###".$celdap[$value]['deviceassignedto']."###".$celdap[$value]['deviceoffice']."###\n");
