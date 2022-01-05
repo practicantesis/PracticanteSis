@@ -1,0 +1,181 @@
+*{
+margin:0px;
+padding:0px;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+.pitic{
+    height:55px;
+    float: left;
+}
+
+
+
+.dm{
+     margin-top: auto;
+     margin-bottom: auto;
+
+}
+
+.menu-grid{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.enlaces-grid{
+    display:grid;
+    margin: 0px;
+    grid-template-columns: auto auto;
+    align-content: left;
+    justify-content: left;
+}
+
+.actualizar-grid{
+display: grid;
+justify-content: right;
+}
+
+.directorio{
+    margin: 0px;
+    background-color: #1883BA;
+    border-radius: 6px;
+    color: #E7E7E7;
+    margin-left:3px;
+    margin-bottom: 3px;
+    padding: 4px;
+    border-style: none;
+}
+
+.link{
+    text-decoration: none;
+    color: #E7E7E7;
+}
+.link:hover{
+    text-decoration: none;
+    color: #E7E7E7;
+}
+.actualizar{
+    background-color: #1cca47;
+}
+.directorio:hover{
+    margin: 0px;
+    background-color: #1cca47;
+    border-radius: 6px;
+    color: #f6f9fa;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    padding: 4px;
+    border-style: none;
+}
+footer{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.copyright {
+    color: #aaa6a6;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.cabecera{
+    border-bottom: 1px solid #E7E7E7;
+   
+
+}
+
+
+.regresar{
+    margin-top: 3px;
+}
+
+body{
+    background-color:#F8F9F9;
+}
+.encabezado{
+    background:#1883BA;
+    color:rgb(255, 255, 255);
+    font-family: 'Roboto', sans-serif;
+}
+.encabezado2{
+    background-color:#1883BA;
+    color:white;
+    font-family: sans-serif;
+}
+
+
+.tabladato{
+    color: black;
+    background-color:whitesmoke
+}
+h3{
+    color: black;
+}
+.boton{
+    
+    background-color: #1883BA;
+    border-radius: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-family: 'Roboto', sans-serif;
+    border: none;
+    color: white;
+}
+
+.ven{
+    border-color: black;
+}
+
+.boton:hover{
+    background-color: white;
+    color: black;
+}
+
+#request{
+    display: none;
+}
+ .regresar{
+     text-align: left;
+ }
+.ventana{
+    background-color: rgb(169, 189, 216, 0.95);
+    /*background:#aaa1a1 ;*/
+    /*width: 75%;*/
+    width: auto;
+    color: white;
+    font-family: sans-serif;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px;
+    
+    min-height: 250px;
+    border-radius: 22px;
+    position: fixed;
+   left: 2%;
+    right: 2%;
+    top: 20%;
+    display: none; 
+    text-overflow: ellipsis;
+   
+}
+#cerrar{
+    position: absolute;
+    right:3px;
+    top: 1px;
+}
+
+h1{
+    font-family: 'Open Sans', sans-serif;
+}
+.titulo{
+    text-align:center;
+    
+}
+
+.formulario{
+    margin-top: 25px;
+    text-align: center;
+}
+

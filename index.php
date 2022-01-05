@@ -17,6 +17,9 @@ session_start();
 unset($_SESSION['user']);
 session_destroy();
 return false;
+
+
+
 */
 
 
@@ -30,6 +33,8 @@ ConectaSQL('firewall');
 //error_reporting(0);
 //global $conn;
 //$objCONF = new Configuraciones;
+
+
 
 session_start();
 if(!isset($_SESSION['user'])) {
@@ -350,6 +355,54 @@ return false;
     .header-left .input-group {
     margin-top: 6px;
     }
+
+    .enlaces-grid{
+        display:grid;
+        padding-left: 1em;
+        grid-template-columns: repeat(5,auto);
+        grid-column-gap: 0.5em;
+        justify-content: flex-start;
+        height:50px;
+        align-items: center;
+    }
+
+    .enlaces-grid a{
+        text-decoration:none;
+       color:white;
+       font-family: 'Open Sans', sans-serif;
+       font-weight: 2px;
+       padding: 2px;
+    }
+
+    .enlaces-g{
+        display:flex;
+       align-items: center;
+       justify-content: center;
+       max-width: 130px;
+       min-width: 130px;
+       width: 100%;
+      background-color: #00935F;
+       border-radius:6px;
+       height:30px;
+    
+    }
+    .enlaces-g:hover{
+        display:flex;
+       align-items: center;
+       justify-content: center;
+       max-width: 130px;
+       min-width: 130px;
+       width: 100%;
+      background-color: #1A73E8;
+       border-radius:6px;
+       height:30px;
+      
+    }
+.eg a{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+    
 
 </style>
 
@@ -737,21 +790,24 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </div>
                 </div>
                 <!--Menu de enlaces-->
-                <div class="header-left mambo">
+                <div class="enlaces-grid">
+                  <div class="enlaces-g ">
                 <a href="https://www.tpitic.com.mx/reportes_mambo.php" target="_blank">Reportes mambo</a>
                 </div>
-                <div class="header-left mambo">
+                <div class="enlaces-g eg" >
                 <a href="http://extensiones.tpitic.com.mx/" target="_blank" >Extensiones</a>
                 </div>
-                <div class="header-left mambo">
+                <div class="enlaces-g eg">
                 <a href="http://192.168.120.119/cobradores/" target="_blank" >Cobradores</a>
                 </div>
-                <div class="header-left mambo">
+                <div class="enlaces-g eg">
                 <a href="http://192.168.120.119/seguros/" target="_blank" >Seguros</a>
                 </div>
-                <div class="header-left mambo">
-                <a href="http://192.168.120.179/INFRAESTRUCTURA-DESARROLLO/gsalazar/tabla/" target="_blank" >Moviles</a>
+                <div class="enlaces-g eg">
+                <a href="http://ti.tpitic.com.mx/INFRAESTRUCTURA-PRODUCCION/Infraestructura/informe/index.php?666U2lzdGVtYXM=897" target="_blank" >Moviles</a>
+                </div>  
                 </div>
+                
                 <!--Menu de enlaces-->
                 <div class="header-right">
                     <ul class="clearfix">
@@ -952,6 +1008,12 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                 <i class="icon-people menu-icon"></i><span class="nav-text">Device Users</span>
                 </a></li>
 
+                <li><a href="#" onclick="ShowLDAP('NukeDev')">
+                <i class="icon-people menu-icon"></i><span class="nav-text">Eliminar</span>
+                </a></li>
+
+
+
             <li class="nav-label">SAMBA</li>
                 <li><a href="#" onclick="ShowLDAPG('SMBLDAPGroup')">
                  <i class="icon-grid menu-icon"></i><span class="nav-text">Grupos LDAP Samba</span>
@@ -1025,6 +1087,7 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </li>
 
 
+
                     <?php
                         $regios= GetRegionalesFromOficinas();
                         foreach ($regios as &$valor) {
@@ -1045,6 +1108,17 @@ var html = '<b>' + $('<div>').text(value.city).html() + '</b>, ' + $('<div>').te
                     </a>
 
 
+                    <li class="nav-label">Herramientas</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()">
+                             <i class="icon-location-pin menu-icon"></i><span class="nav-text">INVENTARIOS</span>
+
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="#" onclick="ShowLastTag()">Ultimo Tag</a></li>
+                            <!-- <li><a href="./index-2.html">Home 2</a></li> -->
+                        </ul>
+                    </li>
 
 
 

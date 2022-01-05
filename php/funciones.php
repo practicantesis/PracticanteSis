@@ -21,7 +21,7 @@ function GetBrandFromModel($model) {
 }
 
 function QueryToAirwatchAPI($tipo,$val) {
-    $basic_auth = base64_encode("jferia:TP1nghm0R1hM0");
+    $basic_auth = base64_encode("jferia:TP1nghm0R1hM0yz");
     //$basic_auth='amZlcmlhOkxldHR5b3J0ZWdh';
     $ch = curl_init();
     $api_key='Zbh2S+e0ejNOibdtwlFDFssflXSeCniu2oh1/7lVg5A=';
@@ -58,8 +58,14 @@ function QueryToAirwatchAPI($tipo,$val) {
         $result['data'] = $ch_result;
     }
     //print_r($result);
+    //echo $tipo,$val;
     curl_close($ch);
-    return $result['data'];
+    if ($result['status'] == "AIRWATCH_API_RESULT_ERROR") {
+        return $result['error'];
+    } else {
+        return $result['data'];    
+    }
+    
 }
 
 
@@ -187,6 +193,56 @@ function GetUsersFromLDAP($base,$how) {
     //echo $out;
     return $out;
 }
+
+
+
+
+function GetDevUsersFromLDAPCells($how,$ofi,$conn) {
+    include 'configuraciones.class.php';
+    $err='';
+    $data='';
+    $out='';
+    if ($how == "array") {
+        $out=array();
+    }
+    $ldapconn=$conn;
+    //error_reporting(E_ALL);
+    //ini_set('display_errors', 'On');
+    set_time_limit(30);
+    $array1= array();
+    $result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com", "(deviceoffice=*)");
+    $err=ldap_error($ldapconn);
+    $ldata = ldap_get_entries($ldapconn, $result);
+    //echo $ldata["count"];
+    for ($i=0; $i<$ldata["count"]; $i++) {
+        //array_push($array1,$ldata[$i][$what][0]);
+        //echo "<pre>";
+        //print_r($ldata);
+        if ($how == "htmltable") {
+            $out .= "<tr><td>".$ldata[$i]['uid'][0]."</td></tr>";    
+        }
+        if ($how == "array") {
+            $at=$ldata[$i]['deviceassignedto'][0];
+            //$out[$at]=$ldata[$i]['devicetag'][0];
+            $out[$at]['tag']=$ldata[$i]['devicetag'][0];
+            $out[$at]['num']=$ldata[$i]['devicenumber'][0];
+            $out[$at]['ofi']=$ldata[$i]['deviceoffice'][0];
+            $out[$at]['imei']=$ldata[$i]['deviceimei'][0];
+
+            //array_push($out,$ldata[$i]['uid'][0]);
+        }
+        if ($how == "exists") {
+            return $ldata["count"];
+        }
+        
+        //echo "</pre>";
+        //return false;
+    }
+    //echo $out;
+    return $out;
+}
+
+
 
 
 
@@ -545,7 +601,6 @@ function GetDeviceInfoFromLDAP($base,$what,$tag) {
     return $ldata;
 }
 
-
 function GetDeviceUserInfoFromLDAP($user) {
     $err='';
     $data='';
@@ -560,6 +615,27 @@ function GetDeviceUserInfoFromLDAP($user) {
         $ldapbind = ldap_bind($ldapconn, $ldapuser, $ldappass) or die ("Error trying to bind: ".ldap_error($ldapconn));
         if ($ldapbind) {
             $result = ldap_search($ldapconn,$ldaptree, "(duusernname=$user)") or die ("Error in search query: ".ldap_error($ldapconn));
+            $ldata = ldap_get_entries($ldapconn, $result);
+        }
+    }
+    return $ldata;
+}
+
+
+function GetDeviceTagInfoFromAssignedUserLDAP($user) {
+    $err='';
+    $data='';
+    set_time_limit(30);
+    $ldapserver = 'ldap.tpitic.com.mx';
+    $ldapuser   = 'cn=feria,dc=transportespitic,dc=com';  
+    $ldappass   = 'sistemaspitic';
+    $ldaptree   = "ou=Celulares,ou=Devices,dc=transportespitic,dc=com";
+    $ldapconn = ldap_connect($ldapserver) or die("Could not connect to LDAP server.");
+    $array1= array();
+    if($ldapconn) {
+        $ldapbind = ldap_bind($ldapconn, $ldapuser, $ldappass) or die ("Error trying to bind: ".ldap_error($ldapconn));
+        if ($ldapbind) {
+            $result = ldap_search($ldapconn,$ldaptree, "(deviceassignedto=$user)") or die ("Error in search query: ".ldap_error($ldapconn));
             $ldata = ldap_get_entries($ldapconn, $result);
         }
     }
@@ -669,6 +745,32 @@ function GetHardwareIDFromUsername($user) {
     //return $pila;
     return $ret;
 }
+
+function GetOfficeFromOCSHWID($hwid,$conn) {
+    $out=Array();
+    $sql = "select fields_3,TAG from accountinfo where HARDWARE_ID='".$hwid."'";
+    $result = $conn->query($sql);
+    if ($result->num_rows == 1) {
+        while($row = $result->fetch_assoc()) {
+            //$ret = $row["hwid"];
+            //print "TAG: ".$row["TAG"]."<br>";
+            $out['TAG']=$row["TAG"];
+            $sqlb = "select TVALUE from config where IVALUE='".$row["fields_3"]."'";
+            $resultb = $conn->query($sqlb);
+            while($rowb = $resultb->fetch_assoc()) {
+                //print $rowb["TVALUE"]." <-- Oficina <br>";
+                //$ret = $rowb["TVALUE"];
+                $out['OFI']=$rowb["TVALUE"];
+            }
+            
+        }
+    } else {
+        $ret = "HWID REPETIDO!!!!";
+    }
+    return $out;
+}
+
+
 
 function DevUserForm($ldata) {
     //echo print_r($ldata);
@@ -1462,18 +1564,28 @@ function NewDevUserForm() {
                             <div class="card"><div class="card-body"><h4 class="card-title">Informacion del Usuario</h4>
                             <!-- Primer Reglon -->
                             <div class="form-group row">';
-                                $cu='duusernname';
-                                $forma .='
-                                <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Username: </label></div>
-                                    <div class="col-lg-6">
-                                        <div class="form-row" id="elinput-'.$cu.'">
-                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="Nombre de usuario" onchange="validarinput('."'palabra','$cu'".','."'SI'".')" '.$rouser.' readonly>
-                                        </div>
+                            $cu='duoficina';
+                            $forma .='
+                            <div class="col">
+                                <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">Oficina: </p></label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                <div class="col-lg-6">
+                                    <div class="form-row" id="elinput-'.$cu.'">
+                                        
+
+
+                                        <select style="width:5" class="form-control" name="val-'.$cu.'" id="val-'.$cu.'" >
+                                            <option value="SELECCIONE">SELECCIONE</option>'.$CmbOfi.'
+
+                                        </select>
+
+
+
+
                                     </div>
                                 </div>
+                            </div>
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-dunombre">Nombre:</label></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-dunombre">Nombre Completo:</label></div>
                                     <div class="col-lg-6">
                                         <input type="text" class="form-control" id="val-dunombre" name="val-dunombre" placeholder="Autogenerado" value="'.$dunombre.'" readonly>
                                     </div>
@@ -1494,23 +1606,13 @@ function NewDevUserForm() {
                                     </div>
                                 </div>
                                 ';
-                                $cu='duoficina';
+                                $cu='duusernname';
                                 $forma .='
                                 <div class="col">
-                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'"><p class="text-danger">Oficina: </p></label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
+                                    <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Username: </label></div>
                                     <div class="col-lg-6">
                                         <div class="form-row" id="elinput-'.$cu.'">
-                                            
-
-
-                                            <select style="width:5" class="form-control" name="val-'.$cu.'" id="val-'.$cu.'" >
-                                                <option value="SELECCIONE">SELECCIONE</option>'.$CmbOfi.'
-
-                                            </select>
-
-
-
-
+                                            <input type="text" class="form-control" id="val-'.$cu.'" name="val-'.$cu.'" placeholder="Nombre de usuario" onchange="validarinput('."'palabra','$cu'".','."'SI'".')" '.$rouser.' readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -1569,7 +1671,7 @@ function NewCellForm() {
                             <!-- Primer Reglon -->
                             <div class="form-group row">';
                                 $cu='newtag';
-                                $rouser="readonly";
+                                $rouser="";
                                 $forma .='
                                 <div class="col">
                                     <div class="row"><label class="col-lg-4 col-form-label" for="val-'.$cu.'">Tag: </label><div id="edit-'.$cu.'"><a href="#" onclick="UValn('."'$dn'".','."'$cu'".')"><span class="fa fa-pencil"></span></a></div></div>
@@ -1640,7 +1742,7 @@ function NewCellForm() {
                                     </div>
                                 </div>
                                 ';
-                                $rouser="readonly";
+                                $rouser="";  //
                                 $cu='devicimei';
                                 $forma .='
                                 <div class="col">
@@ -2187,14 +2289,60 @@ function GetOCSTAG($serial,$conn) {
             $resultb = $conn->query($sqlb);
             if ($resultb->num_rows > 0) {
                 while($rowb = $resultb->fetch_assoc()) {
-                    return "<td> $fnt1 ***".$rowb["TAG"]."</td><td> $fnt1 ***".$row["HARDWARE_ID"]."</td>";
+                    //return "<td> $fnt1 ***".$rowb["TAG"]."</td><td> $fnt1 ***".$row["HARDWARE_ID"]."</td>";
+                    return $rowb["TAG"];
                 }
             } else {
                 return "NO TAG";
             }
         }
+    } else {
+        return "NOTFOUND";
     }
 }
+
+function GetOCSTAGFromHwId($hwid,$conn) {
+    $sql = "select TAG from accountinfo where HARDWARE_ID='$hwid'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            return $row["TAG"];
+        }
+    }
+}
+
+
+function GetOCSHwIDFromIMEI($imei,$conn) {
+    $fnt1="<font face='Trebuchet MS, Arial, Helvetica' size='1'>";
+    $sql = "select HARDWARE_ID from sim where DEVICEID='$imei'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            return $row["HARDWARE_ID"];
+        }
+    } else {
+        return "NOTFOUND_or_DUP";
+    }
+}
+
+function GetOCSImeiFromTag($tag,$conn) {
+    $sql = "select DEVICEID from sim where HARDWARE_ID='$tag'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            return $row["DEVICEID"];
+        }
+    } else {
+        return "NOTFOUND_or_DUP";
+    }
+}
+
+
+function CorrectOCSTAG($goodtag,$wrongtag,$conn) {
+    echo $sql = "UPDATE accountinfo set TAG='".$goodtag."' where TAG='".$wrongtag."'";
+    $result = $conn->query($sql);
+}
+
 
 
 
@@ -2314,14 +2462,14 @@ function GetCellsFromLDAP($como) {
     if ($como == "active" ) {
         $result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com", "(!(deviceoffice=BAJA_*))") or die ("Error in search query: ".ldap_error($ldapconn));
     } else {
-$result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com","(DeviceTAG=*)");
+        $result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=com","(DeviceTAG=*)");
     }
     $err=ldap_error($ldapconn);
     $ldata = ldap_get_entries($ldapconn, $result);
-    echo $ldata["count"]."<br>";
-//echo "<pre>";
-//print_r($ldata);
-//echo "</pre>";
+    $ldata["count"]."<br>";
+    //echo "<pre>";
+    //print_r($ldata);
+    //echo "</pre>";
 
     for ($i=0; $i<$ldata["count"]; $i++) {
         //array_push($array1,$ldata[$i][$what][0]);
@@ -2336,16 +2484,23 @@ $result = ldap_search($ldapconn,"ou=Celulares,ou=Devices,dc=transportespitic,dc=
             $serie=$ldata[$i]['deviceserial'][0];
             $imei=$ldata[$i]['deviceimei'][0];
             //$tag=$ldata[$i]['devicetag'][0];
-//echo "perroi ".$ldata[$i]['devicetag'][0]."--".$imei."--"."<br>";
+            //echo "perroi ".$ldata[$i]['devicetag'][0]."--".$imei."--"."<br>";
             $outb[$imei]['devicelastseen']=$ldata[$i]['devicelastseen'][0];
-            $outb[$imei]['deviceserial']=$ldata[$i]['deviceserial'][0];
+            if (isset($ldata[$i]['deviceserial'][0])) {
+                $outb[$imei]['deviceserial']=$ldata[$i]['deviceserial'][0];
+            } else {
+                $outb[$imei]['deviceserial'] = "PORASIGNAR";
+            }
+            if (isset($ldata[$i]['deviceimei'][0])) {
+                $outb[$imei]['deviceimei']=$ldata[$i]['deviceimei'][0];
+            } else {
+                $outb[$imei]['deviceimei'] = "PORASIGNAR";
+            }
             $outb[$imei]['devicetag']=$ldata[$i]['devicetag'][0];
             $outb[$imei]['deviceimei']=$ldata[$i]['deviceimei'][0];
             $outb[$imei]['deviceassignedto']=$ldata[$i]['deviceassignedto'][0];
             $outb[$imei]['deviceoffice']=$ldata[$i]['deviceoffice'][0];
         }
-        
-        
         //return false;
     }
     //echo $out;

@@ -38,6 +38,36 @@ function respa() {
 }    
 
 
+
+function SaveDevCellNumber(tag) {
+    alert(tag);
+    id='inputnumber'+tag;
+    val = document.getElementById(id).value;
+    alert(val);
+    $.ajax({
+            type: "POST",
+            url: 'php/ChangeCellNumber.php',
+            data: { tag: tag, val: val  },
+            dataType: "json",
+            success: function(data) {
+                if (data[0].success == "NO") {
+                    alert(data[0].data);
+                    //$('#LDAPUserTable').html('<div class="card"><div class="card-header"><div class="card-body">'+where+' '+data[0].error+'</div></div></div>');
+                }
+                if (data[0].success == "YES") {
+                    alert(data[0].data);
+                    id='#divcell'+tag;
+                    $(id).html(val); 
+                    //$('#teibol').empty();
+                    //$('#TablaVPN').dataTable();
+                    //$('#TablaVPN').dataTable( { "lengthMenu": [[150, -1], [150, "All"]]  } );
+                    //alert(data[0].data);
+                }
+            }
+    });
+
+}
+
 function SmbGrpMemberAction (valor,dn,accion) {
     var user = document.getElementById("newsmbgrpuser").value;
     //alert(valor+dn+accion+"----"+user);
@@ -126,6 +156,58 @@ function ShowOPENVPN() {
        });
 
 
+}
+
+
+
+function GetLastAvailTag() {
+    var ofi = document.getElementById("ofi").value;
+    alert(ofi);
+     $.ajax({
+            type: "POST",
+            url: 'php/CalculateLastTag.php',
+            data: { ofi: ofi },
+            dataType: "json",
+            success: function(data)
+            {
+            //alert(data[0].error);
+            //alert(data[0].success);
+            if (data[0].success == "NO") {
+                alert(data[0].error);
+            }
+                if (data[0].success == "YES") {
+                $('#TOPDIV').html(data[0].data);
+                //alert(data[0].data);
+                $('#teibol').dataTable();
+            }
+
+           }
+       });
+
+}
+
+function ShowLastTag() {
+    Limpia();
+     $.ajax({
+            type: "POST",
+            url: 'php/ShowLastTag.php',
+            data: {  },
+            dataType: "json",
+            success: function(data)
+            {
+            //alert(data[0].error);
+            //alert(data[0].success);
+            if (data[0].success == "NO") {
+                alert(data[0].error);
+            }
+                if (data[0].success == "YES") {
+                $('#TOPDIV').html(data[0].data);
+                //alert(data[0].data);
+                $('#teibol').dataTable();
+            }
+
+           }
+       });
 }
 
 
@@ -224,7 +306,8 @@ function ShowLDAP(what) {
             }
         });
     }
-
+   
+   
     if (what == "AddLDAPUsers") {
         $.ajax({
             type: "POST",
@@ -238,6 +321,42 @@ function ShowLDAP(what) {
                 }
             }
         });
+    }
+   
+    /* if (what == "AddLDAPUsers") {
+        //alert('xxx');
+        $("#AddLDAPCell").show();
+        $.ajax({
+            type: "POST",
+            url: 'php/NewCell.php',
+            dataType: "json",
+            success: function(data) {
+                //alert(data[0].success);
+                if (data[0].success == "YES") {
+                    $('#AddLDAPCell').html(data[0].data);
+                    //alert(data[0].data);
+                }
+            }
+        });
+    }*/
+
+    if (what == "NukeDev") {
+        var html ='<div class="col-lg-12"><div class="card"><div class="card-body"><div class="form-validation"><input type="text" id="srchp" class="form-control" ><button type="button" class="btn btn-primary mb-2" onclick="SrchParam()">Buscar</button><div id="DevQResult"></div></div></div></div>';
+        $('#NewLDAPUser').html(html);
+        /*
+        $.ajax({
+            type: "POST",
+            url: 'php/NewUser.php',
+            dataType: "json",
+            success: function(data) {
+                //alert(data[0].success);
+                if (data[0].success == "YES") {
+                    $('#NewLDAPUser').html(data[0].data);
+                    //alert(data[0].data);
+                }
+            }
+        });
+        */
     }
     if (what == "AddLDAPDevUsers") {
         $.ajax({
@@ -254,6 +373,24 @@ function ShowLDAP(what) {
         });
     }
 }
+
+function SrchParam() {
+    var param = document.getElementById("srchp").value;
+    alert(param);
+    $.ajax({
+        type: "POST",
+        data: { param: param },
+        url: 'php/ProcessDevSrch.php',
+        dataType: "json",
+        success: function(data) {
+            if (data[0].success == "YES") {
+                $('#BOTTDIV').html(data[0].mes);
+                //alert(data[0].data);
+            }
+        }
+    });
+}
+
 
 function ShowCells(what) {
     Limpia();
@@ -277,6 +414,20 @@ function ShowCells(what) {
 }
 
 
+
+function ShowLDAPG(tipo) {
+    Limpia();
+    if (tipo == "LDAPGroup") {
+        $("#LDAPGroups").show();    
+    }
+    if (tipo == "SMBLDAPGroup") {
+        $("#SMBLDAPGroups").show();    
+    }
+}
+
+/*
+
+//SMBLDAPGroup
 function ShowLDAPG() {
     Limpia();
     $("#LDAPGroups").show();
@@ -286,6 +437,7 @@ function ShowLDAPG() {
     Limpia();
     $("#SmbLDAPGroups").show();
 }
+*/
 
 function LoadGroupQuery(type) {
     Limpia();

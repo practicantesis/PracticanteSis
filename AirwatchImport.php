@@ -6,7 +6,7 @@ $celdap=GetCellsFromLDAP("x");
 echo "<pre>";
 //print_r($celdap);
 
-
+echo "Este scripi se trae todos los devices de Airwatch <br>";
 
 $imeis=array_keys($celdap);
 $conn = ConectaSQL('ocsweb');
@@ -32,6 +32,7 @@ foreach ($awdevsa['Devices'] as &$valuex) {
 			$fn=$valuex['DeviceFriendlyName'];
 			$all[$fn]['serial']=$valuex['SerialNumber'];
 	    } else {
+	    	// Si el tag esta mal buscar la serie en LDAP
 	    	$din=GetDeviceInfoFromLDAP("ou=Celulares,ou=Devices,dc=transportespitic,dc=com","deviceserial",$valuex['SerialNumber']);
 	    	$mytg=$din[0]['devicetag'];
 	    	$OCS="INVALID TAG, NOT CHECKING (TAG= $mytg sn: ".$valuex['SerialNumber']." )";
@@ -45,7 +46,12 @@ foreach ($awdevsa['Devices'] as &$valuex) {
 	$xxxx='';
     if ($OCS == "NO TAG ON OCS") {
 		$xxx=GetOCSTAG($valuex['SerialNumber'],$conn);
-		$xxxx="ACTUAL WRONG TAG ".$xxx;
+		if (strlen($xxx) > 3) {
+			$xxxx="ACTUAL WRONG TAG ".$xxx;	
+			CorrectOCSTAG($valuex['DeviceFriendlyName'],$xxx,$conn);
+		} else {
+			$xxxx="ACTUAL WRONG TAG TOO SHORT OR NOT FOUND";	
+		}
 		$sx=" -> Serie:".$valuex['SerialNumber'];
     }
 
